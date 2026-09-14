@@ -1,0 +1,1379 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Ledger API v1",
+    "version": "2026-09-14",
+    "description": "Personal finance backend. Path major version and exact date header jointly identify the contract. Documentation is public when enabled; business operations require a Clerk session token.",
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "x-ledger-major": "v1",
+  "servers": [
+    {
+      "url": "/",
+      "description": "Same-origin Ledger API"
+    }
+  ],
+  "security": [
+    {
+      "ClerkSession": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Identity"
+    },
+    {
+      "name": "Administration"
+    },
+    {
+      "name": "Health"
+    }
+  ],
+  "paths": {
+    "/healthz": {
+      "get": {
+        "operationId": "GetHealth",
+        "summary": "Process health",
+        "tags": [
+          "Health"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Health"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "security": []
+      }
+    },
+    "/readyz": {
+      "get": {
+        "operationId": "GetReadiness",
+        "summary": "Database readiness",
+        "tags": [
+          "Health"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Readiness"
+                }
+              }
+            }
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "security": []
+      }
+    },
+    "/api/v1/bootstrap": {
+      "post": {
+        "operationId": "Bootstrap",
+        "summary": "Initialize personal space",
+        "tags": [
+          "Identity"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          },
+          "201": {
+            "description": "New identity and personal space created atomically.",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserContext"
+                }
+              }
+            }
+          }
+        },
+        "description": "The first successful bootstrap transaction also claims instance administrator. New identities require currency, timezone and locale; repeats return existing context without changes. Disabled users cannot reactivate themselves.",
+        "requestBody": {
+          "required": false,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BootstrapInput"
+              },
+              "example": {
+                "base_currency": "CNY",
+                "timezone": "Asia/Shanghai",
+                "locale": "zh-CN"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/me": {
+      "get": {
+        "operationId": "GetMe",
+        "summary": "Current user and personal space",
+        "tags": [
+          "Identity"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserContext"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
+    "/api/v1/books": {
+      "get": {
+        "operationId": "ListBooks",
+        "summary": "List personal books",
+        "tags": [
+          "Identity"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BookList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}": {
+      "get": {
+        "operationId": "GetBook",
+        "summary": "Get a personal book",
+        "tags": [
+          "Identity"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Book"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
+    "/api/v1/me/preferences": {
+      "patch": {
+        "operationId": "UpdatePreferences",
+        "summary": "Update display preferences",
+        "tags": [
+          "Identity"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Preferences"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PreferencesPatch"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/admin/instance": {
+      "get": {
+        "operationId": "GetInstance",
+        "summary": "Instance administrator and initialization time",
+        "tags": [
+          "Administration"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Instance"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "description": "Instance administrator only. Does not grant cross-tenant book access."
+      }
+    },
+    "/api/v1/admin/users": {
+      "get": {
+        "operationId": "ListUsers",
+        "summary": "List internal users",
+        "tags": [
+          "Administration"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Exclusive UUID cursor."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "description": "Instance administrator only. UUID-ordered pagination; not a snapshot during concurrent registrations."
+      }
+    },
+    "/api/v1/admin/users/{user_id}/status": {
+      "patch": {
+        "operationId": "SetUserStatus",
+        "summary": "Suspend or restore a normal user",
+        "tags": [
+          "Administration"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "user_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-14"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "description": "Instance administrator only. Cannot change the administrator. Changes and reason are audited atomically. Existing personal space is retained.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StatusInput"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ClerkSession": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Paste a short-lived Clerk session token, not a backend API key. Scalar does not sign in or refresh tokens."
+      }
+    },
+    "parameters": {
+      "APIVersion": {
+        "name": "X-Ledger-API-Version",
+        "in": "header",
+        "required": true,
+        "description": "Exact contract date. Missing, malformed and retired dates are rejected before authentication.",
+        "schema": {
+          "type": "string",
+          "enum": [
+            "2026-09-14"
+          ],
+          "default": "2026-09-14"
+        }
+      }
+    },
+    "schemas": {
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "display_name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "disabled"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "display_name",
+          "status"
+        ]
+      },
+      "Tenant": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": [
+              "owner"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "role"
+        ]
+      },
+      "Book": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "tenant_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "base_currency": {
+            "type": "string",
+            "pattern": "^[A-Z]{3}$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "tenant_id",
+          "name",
+          "base_currency"
+        ]
+      },
+      "Preferences": {
+        "type": "object",
+        "properties": {
+          "locale": {
+            "type": "string"
+          },
+          "timezone": {
+            "type": "string"
+          },
+          "theme": {
+            "type": "string",
+            "enum": [
+              "system",
+              "light",
+              "dark"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "locale",
+          "timezone",
+          "theme"
+        ]
+      },
+      "UserContext": {
+        "type": "object",
+        "properties": {
+          "user": {
+            "$ref": "#/components/schemas/User"
+          },
+          "instance_role": {
+            "type": "string",
+            "enum": [
+              "admin",
+              "user"
+            ]
+          },
+          "tenant": {
+            "$ref": "#/components/schemas/Tenant"
+          },
+          "default_book": {
+            "$ref": "#/components/schemas/Book"
+          },
+          "preferences": {
+            "$ref": "#/components/schemas/Preferences"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "user",
+          "instance_role",
+          "tenant",
+          "default_book",
+          "preferences"
+        ]
+      },
+      "BootstrapInput": {
+        "type": "object",
+        "properties": {
+          "base_currency": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Required on first initialization: uppercase ISO 4217 code."
+          },
+          "timezone": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Required on first initialization: IANA timezone, excluding Local."
+          },
+          "locale": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Required on first initialization: BCP 47 language tag."
+          }
+        },
+        "additionalProperties": false,
+        "description": "All three values are required only for a new identity. Existing identities may send an empty body or any supported initialization fields; stored settings are never overwritten. This database-dependent rule is enforced by the service."
+      },
+      "PreferencesPatch": {
+        "type": "object",
+        "properties": {
+          "locale": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "BCP 47 locale. Null is ignored."
+          },
+          "timezone": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "IANA timezone, excluding Local. Null is ignored."
+          },
+          "theme": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "system, light or dark. Null is ignored."
+          }
+        },
+        "additionalProperties": false,
+        "description": "At least one non-null field is required; validation is performed by the service."
+      },
+      "StatusInput": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "active",
+              "disabled"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 1000,
+            "description": "Nonblank reason, maximum 1000 UTF-8 bytes."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "reason"
+        ]
+      },
+      "Instance": {
+        "type": "object",
+        "properties": {
+          "admin_user_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "initialized_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "admin_user_id",
+          "initialized_at"
+        ]
+      },
+      "UserPage": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/User"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "users",
+          "next_cursor"
+        ]
+      },
+      "BookList": {
+        "type": "object",
+        "properties": {
+          "books": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Book"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "books"
+        ]
+      },
+      "Health": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "status"
+        ]
+      },
+      "Readiness": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": [
+              "ok"
+            ]
+          },
+          "database": {
+            "type": "string",
+            "enum": [
+              "disabled",
+              "connected"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "status",
+          "database"
+        ]
+      },
+      "FieldError": {
+        "type": "object",
+        "properties": {
+          "location": {
+            "type": "string",
+            "enum": [
+              "body",
+              "path",
+              "query"
+            ]
+          },
+          "name": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "location",
+          "name",
+          "reason"
+        ]
+      },
+      "Problem": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^https://ledger\\.ztd\\.me/errors/[a-z-]+$"
+          },
+          "title": {
+            "type": "string"
+          },
+          "status": {
+            "type": "integer",
+            "minimum": 400,
+            "maximum": 599
+          },
+          "detail": {
+            "type": "string"
+          },
+          "instance": {
+            "type": "string",
+            "format": "uri",
+            "pattern": "^urn:uuid:"
+          },
+          "errors": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FieldError"
+            }
+          },
+          "supported_versions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        },
+        "additionalProperties": true,
+        "required": [
+          "type",
+          "title",
+          "status",
+          "detail",
+          "instance"
+        ]
+      }
+    },
+    "responses": {
+      "Error400": {
+        "description": "Invalid request or API date version",
+        "headers": {
+          "X-Request-ID": {
+            "description": "Server-generated request correlation UUID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "X-Ledger-API-Version": {
+            "description": "Present only after a version is accepted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2026-09-14"
+              ]
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Error401": {
+        "description": "Missing or invalid Clerk session token",
+        "headers": {
+          "X-Request-ID": {
+            "description": "Server-generated request correlation UUID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "X-Ledger-API-Version": {
+            "description": "Present only after a version is accepted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2026-09-14"
+              ]
+            }
+          },
+          "WWW-Authenticate": {
+            "schema": {
+              "type": "string",
+              "const": "Bearer"
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Error403": {
+        "description": "Disabled user or insufficient permission",
+        "headers": {
+          "X-Request-ID": {
+            "description": "Server-generated request correlation UUID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "X-Ledger-API-Version": {
+            "description": "Present only after a version is accepted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2026-09-14"
+              ]
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Error404": {
+        "description": "Absent or foreign resource",
+        "headers": {
+          "X-Request-ID": {
+            "description": "Server-generated request correlation UUID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "X-Ledger-API-Version": {
+            "description": "Present only after a version is accepted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2026-09-14"
+              ]
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Error405": {
+        "description": "Unsupported method",
+        "headers": {
+          "X-Request-ID": {
+            "description": "Server-generated request correlation UUID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "X-Ledger-API-Version": {
+            "description": "Present only after a version is accepted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2026-09-14"
+              ]
+            }
+          },
+          "Allow": {
+            "schema": {
+              "type": "string"
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Error409": {
+        "description": "Local bootstrap is required",
+        "headers": {
+          "X-Request-ID": {
+            "description": "Server-generated request correlation UUID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "X-Ledger-API-Version": {
+            "description": "Present only after a version is accepted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2026-09-14"
+              ]
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Error500": {
+        "description": "Unexpected server failure",
+        "headers": {
+          "X-Request-ID": {
+            "description": "Server-generated request correlation UUID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "X-Ledger-API-Version": {
+            "description": "Present only after a version is accepted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2026-09-14"
+              ]
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      },
+      "Error503": {
+        "description": "Business API, authentication keys or database readiness unavailable",
+        "headers": {
+          "X-Request-ID": {
+            "description": "Server-generated request correlation UUID.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          "X-Ledger-API-Version": {
+            "description": "Present only after a version is accepted.",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "2026-09-14"
+              ]
+            }
+          }
+        },
+        "content": {
+          "application/problem+json": {
+            "schema": {
+              "$ref": "#/components/schemas/Problem"
+            }
+          }
+        }
+      }
+    }
+  }
+}

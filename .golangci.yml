@@ -1,0 +1,59 @@
+version: "2"
+run:
+  timeout: 5m
+  tests: true
+  build-tags: [integration]
+linters:
+  default: none
+  enable:
+    - errcheck
+    - govet
+    - staticcheck
+    - unused
+    - ineffassign
+    - bodyclose
+    - sqlclosecheck
+    - rowserrcheck
+    - contextcheck
+    - noctx
+    - errorlint
+    - durationcheck
+    - nilerr
+    - unconvert
+    - unparam
+    - misspell
+    - gocritic
+    - revive
+    - gosec
+    - nolintlint
+    - sloglint
+    - forbidigo
+  settings:
+    sloglint:
+      context: scope
+    forbidigo:
+      forbid:
+        - pattern: '^(fmt\.Print.*|log\.(Print.*|Fatal.*|Panic.*)|gin\.(Default|Logger|Recovery))$'
+          msg: Use context-aware slog and the shared observability/recovery pipeline.
+    errcheck:
+      check-type-assertions: true
+      check-blank: true
+    nolintlint:
+      require-explanation: true
+      require-specific: true
+    govet:
+      enable-all: true
+      disable: [fieldalignment]
+  exclusions:
+    generated: strict
+    presets: []
+formatters:
+  enable: [gofumpt, goimports]
+  settings:
+    goimports:
+      local-prefixes: [github.com/zeithrold/ledger]
+  exclusions:
+    generated: strict
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0

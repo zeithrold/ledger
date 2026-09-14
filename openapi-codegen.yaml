@@ -1,0 +1,6 @@
+package: apiv1
+generate:
+  models: true
+  gin-server: true
+output-options:
+  skip-prune: true
