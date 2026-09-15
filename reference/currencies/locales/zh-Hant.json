@@ -1,0 +1,1138 @@
+{
+  "currencies": {
+    "AED": {
+      "display_name": "阿拉伯聯合大公國迪爾汗",
+      "display_names_by_plural": {
+        "other": "阿拉伯聯合大公國迪爾汗"
+      },
+      "symbol": "AED"
+    },
+    "AFN": {
+      "display_name": "阿富汗尼",
+      "display_names_by_plural": {
+        "other": "阿富汗尼"
+      },
+      "narrow_symbol": "؋",
+      "symbol": "AFN"
+    },
+    "ALL": {
+      "display_name": "阿爾巴尼亞列克",
+      "display_names_by_plural": {
+        "other": "阿爾巴尼亞列克"
+      },
+      "symbol": "ALL"
+    },
+    "AMD": {
+      "display_name": "亞美尼亞德拉姆",
+      "display_names_by_plural": {
+        "other": "亞美尼亞德拉姆"
+      },
+      "narrow_symbol": "֏",
+      "symbol": "AMD"
+    },
+    "AOA": {
+      "display_name": "安哥拉寬扎",
+      "display_names_by_plural": {
+        "other": "安哥拉寬扎"
+      },
+      "narrow_symbol": "Kz",
+      "symbol": "AOA"
+    },
+    "ARS": {
+      "display_name": "阿根廷披索",
+      "display_names_by_plural": {
+        "other": "阿根廷披索"
+      },
+      "narrow_symbol": "$",
+      "symbol": "ARS"
+    },
+    "AUD": {
+      "display_name": "澳幣",
+      "display_names_by_plural": {
+        "other": "澳幣"
+      },
+      "narrow_symbol": "$",
+      "symbol": "AU$"
+    },
+    "AWG": {
+      "display_name": "阿路巴盾",
+      "display_names_by_plural": {
+        "other": "阿路巴盾"
+      },
+      "symbol": "AWG"
+    },
+    "AZN": {
+      "display_name": "亞塞拜然馬納特",
+      "display_names_by_plural": {
+        "other": "亞塞拜然馬納特"
+      },
+      "narrow_symbol": "₼",
+      "symbol": "AZN"
+    },
+    "BAM": {
+      "display_name": "波士尼亞-赫塞哥維納可轉換馬克",
+      "display_names_by_plural": {
+        "other": "波士尼亞-赫塞哥維納可轉換馬克"
+      },
+      "narrow_symbol": "KM",
+      "symbol": "BAM"
+    },
+    "BBD": {
+      "display_name": "巴貝多元",
+      "display_names_by_plural": {
+        "other": "巴貝多元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BBD"
+    },
+    "BDT": {
+      "display_name": "孟加拉塔卡",
+      "display_names_by_plural": {
+        "other": "孟加拉塔卡"
+      },
+      "narrow_symbol": "৳",
+      "symbol": "BDT"
+    },
+    "BHD": {
+      "display_name": "巴林第納爾",
+      "display_names_by_plural": {
+        "other": "巴林第納爾"
+      },
+      "symbol": "BHD"
+    },
+    "BIF": {
+      "display_name": "蒲隆地法郎",
+      "display_names_by_plural": {
+        "other": "蒲隆地法郎"
+      },
+      "symbol": "BIF"
+    },
+    "BMD": {
+      "display_name": "百慕達幣",
+      "display_names_by_plural": {
+        "other": "百慕達幣"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BMD"
+    },
+    "BND": {
+      "display_name": "汶萊元",
+      "display_names_by_plural": {
+        "other": "汶萊元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BND"
+    },
+    "BOB": {
+      "display_name": "玻利維亞諾",
+      "display_names_by_plural": {
+        "other": "玻利維亞諾"
+      },
+      "narrow_symbol": "Bs",
+      "symbol": "BOB"
+    },
+    "BRL": {
+      "display_name": "巴西雷亞爾",
+      "display_names_by_plural": {
+        "other": "巴西雷亞爾"
+      },
+      "narrow_symbol": "R$",
+      "symbol": "R$"
+    },
+    "BSD": {
+      "display_name": "巴哈馬元",
+      "display_names_by_plural": {
+        "other": "巴哈馬元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BSD"
+    },
+    "BTN": {
+      "display_name": "不丹那特倫",
+      "display_names_by_plural": {
+        "other": "不丹那特倫"
+      },
+      "symbol": "BTN"
+    },
+    "BWP": {
+      "display_name": "波札那普拉",
+      "display_names_by_plural": {
+        "other": "波札那普拉"
+      },
+      "narrow_symbol": "P",
+      "symbol": "BWP"
+    },
+    "BYN": {
+      "display_name": "白俄羅斯盧布",
+      "display_names_by_plural": {
+        "other": "白俄羅斯盧布"
+      },
+      "narrow_symbol": "р.",
+      "symbol": "BYN"
+    },
+    "BZD": {
+      "display_name": "貝里斯元",
+      "display_names_by_plural": {
+        "other": "貝里斯元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BZD"
+    },
+    "CAD": {
+      "display_name": "加幣",
+      "display_names_by_plural": {
+        "other": "加幣"
+      },
+      "narrow_symbol": "$",
+      "symbol": "CA$"
+    },
+    "CDF": {
+      "display_name": "剛果法郎",
+      "display_names_by_plural": {
+        "other": "剛果法郎"
+      },
+      "symbol": "CDF"
+    },
+    "CHF": {
+      "display_name": "瑞士法郎",
+      "display_names_by_plural": {
+        "other": "瑞士法郎"
+      },
+      "symbol": "CHF"
+    },
+    "CLP": {
+      "display_name": "智利披索",
+      "display_names_by_plural": {
+        "other": "智利披索"
+      },
+      "narrow_symbol": "$",
+      "symbol": "CLP"
+    },
+    "CNY": {
+      "display_name": "人民幣",
+      "display_names_by_plural": {
+        "other": "人民幣"
+      },
+      "narrow_symbol": "¥",
+      "symbol": "CN¥"
+    },
+    "COP": {
+      "display_name": "哥倫比亞披索",
+      "display_names_by_plural": {
+        "other": "哥倫比亞披索"
+      },
+      "narrow_symbol": "$",
+      "symbol": "COP"
+    },
+    "CRC": {
+      "display_name": "哥斯大黎加科朗",
+      "display_names_by_plural": {
+        "other": "哥斯大黎加科朗"
+      },
+      "narrow_symbol": "₡",
+      "symbol": "CRC"
+    },
+    "CUP": {
+      "display_name": "古巴披索",
+      "display_names_by_plural": {
+        "other": "古巴披索"
+      },
+      "narrow_symbol": "$",
+      "symbol": "CUP"
+    },
+    "CVE": {
+      "display_name": "維德角埃斯庫多",
+      "display_names_by_plural": {
+        "other": "維德角埃斯庫多"
+      },
+      "symbol": "CVE"
+    },
+    "CZK": {
+      "display_name": "捷克克朗",
+      "display_names_by_plural": {
+        "other": "捷克克朗"
+      },
+      "narrow_symbol": "Kč",
+      "symbol": "CZK"
+    },
+    "DJF": {
+      "display_name": "吉布地法郎",
+      "display_names_by_plural": {
+        "other": "吉布地法郎"
+      },
+      "symbol": "DJF"
+    },
+    "DKK": {
+      "display_name": "丹麥克朗",
+      "display_names_by_plural": {
+        "other": "丹麥克朗"
+      },
+      "narrow_symbol": "kr",
+      "symbol": "DKK"
+    },
+    "DOP": {
+      "display_name": "多明尼加披索",
+      "display_names_by_plural": {
+        "other": "多明尼加披索"
+      },
+      "narrow_symbol": "$",
+      "symbol": "DOP"
+    },
+    "DZD": {
+      "display_name": "阿爾及利亞第納爾",
+      "display_names_by_plural": {
+        "other": "阿爾及利亞第納爾"
+      },
+      "symbol": "DZD"
+    },
+    "EGP": {
+      "display_name": "埃及鎊",
+      "display_names_by_plural": {
+        "other": "埃及鎊"
+      },
+      "narrow_symbol": "E£",
+      "symbol": "EGP"
+    },
+    "ERN": {
+      "display_name": "厄利垂亞納可法",
+      "display_names_by_plural": {
+        "other": "厄利垂亞納可法"
+      },
+      "symbol": "ERN"
+    },
+    "ETB": {
+      "display_name": "衣索比亞比爾",
+      "display_names_by_plural": {
+        "other": "衣索比亞比爾"
+      },
+      "symbol": "ETB"
+    },
+    "EUR": {
+      "display_name": "歐元",
+      "display_names_by_plural": {
+        "other": "歐元"
+      },
+      "narrow_symbol": "€",
+      "symbol": "€"
+    },
+    "FJD": {
+      "display_name": "斐濟元",
+      "display_names_by_plural": {
+        "other": "斐濟元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "FJD"
+    },
+    "FKP": {
+      "display_name": "福克蘭群島鎊",
+      "display_names_by_plural": {
+        "other": "福克蘭群島鎊"
+      },
+      "narrow_symbol": "£",
+      "symbol": "FKP"
+    },
+    "GBP": {
+      "display_name": "英鎊",
+      "display_names_by_plural": {
+        "other": "英鎊"
+      },
+      "narrow_symbol": "£",
+      "symbol": "£"
+    },
+    "GEL": {
+      "display_name": "喬治亞拉里",
+      "display_names_by_plural": {
+        "other": "喬治亞拉里"
+      },
+      "narrow_symbol": "₾",
+      "symbol": "GEL"
+    },
+    "GHS": {
+      "display_name": "迦納塞地",
+      "display_names_by_plural": {
+        "other": "迦納塞地"
+      },
+      "narrow_symbol": "GH₵",
+      "symbol": "GHS"
+    },
+    "GIP": {
+      "display_name": "直布羅陀鎊",
+      "display_names_by_plural": {
+        "other": "直布羅陀鎊"
+      },
+      "narrow_symbol": "£",
+      "symbol": "GIP"
+    },
+    "GMD": {
+      "display_name": "甘比亞達拉西",
+      "display_names_by_plural": {
+        "other": "甘比亞達拉西"
+      },
+      "symbol": "GMD"
+    },
+    "GNF": {
+      "display_name": "幾內亞法郎",
+      "display_names_by_plural": {
+        "other": "幾內亞法郎"
+      },
+      "narrow_symbol": "FG",
+      "symbol": "GNF"
+    },
+    "GTQ": {
+      "display_name": "瓜地馬拉格查爾",
+      "display_names_by_plural": {
+        "other": "瓜地馬拉格查爾"
+      },
+      "narrow_symbol": "Q",
+      "symbol": "GTQ"
+    },
+    "GYD": {
+      "display_name": "圭亞那元",
+      "display_names_by_plural": {
+        "other": "圭亞那元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "GYD"
+    },
+    "HKD": {
+      "display_name": "港幣",
+      "display_names_by_plural": {
+        "other": "港幣"
+      },
+      "narrow_symbol": "$",
+      "symbol": "HK$"
+    },
+    "HNL": {
+      "display_name": "洪都拉斯倫皮拉",
+      "display_names_by_plural": {
+        "other": "洪都拉斯倫皮拉"
+      },
+      "narrow_symbol": "L",
+      "symbol": "HNL"
+    },
+    "HTG": {
+      "display_name": "海地古德",
+      "display_names_by_plural": {
+        "other": "海地古德"
+      },
+      "symbol": "HTG"
+    },
+    "HUF": {
+      "display_name": "匈牙利福林",
+      "display_names_by_plural": {
+        "other": "匈牙利福林"
+      },
+      "narrow_symbol": "Ft",
+      "symbol": "HUF"
+    },
+    "IDR": {
+      "display_name": "印尼盾",
+      "display_names_by_plural": {
+        "other": "印尼盾"
+      },
+      "narrow_symbol": "Rp",
+      "symbol": "IDR"
+    },
+    "ILS": {
+      "display_name": "以色列新謝克爾",
+      "display_names_by_plural": {
+        "other": "以色列新謝克爾"
+      },
+      "narrow_symbol": "₪",
+      "symbol": "₪"
+    },
+    "INR": {
+      "display_name": "印度盧比",
+      "display_names_by_plural": {
+        "other": "印度盧比"
+      },
+      "narrow_symbol": "₹",
+      "symbol": "₹"
+    },
+    "IQD": {
+      "display_name": "伊拉克第納爾",
+      "display_names_by_plural": {
+        "other": "伊拉克第納爾"
+      },
+      "symbol": "IQD"
+    },
+    "IRR": {
+      "display_name": "伊朗里亞爾",
+      "display_names_by_plural": {
+        "other": "伊朗里亞爾"
+      },
+      "symbol": "IRR"
+    },
+    "ISK": {
+      "display_name": "冰島克朗",
+      "display_names_by_plural": {
+        "other": "冰島克朗"
+      },
+      "narrow_symbol": "kr",
+      "symbol": "ISK"
+    },
+    "JMD": {
+      "display_name": "牙買加元",
+      "display_names_by_plural": {
+        "other": "牙買加元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "JMD"
+    },
+    "JOD": {
+      "display_name": "約旦第納爾",
+      "display_names_by_plural": {
+        "other": "約旦第納爾"
+      },
+      "symbol": "JOD"
+    },
+    "JPY": {
+      "display_name": "日圓",
+      "display_names_by_plural": {
+        "other": "日圓"
+      },
+      "narrow_symbol": "¥",
+      "symbol": "¥"
+    },
+    "KES": {
+      "display_name": "肯尼亞先令",
+      "display_names_by_plural": {
+        "other": "肯尼亞先令"
+      },
+      "symbol": "KES"
+    },
+    "KGS": {
+      "display_name": "吉爾吉斯索姆",
+      "display_names_by_plural": {
+        "other": "吉爾吉斯索姆"
+      },
+      "narrow_symbol": "⃀",
+      "symbol": "KGS"
+    },
+    "KHR": {
+      "display_name": "柬埔寨瑞爾",
+      "display_names_by_plural": {
+        "other": "柬埔寨瑞爾"
+      },
+      "narrow_symbol": "៛",
+      "symbol": "KHR"
+    },
+    "KMF": {
+      "display_name": "科摩羅法郎",
+      "display_names_by_plural": {
+        "other": "科摩羅法郎"
+      },
+      "narrow_symbol": "CF",
+      "symbol": "KMF"
+    },
+    "KPW": {
+      "display_name": "北韓元",
+      "display_names_by_plural": {
+        "other": "北韓元"
+      },
+      "narrow_symbol": "₩",
+      "symbol": "KPW"
+    },
+    "KRW": {
+      "display_name": "韓元",
+      "display_names_by_plural": {
+        "other": "韓元"
+      },
+      "narrow_symbol": "₩",
+      "symbol": "￦"
+    },
+    "KWD": {
+      "display_name": "科威特第納爾",
+      "display_names_by_plural": {
+        "other": "科威特第納爾"
+      },
+      "symbol": "KWD"
+    },
+    "KYD": {
+      "display_name": "開曼群島元",
+      "display_names_by_plural": {
+        "other": "開曼群島元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "KYD"
+    },
+    "KZT": {
+      "display_name": "哈薩克堅戈",
+      "display_names_by_plural": {
+        "other": "哈薩克堅戈"
+      },
+      "narrow_symbol": "₸",
+      "symbol": "KZT"
+    },
+    "LAK": {
+      "display_name": "寮國基普",
+      "display_names_by_plural": {
+        "other": "寮國基普"
+      },
+      "narrow_symbol": "₭",
+      "symbol": "LAK"
+    },
+    "LBP": {
+      "display_name": "黎巴嫩鎊",
+      "display_names_by_plural": {
+        "other": "黎巴嫩鎊"
+      },
+      "narrow_symbol": "L£",
+      "symbol": "LBP"
+    },
+    "LKR": {
+      "display_name": "斯里蘭卡盧比",
+      "display_names_by_plural": {
+        "other": "斯里蘭卡盧比"
+      },
+      "narrow_symbol": "Rs",
+      "symbol": "LKR"
+    },
+    "LRD": {
+      "display_name": "賴比瑞亞元",
+      "display_names_by_plural": {
+        "other": "賴比瑞亞元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "LRD"
+    },
+    "LSL": {
+      "display_name": "賴索托洛蒂",
+      "display_names_by_plural": {
+        "other": "賴索托洛蒂"
+      },
+      "symbol": "LSL"
+    },
+    "LYD": {
+      "display_name": "利比亞第納爾",
+      "display_names_by_plural": {
+        "other": "利比亞第納爾"
+      },
+      "symbol": "LYD"
+    },
+    "MAD": {
+      "display_name": "摩洛哥迪拉姆",
+      "display_names_by_plural": {
+        "other": "摩洛哥迪拉姆"
+      },
+      "symbol": "MAD"
+    },
+    "MDL": {
+      "display_name": "摩爾多瓦列伊",
+      "display_names_by_plural": {
+        "other": "摩爾多瓦列伊"
+      },
+      "symbol": "MDL"
+    },
+    "MGA": {
+      "display_name": "馬達加斯加阿里亞里",
+      "display_names_by_plural": {
+        "other": "馬達加斯加阿里亞里"
+      },
+      "narrow_symbol": "Ar",
+      "symbol": "MGA"
+    },
+    "MKD": {
+      "display_name": "馬其頓第納爾",
+      "display_names_by_plural": {
+        "other": "馬其頓第納爾"
+      },
+      "symbol": "MKD"
+    },
+    "MMK": {
+      "display_name": "緬甸元",
+      "display_names_by_plural": {
+        "other": "緬甸元"
+      },
+      "narrow_symbol": "K",
+      "symbol": "MMK"
+    },
+    "MNT": {
+      "display_name": "蒙古圖格里克",
+      "display_names_by_plural": {
+        "other": "蒙古圖格里克"
+      },
+      "narrow_symbol": "₮",
+      "symbol": "MNT"
+    },
+    "MOP": {
+      "display_name": "澳門元",
+      "display_names_by_plural": {
+        "other": "澳門元"
+      },
+      "symbol": "MOP"
+    },
+    "MUR": {
+      "display_name": "模里西斯盧比",
+      "display_names_by_plural": {
+        "other": "模里西斯盧比"
+      },
+      "narrow_symbol": "Rs",
+      "symbol": "MUR"
+    },
+    "MVR": {
+      "display_name": "馬爾地夫盧非亞",
+      "display_names_by_plural": {
+        "other": "馬爾地夫盧非亞"
+      },
+      "symbol": "MVR"
+    },
+    "MWK": {
+      "display_name": "馬拉維克瓦查",
+      "display_names_by_plural": {
+        "other": "馬拉維克瓦查"
+      },
+      "symbol": "MWK"
+    },
+    "MXN": {
+      "display_name": "墨西哥披索",
+      "display_names_by_plural": {
+        "other": "墨西哥披索"
+      },
+      "narrow_symbol": "$",
+      "symbol": "MX$"
+    },
+    "MYR": {
+      "display_name": "馬來西亞令吉",
+      "display_names_by_plural": {
+        "other": "馬來西亞令吉"
+      },
+      "narrow_symbol": "RM",
+      "symbol": "MYR"
+    },
+    "MZN": {
+      "display_name": "莫三比克梅蒂卡爾",
+      "display_names_by_plural": {
+        "other": "莫三比克梅蒂卡爾"
+      },
+      "symbol": "MZN"
+    },
+    "NAD": {
+      "display_name": "納米比亞元",
+      "display_names_by_plural": {
+        "other": "納米比亞元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "NAD"
+    },
+    "NGN": {
+      "display_name": "奈及利亞奈拉",
+      "display_names_by_plural": {
+        "other": "奈及利亞奈拉"
+      },
+      "narrow_symbol": "₦",
+      "symbol": "NGN"
+    },
+    "NIO": {
+      "display_name": "尼加拉瓜科多巴",
+      "display_names_by_plural": {
+        "other": "尼加拉瓜科多巴"
+      },
+      "narrow_symbol": "C$",
+      "symbol": "NIO"
+    },
+    "NOK": {
+      "display_name": "挪威克朗",
+      "display_names_by_plural": {
+        "other": "挪威克朗"
+      },
+      "narrow_symbol": "kr",
+      "symbol": "NOK"
+    },
+    "NPR": {
+      "display_name": "尼泊爾盧比",
+      "display_names_by_plural": {
+        "other": "尼泊爾盧比"
+      },
+      "narrow_symbol": "Rs",
+      "symbol": "NPR"
+    },
+    "NZD": {
+      "display_name": "紐西蘭幣",
+      "display_names_by_plural": {
+        "other": "紐西蘭幣"
+      },
+      "narrow_symbol": "$",
+      "symbol": "NZ$"
+    },
+    "OMR": {
+      "display_name": "阿曼里亞爾",
+      "display_names_by_plural": {
+        "other": "阿曼里亞爾"
+      },
+      "symbol": "OMR"
+    },
+    "PAB": {
+      "display_name": "巴拿馬巴波亞",
+      "display_names_by_plural": {
+        "other": "巴拿馬巴波亞"
+      },
+      "symbol": "PAB"
+    },
+    "PEN": {
+      "display_name": "秘魯太陽幣",
+      "display_names_by_plural": {
+        "other": "秘魯太陽幣"
+      },
+      "symbol": "PEN"
+    },
+    "PGK": {
+      "display_name": "巴布亞紐幾內亞基那",
+      "display_names_by_plural": {
+        "other": "巴布亞紐幾內亞基那"
+      },
+      "symbol": "PGK"
+    },
+    "PHP": {
+      "display_name": "菲律賓披索",
+      "display_names_by_plural": {
+        "other": "菲律賓披索"
+      },
+      "narrow_symbol": "₱",
+      "symbol": "PHP"
+    },
+    "PKR": {
+      "display_name": "巴基斯坦盧比",
+      "display_names_by_plural": {
+        "other": "巴基斯坦盧比"
+      },
+      "narrow_symbol": "Rs",
+      "symbol": "PKR"
+    },
+    "PLN": {
+      "display_name": "波蘭茲羅提",
+      "display_names_by_plural": {
+        "other": "波蘭茲羅提"
+      },
+      "narrow_symbol": "zł",
+      "symbol": "PLN"
+    },
+    "PYG": {
+      "display_name": "巴拉圭瓜拉尼",
+      "display_names_by_plural": {
+        "other": "巴拉圭瓜拉尼"
+      },
+      "narrow_symbol": "₲",
+      "symbol": "PYG"
+    },
+    "QAR": {
+      "display_name": "卡達里亞爾",
+      "display_names_by_plural": {
+        "other": "卡達里亞爾"
+      },
+      "symbol": "QAR"
+    },
+    "RON": {
+      "display_name": "羅馬尼亞列伊",
+      "display_names_by_plural": {
+        "other": "羅馬尼亞列伊"
+      },
+      "narrow_symbol": "L",
+      "symbol": "RON"
+    },
+    "RSD": {
+      "display_name": "塞爾維亞戴納",
+      "display_names_by_plural": {
+        "other": "塞爾維亞戴納"
+      },
+      "symbol": "RSD"
+    },
+    "RUB": {
+      "display_name": "俄羅斯盧布",
+      "display_names_by_plural": {
+        "other": "俄羅斯盧布"
+      },
+      "narrow_symbol": "₽",
+      "symbol": "RUB"
+    },
+    "RWF": {
+      "display_name": "盧安達法郎",
+      "display_names_by_plural": {
+        "other": "盧安達法郎"
+      },
+      "narrow_symbol": "RF",
+      "symbol": "RWF"
+    },
+    "SAR": {
+      "display_name": "沙烏地里亞爾",
+      "display_names_by_plural": {
+        "other": "沙烏地里亞爾"
+      },
+      "symbol": "SAR"
+    },
+    "SBD": {
+      "display_name": "索羅門群島元",
+      "display_names_by_plural": {
+        "other": "索羅門群島元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "SBD"
+    },
+    "SCR": {
+      "display_name": "塞席爾盧比",
+      "display_names_by_plural": {
+        "other": "塞席爾盧比"
+      },
+      "symbol": "SCR"
+    },
+    "SDG": {
+      "display_name": "蘇丹鎊",
+      "display_names_by_plural": {
+        "other": "蘇丹鎊"
+      },
+      "symbol": "SDG"
+    },
+    "SEK": {
+      "display_name": "瑞典克朗",
+      "display_names_by_plural": {
+        "other": "瑞典克朗"
+      },
+      "narrow_symbol": "kr",
+      "symbol": "SEK"
+    },
+    "SGD": {
+      "display_name": "新加坡幣",
+      "display_names_by_plural": {
+        "other": "新加坡幣"
+      },
+      "narrow_symbol": "$",
+      "symbol": "SGD"
+    },
+    "SHP": {
+      "display_name": "聖赫勒拿鎊",
+      "display_names_by_plural": {
+        "other": "聖赫勒拿鎊"
+      },
+      "narrow_symbol": "£",
+      "symbol": "SHP"
+    },
+    "SOS": {
+      "display_name": "索馬利亞先令",
+      "display_names_by_plural": {
+        "other": "索馬利亞先令"
+      },
+      "symbol": "SOS"
+    },
+    "SRD": {
+      "display_name": "蘇利南元",
+      "display_names_by_plural": {
+        "other": "蘇利南元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "SRD"
+    },
+    "SSP": {
+      "display_name": "南蘇丹鎊",
+      "display_names_by_plural": {
+        "other": "南蘇丹鎊"
+      },
+      "narrow_symbol": "£",
+      "symbol": "SSP"
+    },
+    "STN": {
+      "display_name": "聖多美島和普林西比島多布拉",
+      "display_names_by_plural": {
+        "other": "聖多美島和普林西比島多布拉"
+      },
+      "narrow_symbol": "Db",
+      "symbol": "STN"
+    },
+    "SYP": {
+      "display_name": "敘利亞鎊",
+      "display_names_by_plural": {
+        "other": "敘利亞鎊"
+      },
+      "narrow_symbol": "£",
+      "symbol": "SYP"
+    },
+    "SZL": {
+      "display_name": "史瓦帝尼朗吉尼",
+      "display_names_by_plural": {
+        "other": "史瓦帝尼朗吉尼"
+      },
+      "symbol": "SZL"
+    },
+    "THB": {
+      "display_name": "泰銖",
+      "display_names_by_plural": {
+        "other": "泰銖"
+      },
+      "narrow_symbol": "฿",
+      "symbol": "THB"
+    },
+    "TJS": {
+      "display_name": "塔吉克索莫尼",
+      "display_names_by_plural": {
+        "other": "塔吉克索莫尼"
+      },
+      "symbol": "TJS"
+    },
+    "TMT": {
+      "display_name": "土庫曼馬納特",
+      "display_names_by_plural": {
+        "other": "土庫曼馬納特"
+      },
+      "symbol": "TMT"
+    },
+    "TND": {
+      "display_name": "突尼西亞第納爾",
+      "display_names_by_plural": {
+        "other": "突尼西亞第納爾"
+      },
+      "symbol": "TND"
+    },
+    "TOP": {
+      "display_name": "東加潘加",
+      "display_names_by_plural": {
+        "other": "東加潘加"
+      },
+      "narrow_symbol": "T$",
+      "symbol": "TOP"
+    },
+    "TRY": {
+      "display_name": "土耳其里拉",
+      "display_names_by_plural": {
+        "other": "土耳其里拉"
+      },
+      "narrow_symbol": "₺",
+      "symbol": "TRY"
+    },
+    "TTD": {
+      "display_name": "千里達及托巴哥元",
+      "display_names_by_plural": {
+        "other": "千里達及托巴哥元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "TTD"
+    },
+    "TWD": {
+      "display_name": "新台幣",
+      "display_names_by_plural": {
+        "other": "新台幣"
+      },
+      "narrow_symbol": "$",
+      "symbol": "$"
+    },
+    "TZS": {
+      "display_name": "坦尚尼亞先令",
+      "display_names_by_plural": {
+        "other": "坦尚尼亞先令"
+      },
+      "symbol": "TZS"
+    },
+    "UAH": {
+      "display_name": "烏克蘭格里夫納",
+      "display_names_by_plural": {
+        "other": "烏克蘭格里夫納"
+      },
+      "narrow_symbol": "₴",
+      "symbol": "UAH"
+    },
+    "UGX": {
+      "display_name": "烏干達先令",
+      "display_names_by_plural": {
+        "other": "烏干達先令"
+      },
+      "symbol": "UGX"
+    },
+    "USD": {
+      "display_name": "美元",
+      "display_names_by_plural": {
+        "other": "美元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "US$"
+    },
+    "UYU": {
+      "display_name": "烏拉圭披索",
+      "display_names_by_plural": {
+        "other": "烏拉圭披索"
+      },
+      "narrow_symbol": "$",
+      "symbol": "UYU"
+    },
+    "UZS": {
+      "display_name": "烏茲別克索姆",
+      "display_names_by_plural": {
+        "other": "烏茲別克索姆"
+      },
+      "symbol": "UZS"
+    },
+    "VND": {
+      "display_name": "越南盾",
+      "display_names_by_plural": {
+        "other": "越南盾"
+      },
+      "narrow_symbol": "₫",
+      "symbol": "₫"
+    },
+    "VUV": {
+      "display_name": "萬那杜瓦圖",
+      "display_names_by_plural": {
+        "other": "萬那杜瓦圖"
+      },
+      "symbol": "VUV"
+    },
+    "WST": {
+      "display_name": "西薩摩亞塔拉",
+      "display_names_by_plural": {
+        "other": "西薩摩亞塔拉"
+      },
+      "symbol": "WST"
+    },
+    "XAF": {
+      "display_name": "中非法郎",
+      "display_names_by_plural": {
+        "other": "中非法郎"
+      },
+      "symbol": "FCFA"
+    },
+    "XCD": {
+      "display_name": "格瑞那達元",
+      "display_names_by_plural": {
+        "other": "格瑞那達元"
+      },
+      "narrow_symbol": "$",
+      "symbol": "EC$"
+    },
+    "XOF": {
+      "display_name": "西非法郎",
+      "display_names_by_plural": {
+        "other": "西非法郎"
+      },
+      "symbol": "F CFA"
+    },
+    "XPF": {
+      "display_name": "太平洋法郎",
+      "display_names_by_plural": {
+        "other": "太平洋法郎"
+      },
+      "symbol": "CFPF"
+    },
+    "YER": {
+      "display_name": "葉門里亞爾",
+      "display_names_by_plural": {
+        "other": "葉門里亞爾"
+      },
+      "symbol": "YER"
+    },
+    "ZAR": {
+      "display_name": "南非蘭特",
+      "display_names_by_plural": {
+        "other": "南非蘭特"
+      },
+      "narrow_symbol": "R",
+      "symbol": "ZAR"
+    },
+    "ZMW": {
+      "display_name": "尚比亞克瓦查",
+      "display_names_by_plural": {
+        "other": "尚比亞克瓦查"
+      },
+      "narrow_symbol": "ZK",
+      "symbol": "ZMW"
+    }
+  },
+  "locale": "zh-Hant",
+  "schema_version": 1
+}

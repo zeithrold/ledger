@@ -97,11 +97,12 @@ func TestVersionGatePrecedesAuthenticationAndWrites(t *testing.T) {
 		{"missing", "/api/v1/bootstrap", nil, 400, problem.VersionRequired},
 		{"empty", "/api/v1/bootstrap", []string{""}, 400, problem.VersionInvalid},
 		{"invalid date", "/api/v1/bootstrap", []string{"2026-02-30"}, 400, problem.VersionInvalid},
-		{"duplicate", "/api/v1/bootstrap", []string{"2026-09-14", "2026-09-14"}, 400, problem.VersionInvalid},
-		{"comma", "/api/v1/bootstrap", []string{"2026-09-14,2026-09-14"}, 400, problem.VersionInvalid},
+		{"duplicate", "/api/v1/bootstrap", []string{"2026-09-16", "2026-09-16"}, 400, problem.VersionInvalid},
+		{"comma", "/api/v1/bootstrap", []string{"2026-09-16,2026-09-16"}, 400, problem.VersionInvalid},
 		{"old", "/api/v1/bootstrap", []string{"2026-09-13"}, 400, problem.VersionUnsupported},
-		{"future", "/api/v1/bootstrap", []string{"2026-09-15"}, 400, problem.VersionUnsupported},
-		{"major", "/api/v2/bootstrap", []string{"2026-09-14"}, 404, problem.MajorUnsupported},
+		{"previous currency contract", "/api/v1/bootstrap", []string{"2026-09-15"}, 400, problem.VersionUnsupported},
+		{"future", "/api/v1/bootstrap", []string{"2026-09-17"}, 400, problem.VersionUnsupported},
+		{"major", "/api/v2/bootstrap", []string{"2026-09-16"}, 404, problem.MajorUnsupported},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			req := httptest.NewRequestWithContext(t.Context(), "POST", tc.path, nil)
@@ -112,7 +113,7 @@ func TestVersionGatePrecedesAuthenticationAndWrites(t *testing.T) {
 			r.ServeHTTP(w, req)
 			body := checkProblem(t, w, tc.code, tc.kind)
 			if tc.kind == problem.VersionUnsupported {
-				if versions, ok := body["supported_versions"].([]any); !ok || len(versions) != 1 || versions[0] != "2026-09-14" {
+				if versions, ok := body["supported_versions"].([]any); !ok || len(versions) != 1 || versions[0] != "2026-09-16" {
 					t.Fatalf("versions=%v", body)
 				}
 			}
@@ -124,8 +125,8 @@ func TestVersionGatePrecedesAuthenticationAndWrites(t *testing.T) {
 	if v.calls != 0 || b.calls != 0 {
 		t.Fatal("version failure executed auth or business code")
 	}
-	w := request(t, r, "POST", "/api/v1/bootstrap", "2026-09-14", "{}")
-	if w.Code != 201 || v.calls != 1 || b.calls != 1 || w.Header().Get(VersionHeader) != "2026-09-14" {
+	w := request(t, r, "POST", "/api/v1/bootstrap", "2026-09-16", "{}")
+	if w.Code != 201 || v.calls != 1 || b.calls != 1 || w.Header().Get(VersionHeader) != "2026-09-16" {
 		t.Fatalf("status=%d calls=%d/%d", w.Code, v.calls, b.calls)
 	}
 	if w.Header().Get("Cache-Control") != "no-store" {
@@ -141,13 +142,13 @@ func TestProblemCoverageAndHeaders(t *testing.T) {
 	}
 	checkProblem(t, request(t, r, "GET", "/readyz", "", ""), 503, problem.Unavailable)
 	checkProblem(t, request(t, r, "GET", "/absent", "", ""), 404, problem.NotFound)
-	w := request(t, r, "DELETE", "/api/v1/books/00000000-0000-0000-0000-000000000000", "2026-09-14", "")
+	w := request(t, r, "DELETE", "/api/v1/books/00000000-0000-0000-0000-000000000000", "2026-09-16", "")
 	checkProblem(t, w, 405, problem.MethodNotAllowed)
 	if w.Header().Get("Allow") != "GET" {
 		t.Fatalf("Allow=%s", w.Header().Get("Allow"))
 	}
 	req := httptest.NewRequestWithContext(t.Context(), "GET", "/api/v1/me", nil)
-	req.Header.Set(VersionHeader, "2026-09-14")
+	req.Header.Set(VersionHeader, "2026-09-16")
 	w = httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 	checkProblem(t, w, 401, problem.AuthenticationRequired)
@@ -155,14 +156,14 @@ func TestProblemCoverageAndHeaders(t *testing.T) {
 		t.Fatal("missing authentication/version headers")
 	}
 	v.err = problem.New(problem.InvalidToken, "The session token is invalid.")
-	checkProblem(t, request(t, r, "GET", "/api/v1/me", "2026-09-14", ""), 401, problem.InvalidToken)
+	checkProblem(t, request(t, r, "GET", "/api/v1/me", "2026-09-16", ""), 401, problem.InvalidToken)
 	v.err = problem.New(problem.Unavailable, "Keys unavailable.")
-	checkProblem(t, request(t, r, "GET", "/api/v1/me", "2026-09-14", ""), 503, problem.Unavailable)
+	checkProblem(t, request(t, r, "GET", "/api/v1/me", "2026-09-16", ""), 503, problem.Unavailable)
 	v.err = nil
 	b.err = problem.New(problem.BootstrapRequired, "Initialize your personal space first.")
-	checkProblem(t, request(t, r, "GET", "/api/v1/me", "2026-09-14", ""), 409, problem.BootstrapRequired)
+	checkProblem(t, request(t, r, "GET", "/api/v1/me", "2026-09-16", ""), 409, problem.BootstrapRequired)
 	b.err = errors.New("DATABASE_URL secret=do-not-disclose")
-	w = request(t, r, "POST", "/api/v1/bootstrap", "2026-09-14", "{}")
+	w = request(t, r, "POST", "/api/v1/bootstrap", "2026-09-16", "{}")
 	checkProblem(t, w, 500, problem.Internal)
 	if strings.Contains(w.Body.String(), "do-not-disclose") {
 		t.Fatal("internal error leaked")
@@ -171,7 +172,7 @@ func TestProblemCoverageAndHeaders(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	checkProblem(t, request(t, onlyHTTP, "GET", "/api/v1/me", "2026-09-14", ""), 503, problem.Unavailable)
+	checkProblem(t, request(t, onlyHTTP, "GET", "/api/v1/me", "2026-09-16", ""), 503, problem.Unavailable)
 	if w = request(t, onlyHTTP, "GET", "/healthz", "", ""); w.Code != 200 {
 		t.Fatal("health requires version")
 	}
@@ -184,7 +185,7 @@ func TestStrictBodiesAndProblemLogging(t *testing.T) {
 		t.Fatal(err)
 	}
 	for _, body := range []string{"null", "[]", "{", "{} {}", `{"role":"admin"}`, strings.Repeat("x", 16385)} {
-		checkProblem(t, request(t, r, "POST", "/api/v1/bootstrap", "2026-09-14", body), 400, problem.InvalidRequest)
+		checkProblem(t, request(t, r, "POST", "/api/v1/bootstrap", "2026-09-16", body), 400, problem.InvalidRequest)
 	}
 	if b.calls != 0 {
 		t.Fatal("invalid bodies reached backend")

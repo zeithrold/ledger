@@ -45,3 +45,21 @@ Middleware order is request correlation/access logging → Problem Details recov
 Only verified identities are attached. Before local initialization, `user.id` is `clerk:<subject>`. Once local authorization or bootstrap succeeds, it is the internal user UUID, with tenant_id on scope/logs. Rejected credentials remain anonymous. Hubs are cloned for every request; no user is set on a global hub. Instance administrators still use their own user and tenant identities.
 
 `sentrygin` captures panic events. Non-panic 5xx problems produce one Sentry error event with problem.instance/type tags; expected 4xx responses produce logs rather than issues. The official v0.49 slog integration sends Logs only, avoiding duplicate issues for ERROR-level access/problem logs. The panic event and final Problem Details response share request_id even though the response instance is generated after panic capture.
+
+## PostgreSQL tracing
+
+The shared `database.Open` pool installs a pgx `QueryTracer`. When its context contains a Sentry span, every `Query`, `QueryRow` and `Exec` produces a `db.sql.query` child span. SQLC calls and calls inside pgx transactions use the same hooks; BEGIN/COMMIT/ROLLBACK commands appear as queries, not a separate transaction-duration span. Query spans finish when pgx closes the result rows, so callers must always consume/close rows and scan QueryRow results.
+
+Spans contain the SQL shape (`description` and `db.query.text`), PostgreSQL system name, affected-row count on success, and SQLSTATE on PostgreSQL failure. The PostgreSQL lexer removes string/numeric/dollar-quoted literals and comments; positional placeholders remain visible. Arguments and raw database error messages/details are never recorded. Keep identifiers static and all user values parameterized. Database failures mark the span; the existing HTTP problem boundary remains responsible for error events.
+
+The tracer uses only the caller's context and does not create standalone transactions or initialize a global client. Startup, migrations, or jobs without a parent span stay untraced. The parent transaction's sampling applies unchanged. Connection-pool wait time, batch APIs, COPY and full business-function call stacks are outside this query tracer's coverage.
+
+## Outgoing HTTP and future LLM instrumentation
+
+Sentry Go 0.49 provides the optional `github.com/getsentry/sentry-go/httpclient` integration. Wrapping a shared client's transport with `NewSentryRoundTripper` automatically produces `http.client` child spans for requests carrying an active Sentry span in their context. Initializing Sentry alone does not instrument every HTTP client. The current Clerk JWKS client is not yet wrapped; the Sentry transport used to upload telemetry must remain outside application HTTP instrumentation.
+
+In this version, propagation targets use substring matching (not regular expressions), and nonmatching requests bypass both span creation and propagation. The wrapper reads some propagation settings from the global hub at construction; Ledger uses explicit runtime/request hubs, so an eventual integration must configure and test propagation deliberately. Empty targets are not a deny-all switch.
+
+The wrapper finishes its span when `RoundTrip` returns, before the response body has necessarily been consumed. This is insufficient for the full duration of streaming LLM generation. The published Go 0.49 SDK has no dedicated OpenAI/DeepSeek integration. A future shared LLM adapter can use the HTTP transport for network spans and own a parent generation span through response/stream completion, recording provider/model and reported token usage. Prompt/response capture requires a separate intentional policy. The current `LLM` configuration is reserved; no DeepSeek client or generation call exists in the backend yet.
+
+References: [HTTP integration source at v0.49.0](https://github.com/getsentry/sentry-go/blob/v0.49.0/httpclient/sentryhttpclient.go), [SDK integrations at v0.49.0](https://github.com/getsentry/sentry-go/tree/v0.49.0), [pgx query hooks](https://github.com/jackc/pgx/blob/v5.10.0/tracer.go).

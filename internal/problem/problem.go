@@ -28,6 +28,7 @@ const (
 	NotFound               Kind = "not-found"
 	MethodNotAllowed       Kind = "method-not-allowed"
 	BootstrapRequired      Kind = "bootstrap-required"
+	Conflict               Kind = "accounting-conflict"
 	Unavailable            Kind = "service-unavailable"
 	Internal               Kind = "internal-error"
 )
@@ -38,6 +39,7 @@ type definition struct {
 }
 
 var definitions = map[Kind]definition{
+	Conflict:        {409, "Accounting conflict"},
 	VersionRequired: {400, "API version required"}, VersionInvalid: {400, "Invalid API version"},
 	VersionUnsupported: {400, "Unsupported API version"}, InvalidRequest: {400, "Invalid request"},
 	AuthenticationRequired: {401, "Authentication required"}, InvalidToken: {401, "Invalid token"},

@@ -1,8 +1,8 @@
 # Ledger
 
-A personal finance application scaffold built with Go, Gin, PostgreSQL, sqlc, and goose.
+A personal finance API built with Go, Gin, PostgreSQL, sqlc, and goose.
 
-The selected architecture uses Eino for LLM orchestration, Clerk for authentication, and River for background jobs. The accounting core will use transactions and balanced postings, with independent tenant ownership and multi-currency support from the first release. Screenshots will be stored in S3, and DeepSeek is the selected LLM provider. Clerk authentication and local identity/tenant initialization are implemented. Financial tables, Eino, River, and S3 integrations remain unimplemented.
+The selected architecture uses Eino for LLM orchestration, Clerk for authentication, and River for background jobs. The accounting core uses immutable revisions and balanced postings with independent tenant ownership and exact multi-currency amounts. Screenshots will be stored in S3, and DeepSeek is the selected LLM provider. Clerk authentication and local identity/tenant initialization are implemented. Manual accounts, transfers, fees, refunds, corrections and per-currency summaries are implemented; the Flutter client lives in the sibling ledger-app repository. Eino, River and S3 integrations remain later work. See [manual accounting](docs/accounting.md).
 
 ## Requirements
 
@@ -32,6 +32,8 @@ An empty `DATABASE_URL` enables HTTP-only mode; business endpoints return 503 Pr
 
 ## Local secrets
 
+Both repositories use separate `.env.local` files and `.env.example` templates. The App uses Dart Define with a local debug dotenv fallback for public client values. Never copy the backend file into the App.
+
 `.env.local` is ignored by Git. `.env.example` contains only empty values and public defaults. Process environment variables take precedence over the local file. `CONFIG_FILE` can select a different file; ensure custom secret files are also excluded from Git.
 
 | Variable | Purpose |
@@ -53,7 +55,7 @@ An empty `DATABASE_URL` enables HTTP-only mode; business endpoints return 503 Pr
 | `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | Optional explicit S3 credentials |
 | `S3_SESSION_TOKEN` | Optional temporary-credential session token |
 
-Clerk session authentication uses its JWKS endpoint. DeepSeek and S3 settings remain placeholders and are not called. The publishable key is reserved for a future client. The DeepSeek model remains configurable through `LLM_MODEL`; fill it with the model available through your endpoint. Never log secrets or the complete configuration.
+Clerk session authentication uses its JWKS endpoint. DeepSeek and S3 settings remain placeholders and are not called. The backend does not use the publishable key; the Flutter client has its own public configuration. The DeepSeek model remains configurable through `LLM_MODEL`; fill it with the model available through your endpoint. Never log secrets or the complete configuration.
 
 ## SQL and migrations
 
@@ -98,7 +100,7 @@ just test-integration
 just fuzz
 ```
 
-The module and repository path is `github.com/zeithrold/ledger`. This repository is backend-only. A future client, potentially Flutter, will live outside this directory. See [architecture](docs/architecture.md) for the selected stack and implementation boundaries.
+The module and repository path is `github.com/zeithrold/ledger`. This repository is backend-only; the Flutter client lives in the sibling `ledger-app` directory. See [architecture](docs/architecture.md) for the selected stack and implementation boundaries.
 
 ## License
 
@@ -108,7 +110,7 @@ See [testing and code quality](docs/testing.md) for isolation, fuzzing, and muta
 
 ## Identity API
 
-All `/api/v1` requests require `X-Ledger-API-Version: 2026-09-14`. Login with Clerk, then explicitly call `POST /api/v1/bootstrap`. The first successful initializer becomes instance administrator; control initial access through Clerk registration. Later users receive isolated personal spaces. See [API contract](docs/api.md) and [Problem Details](docs/errors.md).
+All `/api/v1` requests require `X-Ledger-API-Version: 2026-09-16`. Login with Clerk, then explicitly call `POST /api/v1/bootstrap`. The first successful initializer becomes instance administrator; control initial access through Clerk registration. Later users receive isolated personal spaces. See [API contract](docs/api.md) and [Problem Details](docs/errors.md).
 
 ## Observability
 

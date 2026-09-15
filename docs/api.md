@@ -1,6 +1,6 @@
 # API contract
 
-Current contract: **`/api/v1` + `X-Ledger-API-Version: 2026-09-14`**.
+Current contract: **`/api/v1` + `X-Ledger-API-Version: 2026-09-16`**.
 
 ## Version selection
 
@@ -10,7 +10,7 @@ Every response handled by the application includes a server-generated `X-Request
 
 | Major | Supported date | Status |
 | --- | --- | --- |
-| v1 | 2026-09-14 | Initial identity and bootstrap contract |
+| v1 | 2026-09-16 | Identity and manual accounting; language-neutral currency metadata |
 
 During early development, only one date implementation is maintained per major version. Existing request, response, or authorization semantics must not silently change under that date. Breaking revisions advance the date and can immediately remove the previous implementation; old clients receive an explicit unsupported-version problem. Internal fixes and independent new endpoints need not change the date. A broad redesign uses a new major path. If compatibility adapters become necessary, register explicit date handlers; no adapters are implemented yet.
 
@@ -18,7 +18,7 @@ Breaking deployment procedure: enter a maintenance window, stop traffic to old i
 
 ## Authentication
 
-Send exactly one `Authorization: Bearer <Clerk session token>` header. Backend API keys, cookies, and client-supplied user IDs are not accepted as user authentication. A valid token must have a verified RS256 signature, exact configured issuer, exp, nbf, non-empty sub and sid, and cannot have `sts=pending`. An azp claim, when present, must match a configured origin. An absent azp is allowed for native clients; an empty origin allowlist rejects all non-empty azp values.
+Send exactly one `Authorization: Bearer <Clerk session token>` header. Backend API keys, cookies, and client-supplied user IDs are not accepted as user authentication. A valid token must have a verified RS256 signature, exact configured issuer, exp, nbf, non-empty sub and sid, and cannot have `sts=pending`. Time claims (`iat`, `nbf`, `exp`) allow at most five seconds of server clock skew, matching [Clerk’s documented default](https://clerk.com/docs/reference/backend/verify-token). Keep host clocks synchronized; larger drift remains a verification failure. An azp claim, when present, must match a configured origin. An absent azp is allowed for native clients; an empty origin allowlist rejects all non-empty azp values.
 
 The Clerk v2.7.0 SDK verifies signatures and fetches JWKS from the configured backend endpoint. Ledger uses a per-verifier cache because the SDK middleware uses a global sliding cache and conflates verification and key-fetch errors. Cache lifetime is one hour without sliding renewal. Unknown key IDs trigger refresh at most once per 30 seconds; failed fetches also have a 30-second cooldown. Existing unexpired keys can be used during a key-service outage. Expired or unavailable keys fail closed with 503; malformed or unverifiable tokens return 401. HTTP fetches time out after five seconds and do not follow redirects. A newly rotated unknown key may require retry after the cooldown.
 
@@ -29,7 +29,7 @@ Clerk manages sessions; Ledger checks local user, tenant, and membership status 
 ```sh
 # SESSION_TOKEN is a short-lived session token acquired from your Clerk instance.
 curl -X POST http://127.0.0.1:8080/api/v1/bootstrap \
-  -H 'X-Ledger-API-Version: 2026-09-14' \
+  -H 'X-Ledger-API-Version: 2026-09-16' \
   -H "Authorization: Bearer ${SESSION_TOKEN}" \
   -H 'Content-Type: application/json' \
   -d '{"base_currency":"CNY","timezone":"Asia/Shanghai","locale":"zh-CN"}'
@@ -77,3 +77,7 @@ JSON request bodies are limited to 16 KiB; unknown fields, invalid types, and tr
 The canonical OpenAPI 3.1 contract generates the Gin interface and HTTP DTOs.
 See [OpenAPI and Scalar](openapi.md) for `/docs`, exact-date spec URLs, configuration,
 generation, authentication in the request client and contract validation.
+
+## Accounting API
+
+The current date includes currencies, asset accounts, two-level categories, tenant counterparties, immutable transaction revisions, ordinary/fee links, refunds and per-currency summaries. See [manual accounting](accounting.md) for business inputs, idempotency, optimistic revision checks and reversal semantics.

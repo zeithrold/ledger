@@ -37,7 +37,17 @@ migrate-down:
 migrate-status:
     go run ./cmd/migrate status
 
-check: check-api sqlc-vet lint test-unit vet build
+check: check-currencies check-api sqlc-vet lint test-unit vet build
+
+# Rebuild the pinned reference pack and embedded accounting metadata offline.
+generate-currencies:
+    python3 tool/currencies.py
+
+check-currencies:
+    python3 tool/currencies.py --check
+
+export-currencies app:
+    python3 tool/currencies.py --app {{quote(app)}}
 
 # Start the persistent local database without deleting existing data.
 db-up:
@@ -85,3 +95,10 @@ check-api:
     trap 'rm -f "$temporary"' EXIT
     go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.0 --config openapi-codegen.yaml -o "$temporary" internal/apicontract/v1/openapi.json
     cmp internal/apiv1/api.gen.go "$temporary"
+
+# A pinned mutation engine and a credentials-free copy of pure money functions.
+install-mutation:
+    GOBIN="{{justfile_directory()}}/bin" go install github.com/go-gremlins/gremlins/cmd/gremlins@v0.6.0
+
+mutation-accounting:
+    bash tool/mutation-accounting.sh

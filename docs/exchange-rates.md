@@ -4,7 +4,7 @@
 
 Use [Frankfurter](https://frankfurter.dev/) for reference exchange rates. A River periodic job will fetch rates once per day and persist daily snapshots in PostgreSQL. Request handlers read the database and never fetch rates synchronously.
 
-The current repository only records this design. No exchange-rate tables, jobs, or API calls are implemented yet.
+This automatic reference-rate cache remains a later-phase design. Phase 2 already stores manual actual conversion ratios, source, date and both principals on immutable journal postings. Those applied rates never depend on this future market-data cache. See [manual accounting](accounting.md).
 
 ## Proposed storage and retention
 

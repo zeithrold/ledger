@@ -6,6 +6,8 @@ Maintained reference for developing and operating Ledger.
 | --- | --- |
 | [Architecture](architecture.md) | Stack, tenancy, runtime boundaries and implementation scope |
 | [API contract](api.md) | Date versions, authentication, bootstrap and identity endpoints |
+| [Manual accounting](accounting.md) | Exact amounts, posting invariants, corrections, fees, refunds and queries |
+| [Currency reference data](currencies.md) | Locale bundles, source generation, client export and migrations |
 | [Problem Details](errors.md) | Stable error types and response format |
 | [OpenAPI and Scalar](openapi.md) | Generated HTTP boundary, documentation delivery and contract checks |
 | [Logging and Sentry](observability.md) | Configuration, structured logging, tracing and user scopes |

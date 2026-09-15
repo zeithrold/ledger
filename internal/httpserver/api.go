@@ -12,6 +12,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 
+	"github.com/zeithrold/ledger/internal/accounting"
 	"github.com/zeithrold/ledger/internal/apiv1"
 	"github.com/zeithrold/ledger/internal/auth"
 	"github.com/zeithrold/ledger/internal/identity"
@@ -37,6 +38,7 @@ type (
 		DocsEnabled bool
 		Telemetry   *observability.Runtime
 		Backend     Backend
+		Accounting  *accounting.Service
 		Verifier    auth.Verifier
 	}
 	api struct {

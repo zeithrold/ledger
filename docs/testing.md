@@ -44,21 +44,31 @@ Install the pinned version with `just install-lint`, format with `just format`, 
 
 `just fuzz ./internal/config FuzzGinMode 10s` starts a bounded native fuzz run. Seed inputs also run during unit tests. Check in minimized regressions under `testdata/fuzz/<target>`; never use real screenshots, tokens, or private financial data in corpora.
 
-Future targets should test money parsing, currency conversion/rounding invariants, external response decoding, and draft validation using pure functions and deterministic inputs. Avoid external calls in fuzz targets.
+Accounting targets are `FuzzMoneyRoundTrip`, `FuzzExactRatio` and `FuzzBalance` in `./internal/accounting`. Run each with `just fuzz ./internal/accounting <target> 15s`. They use no database or external services. Future external-response and draft targets must remain deterministic.
 
-## Mutation testing preparation
+## Mutation baseline
 
-Mutation testing is a separate future quality gate, not part of `just test`. [Gremlins](https://github.com/go-gremlins/gremlins) is the candidate engine; pin and validate a Go-compatible release before enabling it. No mutation score is claimed by this scaffold.
+Pin [Gremlins v0.6.0](https://github.com/go-gremlins/gremlins/releases/tag/v0.6.0).
+The initial pure-money baseline on Go 1.26 has 65 covered mutations: 59 killed,
+6 lived, none uncovered, timed out or nonviable (90.77% efficacy). Surviving
+boundary mutants are reviewed in the external Phase 2 acceptance record; no
+arbitrary score threshold is enabled yet.
 
-Run mutations on pure, handwritten domain packages in a disposable copy or worktree. Exclude generated SQL code, migrations, adapters, integration tests, and fuzz harnesses. Do not copy `.env.local`, Git credentials, or storage keys into the work directory. Execute unit tests for each mutant; killed, survived, uncovered and timed-out mutants must be reported separately. Review equivalent mutants explicitly.
+```sh
+just install-mutation
+just mutation-accounting
+```
 
-Store reports under ignored `mutation-results/`. Start with money rounding and posting balance validation once those functions exist; set a threshold only after establishing a meaningful baseline. The present scaffold has no financial domain logic to mutate.
+The wrapper verifies the installed version and copies only `money.go`, its exact tests and the currency catalog into a temporary standalone module. No application configuration, credentials or unrelated files enter the mutation workspace. The selected target is handwritten `money.go`. Service/database code is tested by
+Testcontainers and excluded from this pure-function mutation score. Keep generated
+files and credentials out of mutation fixtures. Reports belong in ignored
+`mutation-results/`; dated evidence belongs in the external manuscript directory.
 
 ## Identity and contract tests
 
 Offline unit tests verify signed session JWTs and JWKS cache behavior without developer credentials. HTTP contract tests cover version negotiation, Problem Details, authentication errors, body validation, routing, and recovery. Tagged integration tests verify concurrent bootstrap, administrator assignment, rollback, authorization, audit atomicity, pagination, and HTTP lifecycle in a disposable PostgreSQL database.
 
-The phase 1 migration is version 2; lifecycle tests verify migration to 2, rollback through baseline 1 to 0, and reapply. Never run Down against a persistent identity database as a routine check.
+The current schema is version 4. Lifecycle tests upgrade populated version 3, verify an existing balance, restore all old currency names on rollback to 3, then roll back through identity 2 and baseline 1 to 0 and reapply. Never run Down against a persistent database as a routine check. `just check-currencies` also verifies pinned hashes, required locale coverage, precision and generated metadata drift.
 
 `just check` requires no running database, but tool/module acquisition and golangci-lint's configuration-schema verification may require network access. Real Clerk integration is explicit and separate from `just test-unit`; no real token is stored as a fixture.
 
@@ -72,3 +82,24 @@ Observability tests use in-memory Sentry transports and fake DSNs. They verify l
 compares it with the checked-in output. Unit tests validate the OpenAPI 3.1 schema,
 route coverage and documentation configuration. Integration lifecycle and admin
 HTTP responses are schema-validated against the same embedded document.
+
+Database tracing unit tests verify parent linkage, error/cancellation status, no-parent disablement and PostgreSQL literal/argument redaction using a fake Sentry transport. `TestPoolQueriesJoinGinTrace` uses an isolated PostgreSQL container and the real Gin Sentry middleware to verify SQLC, Query, Exec, transaction commands and failed queries appear in one request transaction without sending telemetry to Sentry.
+
+## Native accounting integration
+
+`TestAccountingDeviceServer` is skipped during ordinary integration runs. To test
+Flutter against an actual Go HTTP server and disposable PostgreSQL database:
+
+```sh
+LEDGER_DEVICE_FIXTURE=/tmp/ledger-native.json go test -tags=integration \
+  -run '^TestAccountingDeviceServer$' -v -timeout=26m ./tests/integration
+```
+
+The output JSON contains a loopback URL. Use it as `ACCOUNTING_TEST_URL` for the
+client's `integration_test/accounting_test.dart` and
+`integration_test/accounting_accessibility_test.dart`. Android's emulator uses
+`10.0.2.2` in place of `127.0.0.1`. Each platform needs a fresh fixture for the
+creation flow. Create `/tmp/ledger-native.json.stop` to finish and clean up its
+container; the fixture also has a 25-minute deadline. It uses a synthetic verifier
+compiled only with integration tests. This proves native UI, HTTP and PostgreSQL
+behavior; it does not prove live Clerk, Sentry ingestion or deployment.

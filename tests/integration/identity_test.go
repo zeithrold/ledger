@@ -304,7 +304,7 @@ func TestPhaseOne(t *testing.T) {
 		} {
 			req := httptest.NewRequestWithContext(t.Context(), tc.method, tc.path, strings.NewReader(tc.body))
 			req.Header.Set("Authorization", "Bearer "+adminSubject)
-			req.Header.Set(httpserver.VersionHeader, "2026-09-14")
+			req.Header.Set(httpserver.VersionHeader, "2026-09-16")
 			w := httptest.NewRecorder()
 			router.ServeHTTP(w, req)
 			contracttest.Response(t, req, w)
@@ -330,7 +330,7 @@ func TestPhaseOne(t *testing.T) {
 		call := func(method, path, body string, want int) *httptest.ResponseRecorder {
 			req := httptest.NewRequestWithContext(t.Context(), method, path, strings.NewReader(body))
 			req.Header.Set("Authorization", "Bearer http-user")
-			req.Header.Set(httpserver.VersionHeader, "2026-09-14")
+			req.Header.Set(httpserver.VersionHeader, "2026-09-16")
 			w := httptest.NewRecorder()
 			router.ServeHTTP(w, req)
 			contracttest.Response(t, req, w)

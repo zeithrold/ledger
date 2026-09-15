@@ -1,0 +1,72 @@
+{
+  "catalog": "catalog.json",
+  "cldr_version": "48.0.0",
+  "content_sha256": "fd226b1ab8838cd8962cb591c424125873746980ad47b691c8ae378c08e30909",
+  "default_locale": "en",
+  "files": {
+    "UNICODE-LICENSE.txt": "220ba0e1c43b99530d2d5bdb892a99dca0989414f51ab695ecd90163eaa1ec3b",
+    "catalog.json": "d25aa6185a60c91ff93200187149e4a3b3aed9fe3e19cfaf8e8f0ea1a96c866a",
+    "locale_rules.json": "14ee3792bc36698faa328cd898474dcc305428844c2b40045fef3e67e7a189ee",
+    "locales/en-CA.json": "3dee1419de809e5883deb90b2b3db6657c3901dd73b58f9b1627b9f13439809b",
+    "locales/en.json": "351267db4ab472638c0373cdea2fea7f62848673cc039001b7faedac396ce1d2",
+    "locales/zh-Hans.json": "99db413fd0a27bc9ea6e7f36abed8417d1e3c0f614c5d12087e6b9cb28be4e1e",
+    "locales/zh-Hant.json": "242f04e0b061268ec3c1fd30423e0e074052d663c68bd652a916003f25fb957c"
+  },
+  "legacy_locale_aliases": {
+    "zh": "zh-Hans"
+  },
+  "locales": {
+    "en": {
+      "path": "locales/en.json",
+      "source_locale": "en"
+    },
+    "en-CA": {
+      "path": "locales/en-CA.json",
+      "source_locale": "en-CA"
+    },
+    "zh-Hans": {
+      "path": "locales/zh-Hans.json",
+      "source_locale": "zh"
+    },
+    "zh-Hant": {
+      "path": "locales/zh-Hant.json",
+      "source_locale": "zh-Hant"
+    }
+  },
+  "rules": "locale_rules.json",
+  "schema_version": 1,
+  "sources": {
+    "aliases.json": {
+      "sha256": "b7011c866f27502ed6f160ca83f2a83fa42bce9fdc2176e60e2c6630961d877c",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr-json/48.0.0/cldr-json/cldr-core/supplemental/aliases.json"
+    },
+    "currencyData.json": {
+      "sha256": "ab007c5bb654a11601d6328f73a9b5b504334c556f3edb760020d6e2cc408472",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr-json/48.0.0/cldr-json/cldr-core/supplemental/currencyData.json"
+    },
+    "en-CA.json": {
+      "sha256": "59fd684dbd6df5f76f37887ea6781ec67b09146327b694f04113f60e26e2550f",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr-json/48.0.0/cldr-json/cldr-numbers-full/main/en-CA/currencies.json"
+    },
+    "en.json": {
+      "sha256": "a6c41b28f4035f65ae698b53a66866982b4ff49bc0de7e840f91d2c6e6bdc23b",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr-json/48.0.0/cldr-json/cldr-numbers-full/main/en/currencies.json"
+    },
+    "likelySubtags.json": {
+      "sha256": "38345946ad457213fb39e9645ab50f36b61681bf674b2eef2979a3b58d04afc8",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr-json/48.0.0/cldr-json/cldr-core/supplemental/likelySubtags.json"
+    },
+    "parentLocales.json": {
+      "sha256": "5a3f056a70ff52af7a25681a670ec860d785d98894934d3a9e5332508c23651e",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr-json/48.0.0/cldr-json/cldr-core/supplemental/parentLocales.json"
+    },
+    "zh-Hant.json": {
+      "sha256": "267565016b055a997bced6bd07e2f5a826fc3bb093d4db05aff08f7b1a367e54",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr-json/48.0.0/cldr-json/cldr-numbers-full/main/zh-Hant/currencies.json"
+    },
+    "zh.json": {
+      "sha256": "c23b7df1982deae53121f6665e3c27059c1e47640b167c3ce0e3bf5a64d13c8d",
+      "url": "https://raw.githubusercontent.com/unicode-org/cldr-json/48.0.0/cldr-json/cldr-numbers-full/main/zh/currencies.json"
+    }
+  }
+}

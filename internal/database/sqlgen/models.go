@@ -8,6 +8,40 @@ import (
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
+type Account struct {
+	ID         pgtype.UUID
+	TenantID   pgtype.UUID
+	BookID     pgtype.UUID
+	Name       string
+	Role       string
+	Kind       string
+	Currency   string
+	CategoryID pgtype.UUID
+	SystemCode pgtype.Text
+	Archived   bool
+	Revision   int32
+}
+
+type AccountingAudit struct {
+	ID         pgtype.UUID
+	TenantID   pgtype.UUID
+	BookID     pgtype.UUID
+	ActorID    pgtype.UUID
+	Action     string
+	ResourceID pgtype.UUID
+	BeforeData []byte
+	AfterData  []byte
+	CreatedAt  pgtype.Timestamptz
+}
+
+type AccountingOperation struct {
+	TenantID    pgtype.UUID
+	Key         pgtype.UUID
+	RequestHash string
+	Response    []byte
+	CreatedAt   pgtype.Timestamptz
+}
+
 type AdminAuditEvent struct {
 	ID             pgtype.UUID
 	ActorID        pgtype.UUID
@@ -26,16 +60,68 @@ type Book struct {
 	CreatedAt    pgtype.Timestamptz
 }
 
+type Category struct {
+	ID         pgtype.UUID
+	TenantID   pgtype.UUID
+	BookID     pgtype.UUID
+	ParentID   pgtype.UUID
+	Kind       string
+	Name       string
+	NameZh     string
+	SystemCode pgtype.Text
+	Archived   bool
+	Revision   int32
+}
+
+type Counterparty struct {
+	ID       pgtype.UUID
+	TenantID pgtype.UUID
+	Name     string
+	Archived bool
+	Revision int32
+}
+
+type Currency struct {
+	Code       string
+	MinorUnits int32
+}
+
 type InstanceState struct {
 	Singleton     bool
 	AdminUserID   pgtype.UUID
 	InitializedAt pgtype.Timestamptz
 }
 
+type JournalEntry struct {
+	ID                pgtype.UUID
+	TenantID          pgtype.UUID
+	BookID            pgtype.UUID
+	TransactionID     pgtype.UUID
+	Revision          int32
+	OccurredOn        pgtype.Date
+	ValuationCurrency string
+	ReversalOf        pgtype.UUID
+	Sealed            bool
+}
+
 type PersonalTenantBinding struct {
 	UserID        pgtype.UUID
 	TenantID      pgtype.UUID
 	DefaultBookID pgtype.UUID
+}
+
+type Posting struct {
+	ID              pgtype.UUID
+	TenantID        pgtype.UUID
+	BookID          pgtype.UUID
+	JournalID       pgtype.UUID
+	AccountID       pgtype.UUID
+	Amount          pgtype.Numeric
+	ValuationAmount pgtype.Numeric
+	RateNumerator   pgtype.Numeric
+	RateDenominator pgtype.Numeric
+	RateSource      string
+	RateDate        pgtype.Date
 }
 
 type Tenant struct {
@@ -51,6 +137,47 @@ type TenantMember struct {
 	UserID   pgtype.UUID
 	Role     string
 	Status   string
+}
+
+type Transaction struct {
+	ID        pgtype.UUID
+	TenantID  pgtype.UUID
+	BookID    pgtype.UUID
+	Revision  int32
+	Status    string
+	CreatedBy pgtype.UUID
+	CreatedAt pgtype.Timestamptz
+}
+
+type TransactionLink struct {
+	ID        pgtype.UUID
+	TenantID  pgtype.UUID
+	BookID    pgtype.UUID
+	SourceID  pgtype.UUID
+	TargetID  pgtype.UUID
+	Kind      string
+	CreatedBy pgtype.UUID
+	CreatedAt pgtype.Timestamptz
+}
+
+type TransactionRevision struct {
+	TenantID       pgtype.UUID
+	BookID         pgtype.UUID
+	TransactionID  pgtype.UUID
+	Revision       int32
+	Kind           string
+	OccurredOn     pgtype.Date
+	AccountID      pgtype.UUID
+	ToAccountID    pgtype.UUID
+	CategoryID     pgtype.UUID
+	CounterpartyID pgtype.UUID
+	Amount         pgtype.Numeric
+	ToAmount       pgtype.Numeric
+	OriginalID     pgtype.UUID
+	Data           []byte
+	Voided         bool
+	ActorID        pgtype.UUID
+	CreatedAt      pgtype.Timestamptz
 }
 
 type User struct {

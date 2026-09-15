@@ -1,0 +1,1285 @@
+{
+  "currencies": {
+    "AED": {
+      "display_name": "United Arab Emirates Dirham",
+      "display_names_by_plural": {
+        "one": "UAE dirham",
+        "other": "UAE dirhams"
+      },
+      "symbol": "AED"
+    },
+    "AFN": {
+      "display_name": "Afghan Afghani",
+      "display_names_by_plural": {
+        "one": "Afghan Afghani",
+        "other": "Afghan Afghanis"
+      },
+      "narrow_symbol": "؋",
+      "symbol": "AFN"
+    },
+    "ALL": {
+      "display_name": "Albanian Lek",
+      "display_names_by_plural": {
+        "one": "Albanian lek",
+        "other": "Albanian lekë"
+      },
+      "symbol": "ALL"
+    },
+    "AMD": {
+      "display_name": "Armenian Dram",
+      "display_names_by_plural": {
+        "one": "Armenian dram",
+        "other": "Armenian drams"
+      },
+      "narrow_symbol": "֏",
+      "symbol": "AMD"
+    },
+    "AOA": {
+      "display_name": "Angolan Kwanza",
+      "display_names_by_plural": {
+        "one": "Angolan kwanza",
+        "other": "Angolan kwanzas"
+      },
+      "narrow_symbol": "Kz",
+      "symbol": "AOA"
+    },
+    "ARS": {
+      "display_name": "Argentine Peso",
+      "display_names_by_plural": {
+        "one": "Argentine peso",
+        "other": "Argentine pesos"
+      },
+      "narrow_symbol": "$",
+      "symbol": "ARS"
+    },
+    "AUD": {
+      "display_name": "Australian Dollar",
+      "display_names_by_plural": {
+        "one": "Australian dollar",
+        "other": "Australian dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "A$"
+    },
+    "AWG": {
+      "display_name": "Aruban Florin",
+      "display_names_by_plural": {
+        "one": "Aruban florin",
+        "other": "Aruban florin"
+      },
+      "symbol": "AWG"
+    },
+    "AZN": {
+      "display_name": "Azerbaijani Manat",
+      "display_names_by_plural": {
+        "one": "Azerbaijani manat",
+        "other": "Azerbaijani manats"
+      },
+      "narrow_symbol": "₼",
+      "symbol": "AZN"
+    },
+    "BAM": {
+      "display_name": "Bosnia-Herzegovina Convertible Mark",
+      "display_names_by_plural": {
+        "one": "Bosnia-Herzegovina convertible mark",
+        "other": "Bosnia-Herzegovina convertible marks"
+      },
+      "narrow_symbol": "KM",
+      "symbol": "BAM"
+    },
+    "BBD": {
+      "display_name": "Barbadian Dollar",
+      "display_names_by_plural": {
+        "one": "Barbadian dollar",
+        "other": "Barbadian dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BBD"
+    },
+    "BDT": {
+      "display_name": "Bangladeshi Taka",
+      "display_names_by_plural": {
+        "one": "Bangladeshi taka",
+        "other": "Bangladeshi takas"
+      },
+      "narrow_symbol": "৳",
+      "symbol": "BDT"
+    },
+    "BHD": {
+      "display_name": "Bahraini Dinar",
+      "display_names_by_plural": {
+        "one": "Bahraini dinar",
+        "other": "Bahraini dinars"
+      },
+      "symbol": "BHD"
+    },
+    "BIF": {
+      "display_name": "Burundian Franc",
+      "display_names_by_plural": {
+        "one": "Burundian franc",
+        "other": "Burundian francs"
+      },
+      "symbol": "BIF"
+    },
+    "BMD": {
+      "display_name": "Bermudan Dollar",
+      "display_names_by_plural": {
+        "one": "Bermudan dollar",
+        "other": "Bermudan dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BMD"
+    },
+    "BND": {
+      "display_name": "Brunei Dollar",
+      "display_names_by_plural": {
+        "one": "Brunei dollar",
+        "other": "Brunei dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BND"
+    },
+    "BOB": {
+      "display_name": "Bolivian Boliviano",
+      "display_names_by_plural": {
+        "one": "Bolivian boliviano",
+        "other": "Bolivian bolivianos"
+      },
+      "narrow_symbol": "Bs",
+      "symbol": "BOB"
+    },
+    "BRL": {
+      "display_name": "Brazilian Real",
+      "display_names_by_plural": {
+        "one": "Brazilian real",
+        "other": "Brazilian reals"
+      },
+      "narrow_symbol": "R$",
+      "symbol": "R$"
+    },
+    "BSD": {
+      "display_name": "Bahamian Dollar",
+      "display_names_by_plural": {
+        "one": "Bahamian dollar",
+        "other": "Bahamian dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BSD"
+    },
+    "BTN": {
+      "display_name": "Bhutanese Ngultrum",
+      "display_names_by_plural": {
+        "one": "Bhutanese ngultrum",
+        "other": "Bhutanese ngultrums"
+      },
+      "symbol": "BTN"
+    },
+    "BWP": {
+      "display_name": "Botswanan Pula",
+      "display_names_by_plural": {
+        "one": "Botswanan pula",
+        "other": "Botswanan pulas"
+      },
+      "narrow_symbol": "P",
+      "symbol": "BWP"
+    },
+    "BYN": {
+      "display_name": "Belarusian Ruble",
+      "display_names_by_plural": {
+        "one": "Belarusian ruble",
+        "other": "Belarusian rubles"
+      },
+      "symbol": "BYN"
+    },
+    "BZD": {
+      "display_name": "Belize Dollar",
+      "display_names_by_plural": {
+        "one": "Belize dollar",
+        "other": "Belize dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "BZD"
+    },
+    "CAD": {
+      "display_name": "Canadian Dollar",
+      "display_names_by_plural": {
+        "one": "Canadian dollar",
+        "other": "Canadian dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "CA$"
+    },
+    "CDF": {
+      "display_name": "Congolese Franc",
+      "display_names_by_plural": {
+        "one": "Congolese franc",
+        "other": "Congolese francs"
+      },
+      "symbol": "CDF"
+    },
+    "CHF": {
+      "display_name": "Swiss Franc",
+      "display_names_by_plural": {
+        "one": "Swiss franc",
+        "other": "Swiss francs"
+      },
+      "symbol": "CHF"
+    },
+    "CLP": {
+      "display_name": "Chilean Peso",
+      "display_names_by_plural": {
+        "one": "Chilean peso",
+        "other": "Chilean pesos"
+      },
+      "narrow_symbol": "$",
+      "symbol": "CLP"
+    },
+    "CNY": {
+      "display_name": "Chinese Yuan",
+      "display_names_by_plural": {
+        "one": "Chinese yuan",
+        "other": "Chinese yuan"
+      },
+      "narrow_symbol": "¥",
+      "symbol": "CN¥"
+    },
+    "COP": {
+      "display_name": "Colombian Peso",
+      "display_names_by_plural": {
+        "one": "Colombian peso",
+        "other": "Colombian pesos"
+      },
+      "narrow_symbol": "$",
+      "symbol": "COP"
+    },
+    "CRC": {
+      "display_name": "Costa Rican Colón",
+      "display_names_by_plural": {
+        "one": "Costa Rican colón",
+        "other": "Costa Rican colóns"
+      },
+      "narrow_symbol": "₡",
+      "symbol": "CRC"
+    },
+    "CUP": {
+      "display_name": "Cuban Peso",
+      "display_names_by_plural": {
+        "one": "Cuban peso",
+        "other": "Cuban pesos"
+      },
+      "narrow_symbol": "$",
+      "symbol": "CUP"
+    },
+    "CVE": {
+      "display_name": "Cape Verdean Escudo",
+      "display_names_by_plural": {
+        "one": "Cape Verdean escudo",
+        "other": "Cape Verdean escudos"
+      },
+      "symbol": "CVE"
+    },
+    "CZK": {
+      "display_name": "Czech Koruna",
+      "display_names_by_plural": {
+        "one": "Czech koruna",
+        "other": "Czech korunas"
+      },
+      "narrow_symbol": "Kč",
+      "symbol": "CZK"
+    },
+    "DJF": {
+      "display_name": "Djiboutian Franc",
+      "display_names_by_plural": {
+        "one": "Djiboutian franc",
+        "other": "Djiboutian francs"
+      },
+      "symbol": "DJF"
+    },
+    "DKK": {
+      "display_name": "Danish Krone",
+      "display_names_by_plural": {
+        "one": "Danish krone",
+        "other": "Danish kroner"
+      },
+      "narrow_symbol": "kr",
+      "symbol": "DKK"
+    },
+    "DOP": {
+      "display_name": "Dominican Peso",
+      "display_names_by_plural": {
+        "one": "Dominican peso",
+        "other": "Dominican pesos"
+      },
+      "narrow_symbol": "$",
+      "symbol": "DOP"
+    },
+    "DZD": {
+      "display_name": "Algerian Dinar",
+      "display_names_by_plural": {
+        "one": "Algerian dinar",
+        "other": "Algerian dinars"
+      },
+      "symbol": "DZD"
+    },
+    "EGP": {
+      "display_name": "Egyptian Pound",
+      "display_names_by_plural": {
+        "one": "Egyptian pound",
+        "other": "Egyptian pounds"
+      },
+      "narrow_symbol": "E£",
+      "symbol": "EGP"
+    },
+    "ERN": {
+      "display_name": "Eritrean Nakfa",
+      "display_names_by_plural": {
+        "one": "Eritrean nakfa",
+        "other": "Eritrean nakfas"
+      },
+      "symbol": "ERN"
+    },
+    "ETB": {
+      "display_name": "Ethiopian Birr",
+      "display_names_by_plural": {
+        "one": "Ethiopian birr",
+        "other": "Ethiopian birrs"
+      },
+      "symbol": "ETB"
+    },
+    "EUR": {
+      "display_name": "Euro",
+      "display_names_by_plural": {
+        "one": "euro",
+        "other": "euros"
+      },
+      "narrow_symbol": "€",
+      "symbol": "€"
+    },
+    "FJD": {
+      "display_name": "Fijian Dollar",
+      "display_names_by_plural": {
+        "one": "Fijian dollar",
+        "other": "Fijian dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "FJD"
+    },
+    "FKP": {
+      "display_name": "Falkland Islands Pound",
+      "display_names_by_plural": {
+        "one": "Falkland Islands pound",
+        "other": "Falkland Islands pounds"
+      },
+      "narrow_symbol": "£",
+      "symbol": "FKP"
+    },
+    "GBP": {
+      "display_name": "British Pound",
+      "display_names_by_plural": {
+        "one": "British pound",
+        "other": "British pounds"
+      },
+      "narrow_symbol": "£",
+      "symbol": "£"
+    },
+    "GEL": {
+      "display_name": "Georgian Lari",
+      "display_names_by_plural": {
+        "one": "Georgian lari",
+        "other": "Georgian laris"
+      },
+      "narrow_symbol": "₾",
+      "symbol": "GEL"
+    },
+    "GHS": {
+      "display_name": "Ghanaian Cedi",
+      "display_names_by_plural": {
+        "one": "Ghanaian cedi",
+        "other": "Ghanaian cedis"
+      },
+      "narrow_symbol": "GH₵",
+      "symbol": "GHS"
+    },
+    "GIP": {
+      "display_name": "Gibraltar Pound",
+      "display_names_by_plural": {
+        "one": "Gibraltar pound",
+        "other": "Gibraltar pounds"
+      },
+      "narrow_symbol": "£",
+      "symbol": "GIP"
+    },
+    "GMD": {
+      "display_name": "Gambian Dalasi",
+      "display_names_by_plural": {
+        "one": "Gambian dalasi",
+        "other": "Gambian dalasis"
+      },
+      "symbol": "GMD"
+    },
+    "GNF": {
+      "display_name": "Guinean Franc",
+      "display_names_by_plural": {
+        "one": "Guinean franc",
+        "other": "Guinean francs"
+      },
+      "narrow_symbol": "FG",
+      "symbol": "GNF"
+    },
+    "GTQ": {
+      "display_name": "Guatemalan Quetzal",
+      "display_names_by_plural": {
+        "one": "Guatemalan quetzal",
+        "other": "Guatemalan quetzals"
+      },
+      "narrow_symbol": "Q",
+      "symbol": "GTQ"
+    },
+    "GYD": {
+      "display_name": "Guyanaese Dollar",
+      "display_names_by_plural": {
+        "one": "Guyanaese dollar",
+        "other": "Guyanaese dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "GYD"
+    },
+    "HKD": {
+      "display_name": "Hong Kong Dollar",
+      "display_names_by_plural": {
+        "one": "Hong Kong dollar",
+        "other": "Hong Kong dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "HK$"
+    },
+    "HNL": {
+      "display_name": "Honduran Lempira",
+      "display_names_by_plural": {
+        "one": "Honduran lempira",
+        "other": "Honduran lempiras"
+      },
+      "narrow_symbol": "L",
+      "symbol": "HNL"
+    },
+    "HTG": {
+      "display_name": "Haitian Gourde",
+      "display_names_by_plural": {
+        "one": "Haitian gourde",
+        "other": "Haitian gourdes"
+      },
+      "symbol": "HTG"
+    },
+    "HUF": {
+      "display_name": "Hungarian Forint",
+      "display_names_by_plural": {
+        "one": "Hungarian forint",
+        "other": "Hungarian forints"
+      },
+      "narrow_symbol": "Ft",
+      "symbol": "HUF"
+    },
+    "IDR": {
+      "display_name": "Indonesian Rupiah",
+      "display_names_by_plural": {
+        "one": "Indonesian rupiah",
+        "other": "Indonesian rupiahs"
+      },
+      "narrow_symbol": "Rp",
+      "symbol": "IDR"
+    },
+    "ILS": {
+      "display_name": "Israeli New Shekel",
+      "display_names_by_plural": {
+        "one": "Israeli new shekel",
+        "other": "Israeli new shekels"
+      },
+      "narrow_symbol": "₪",
+      "symbol": "₪"
+    },
+    "INR": {
+      "display_name": "Indian Rupee",
+      "display_names_by_plural": {
+        "one": "Indian rupee",
+        "other": "Indian rupees"
+      },
+      "narrow_symbol": "₹",
+      "symbol": "₹"
+    },
+    "IQD": {
+      "display_name": "Iraqi Dinar",
+      "display_names_by_plural": {
+        "one": "Iraqi dinar",
+        "other": "Iraqi dinars"
+      },
+      "symbol": "IQD"
+    },
+    "IRR": {
+      "display_name": "Iranian Rial",
+      "display_names_by_plural": {
+        "one": "Iranian rial",
+        "other": "Iranian rials"
+      },
+      "symbol": "IRR"
+    },
+    "ISK": {
+      "display_name": "Icelandic Króna",
+      "display_names_by_plural": {
+        "one": "Icelandic króna",
+        "other": "Icelandic krónur"
+      },
+      "narrow_symbol": "kr",
+      "symbol": "ISK"
+    },
+    "JMD": {
+      "display_name": "Jamaican Dollar",
+      "display_names_by_plural": {
+        "one": "Jamaican dollar",
+        "other": "Jamaican dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "JMD"
+    },
+    "JOD": {
+      "display_name": "Jordanian Dinar",
+      "display_names_by_plural": {
+        "one": "Jordanian dinar",
+        "other": "Jordanian dinars"
+      },
+      "symbol": "JOD"
+    },
+    "JPY": {
+      "display_name": "Japanese Yen",
+      "display_names_by_plural": {
+        "one": "Japanese yen",
+        "other": "Japanese yen"
+      },
+      "narrow_symbol": "¥",
+      "symbol": "¥"
+    },
+    "KES": {
+      "display_name": "Kenyan Shilling",
+      "display_names_by_plural": {
+        "one": "Kenyan shilling",
+        "other": "Kenyan shillings"
+      },
+      "symbol": "KES"
+    },
+    "KGS": {
+      "display_name": "Kyrgyz Som",
+      "display_names_by_plural": {
+        "one": "Kyrgyz som",
+        "other": "Kyrgyz soms"
+      },
+      "narrow_symbol": "⃀",
+      "symbol": "KGS"
+    },
+    "KHR": {
+      "display_name": "Cambodian Riel",
+      "display_names_by_plural": {
+        "one": "Cambodian riel",
+        "other": "Cambodian riels"
+      },
+      "narrow_symbol": "៛",
+      "symbol": "KHR"
+    },
+    "KMF": {
+      "display_name": "Comorian Franc",
+      "display_names_by_plural": {
+        "one": "Comorian franc",
+        "other": "Comorian francs"
+      },
+      "narrow_symbol": "CF",
+      "symbol": "KMF"
+    },
+    "KPW": {
+      "display_name": "North Korean Won",
+      "display_names_by_plural": {
+        "one": "North Korean won",
+        "other": "North Korean won"
+      },
+      "narrow_symbol": "₩",
+      "symbol": "KPW"
+    },
+    "KRW": {
+      "display_name": "South Korean Won",
+      "display_names_by_plural": {
+        "one": "South Korean won",
+        "other": "South Korean won"
+      },
+      "narrow_symbol": "₩",
+      "symbol": "₩"
+    },
+    "KWD": {
+      "display_name": "Kuwaiti Dinar",
+      "display_names_by_plural": {
+        "one": "Kuwaiti dinar",
+        "other": "Kuwaiti dinars"
+      },
+      "symbol": "KWD"
+    },
+    "KYD": {
+      "display_name": "Cayman Islands Dollar",
+      "display_names_by_plural": {
+        "one": "Cayman Islands dollar",
+        "other": "Cayman Islands dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "KYD"
+    },
+    "KZT": {
+      "display_name": "Kazakhstani Tenge",
+      "display_names_by_plural": {
+        "one": "Kazakhstani tenge",
+        "other": "Kazakhstani tenges"
+      },
+      "narrow_symbol": "₸",
+      "symbol": "KZT"
+    },
+    "LAK": {
+      "display_name": "Laotian Kip",
+      "display_names_by_plural": {
+        "one": "Laotian kip",
+        "other": "Laotian kips"
+      },
+      "narrow_symbol": "₭",
+      "symbol": "LAK"
+    },
+    "LBP": {
+      "display_name": "Lebanese Pound",
+      "display_names_by_plural": {
+        "one": "Lebanese pound",
+        "other": "Lebanese pounds"
+      },
+      "narrow_symbol": "L£",
+      "symbol": "LBP"
+    },
+    "LKR": {
+      "display_name": "Sri Lankan Rupee",
+      "display_names_by_plural": {
+        "one": "Sri Lankan rupee",
+        "other": "Sri Lankan rupees"
+      },
+      "narrow_symbol": "Rs",
+      "symbol": "LKR"
+    },
+    "LRD": {
+      "display_name": "Liberian Dollar",
+      "display_names_by_plural": {
+        "one": "Liberian dollar",
+        "other": "Liberian dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "LRD"
+    },
+    "LSL": {
+      "display_name": "Lesotho Loti",
+      "display_names_by_plural": {
+        "one": "Lesotho loti",
+        "other": "Lesotho lotis"
+      },
+      "symbol": "LSL"
+    },
+    "LYD": {
+      "display_name": "Libyan Dinar",
+      "display_names_by_plural": {
+        "one": "Libyan dinar",
+        "other": "Libyan dinars"
+      },
+      "symbol": "LYD"
+    },
+    "MAD": {
+      "display_name": "Moroccan Dirham",
+      "display_names_by_plural": {
+        "one": "Moroccan dirham",
+        "other": "Moroccan dirhams"
+      },
+      "symbol": "MAD"
+    },
+    "MDL": {
+      "display_name": "Moldovan Leu",
+      "display_names_by_plural": {
+        "one": "Moldovan leu",
+        "other": "Moldovan lei"
+      },
+      "symbol": "MDL"
+    },
+    "MGA": {
+      "display_name": "Malagasy Ariary",
+      "display_names_by_plural": {
+        "one": "Malagasy ariary",
+        "other": "Malagasy ariaries"
+      },
+      "narrow_symbol": "Ar",
+      "symbol": "MGA"
+    },
+    "MKD": {
+      "display_name": "Macedonian Denar",
+      "display_names_by_plural": {
+        "one": "Macedonian denar",
+        "other": "Macedonian denari"
+      },
+      "symbol": "MKD"
+    },
+    "MMK": {
+      "display_name": "Myanmar Kyat",
+      "display_names_by_plural": {
+        "one": "Myanmar kyat",
+        "other": "Myanmar kyats"
+      },
+      "narrow_symbol": "K",
+      "symbol": "MMK"
+    },
+    "MNT": {
+      "display_name": "Mongolian Tugrik",
+      "display_names_by_plural": {
+        "one": "Mongolian tugrik",
+        "other": "Mongolian tugriks"
+      },
+      "narrow_symbol": "₮",
+      "symbol": "MNT"
+    },
+    "MOP": {
+      "display_name": "Macanese Pataca",
+      "display_names_by_plural": {
+        "one": "Macanese pataca",
+        "other": "Macanese patacas"
+      },
+      "symbol": "MOP"
+    },
+    "MUR": {
+      "display_name": "Mauritian Rupee",
+      "display_names_by_plural": {
+        "one": "Mauritian rupee",
+        "other": "Mauritian rupees"
+      },
+      "narrow_symbol": "Rs",
+      "symbol": "MUR"
+    },
+    "MVR": {
+      "display_name": "Maldivian Rufiyaa",
+      "display_names_by_plural": {
+        "one": "Maldivian rufiyaa",
+        "other": "Maldivian rufiyaas"
+      },
+      "symbol": "MVR"
+    },
+    "MWK": {
+      "display_name": "Malawian Kwacha",
+      "display_names_by_plural": {
+        "one": "Malawian kwacha",
+        "other": "Malawian kwachas"
+      },
+      "symbol": "MWK"
+    },
+    "MXN": {
+      "display_name": "Mexican Peso",
+      "display_names_by_plural": {
+        "one": "Mexican peso",
+        "other": "Mexican pesos"
+      },
+      "narrow_symbol": "$",
+      "symbol": "MX$"
+    },
+    "MYR": {
+      "display_name": "Malaysian Ringgit",
+      "display_names_by_plural": {
+        "one": "Malaysian ringgit",
+        "other": "Malaysian ringgits"
+      },
+      "narrow_symbol": "RM",
+      "symbol": "MYR"
+    },
+    "MZN": {
+      "display_name": "Mozambican Metical",
+      "display_names_by_plural": {
+        "one": "Mozambican metical",
+        "other": "Mozambican meticals"
+      },
+      "symbol": "MZN"
+    },
+    "NAD": {
+      "display_name": "Namibian Dollar",
+      "display_names_by_plural": {
+        "one": "Namibian dollar",
+        "other": "Namibian dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "NAD"
+    },
+    "NGN": {
+      "display_name": "Nigerian Naira",
+      "display_names_by_plural": {
+        "one": "Nigerian naira",
+        "other": "Nigerian nairas"
+      },
+      "narrow_symbol": "₦",
+      "symbol": "NGN"
+    },
+    "NIO": {
+      "display_name": "Nicaraguan Córdoba",
+      "display_names_by_plural": {
+        "one": "Nicaraguan córdoba",
+        "other": "Nicaraguan córdobas"
+      },
+      "narrow_symbol": "C$",
+      "symbol": "NIO"
+    },
+    "NOK": {
+      "display_name": "Norwegian Krone",
+      "display_names_by_plural": {
+        "one": "Norwegian krone",
+        "other": "Norwegian kroner"
+      },
+      "narrow_symbol": "kr",
+      "symbol": "NOK"
+    },
+    "NPR": {
+      "display_name": "Nepalese Rupee",
+      "display_names_by_plural": {
+        "one": "Nepalese rupee",
+        "other": "Nepalese rupees"
+      },
+      "narrow_symbol": "Rs",
+      "symbol": "NPR"
+    },
+    "NZD": {
+      "display_name": "New Zealand Dollar",
+      "display_names_by_plural": {
+        "one": "New Zealand dollar",
+        "other": "New Zealand dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "NZ$"
+    },
+    "OMR": {
+      "display_name": "Omani Rial",
+      "display_names_by_plural": {
+        "one": "Omani rial",
+        "other": "Omani rials"
+      },
+      "symbol": "OMR"
+    },
+    "PAB": {
+      "display_name": "Panamanian Balboa",
+      "display_names_by_plural": {
+        "one": "Panamanian balboa",
+        "other": "Panamanian balboas"
+      },
+      "symbol": "PAB"
+    },
+    "PEN": {
+      "display_name": "Peruvian Sol",
+      "display_names_by_plural": {
+        "one": "Peruvian sol",
+        "other": "Peruvian soles"
+      },
+      "symbol": "PEN"
+    },
+    "PGK": {
+      "display_name": "Papua New Guinean Kina",
+      "display_names_by_plural": {
+        "one": "Papua New Guinean kina",
+        "other": "Papua New Guinean kina"
+      },
+      "symbol": "PGK"
+    },
+    "PHP": {
+      "display_name": "Philippine Peso",
+      "display_names_by_plural": {
+        "one": "Philippine peso",
+        "other": "Philippine pesos"
+      },
+      "narrow_symbol": "₱",
+      "symbol": "₱"
+    },
+    "PKR": {
+      "display_name": "Pakistani Rupee",
+      "display_names_by_plural": {
+        "one": "Pakistani rupee",
+        "other": "Pakistani rupees"
+      },
+      "narrow_symbol": "Rs",
+      "symbol": "PKR"
+    },
+    "PLN": {
+      "display_name": "Polish Zloty",
+      "display_names_by_plural": {
+        "one": "Polish zloty",
+        "other": "Polish zlotys"
+      },
+      "narrow_symbol": "zł",
+      "symbol": "PLN"
+    },
+    "PYG": {
+      "display_name": "Paraguayan Guarani",
+      "display_names_by_plural": {
+        "one": "Paraguayan guarani",
+        "other": "Paraguayan guaranis"
+      },
+      "narrow_symbol": "₲",
+      "symbol": "PYG"
+    },
+    "QAR": {
+      "display_name": "Qatari Riyal",
+      "display_names_by_plural": {
+        "one": "Qatari riyal",
+        "other": "Qatari riyals"
+      },
+      "symbol": "QAR"
+    },
+    "RON": {
+      "display_name": "Romanian Leu",
+      "display_names_by_plural": {
+        "one": "Romanian leu",
+        "other": "Romanian lei"
+      },
+      "narrow_symbol": "lei",
+      "symbol": "RON"
+    },
+    "RSD": {
+      "display_name": "Serbian Dinar",
+      "display_names_by_plural": {
+        "one": "Serbian dinar",
+        "other": "Serbian dinars"
+      },
+      "symbol": "RSD"
+    },
+    "RUB": {
+      "display_name": "Russian Ruble",
+      "display_names_by_plural": {
+        "one": "Russian ruble",
+        "other": "Russian rubles"
+      },
+      "narrow_symbol": "₽",
+      "symbol": "RUB"
+    },
+    "RWF": {
+      "display_name": "Rwandan Franc",
+      "display_names_by_plural": {
+        "one": "Rwandan franc",
+        "other": "Rwandan francs"
+      },
+      "narrow_symbol": "RF",
+      "symbol": "RWF"
+    },
+    "SAR": {
+      "display_name": "Saudi Riyal",
+      "display_names_by_plural": {
+        "one": "Saudi riyal",
+        "other": "Saudi riyals"
+      },
+      "symbol": "SAR"
+    },
+    "SBD": {
+      "display_name": "Solomon Islands Dollar",
+      "display_names_by_plural": {
+        "one": "Solomon Islands dollar",
+        "other": "Solomon Islands dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "SBD"
+    },
+    "SCR": {
+      "display_name": "Seychellois Rupee",
+      "display_names_by_plural": {
+        "one": "Seychellois rupee",
+        "other": "Seychellois rupees"
+      },
+      "symbol": "SCR"
+    },
+    "SDG": {
+      "display_name": "Sudanese Pound",
+      "display_names_by_plural": {
+        "one": "Sudanese pound",
+        "other": "Sudanese pounds"
+      },
+      "symbol": "SDG"
+    },
+    "SEK": {
+      "display_name": "Swedish Krona",
+      "display_names_by_plural": {
+        "one": "Swedish krona",
+        "other": "Swedish kronor"
+      },
+      "narrow_symbol": "kr",
+      "symbol": "SEK"
+    },
+    "SGD": {
+      "display_name": "Singapore Dollar",
+      "display_names_by_plural": {
+        "one": "Singapore dollar",
+        "other": "Singapore dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "SGD"
+    },
+    "SHP": {
+      "display_name": "St. Helena Pound",
+      "display_names_by_plural": {
+        "one": "St. Helena pound",
+        "other": "St. Helena pounds"
+      },
+      "narrow_symbol": "£",
+      "symbol": "SHP"
+    },
+    "SOS": {
+      "display_name": "Somali Shilling",
+      "display_names_by_plural": {
+        "one": "Somali shilling",
+        "other": "Somali shillings"
+      },
+      "symbol": "SOS"
+    },
+    "SRD": {
+      "display_name": "Surinamese Dollar",
+      "display_names_by_plural": {
+        "one": "Surinamese dollar",
+        "other": "Surinamese dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "SRD"
+    },
+    "SSP": {
+      "display_name": "South Sudanese Pound",
+      "display_names_by_plural": {
+        "one": "South Sudanese pound",
+        "other": "South Sudanese pounds"
+      },
+      "narrow_symbol": "£",
+      "symbol": "SSP"
+    },
+    "STN": {
+      "display_name": "São Tomé & Príncipe Dobra",
+      "display_names_by_plural": {
+        "one": "São Tomé & Príncipe dobra",
+        "other": "São Tomé & Príncipe dobras"
+      },
+      "narrow_symbol": "Db",
+      "symbol": "STN"
+    },
+    "SYP": {
+      "display_name": "Syrian Pound",
+      "display_names_by_plural": {
+        "one": "Syrian pound",
+        "other": "Syrian pounds"
+      },
+      "narrow_symbol": "£",
+      "symbol": "SYP"
+    },
+    "SZL": {
+      "display_name": "Swazi Lilangeni",
+      "display_names_by_plural": {
+        "one": "Swazi lilangeni",
+        "other": "Swazi emalangeni"
+      },
+      "symbol": "SZL"
+    },
+    "THB": {
+      "display_name": "Thai Baht",
+      "display_names_by_plural": {
+        "one": "Thai baht",
+        "other": "Thai baht"
+      },
+      "narrow_symbol": "฿",
+      "symbol": "THB"
+    },
+    "TJS": {
+      "display_name": "Tajikistani Somoni",
+      "display_names_by_plural": {
+        "one": "Tajikistani somoni",
+        "other": "Tajikistani somonis"
+      },
+      "symbol": "TJS"
+    },
+    "TMT": {
+      "display_name": "Turkmenistani Manat",
+      "display_names_by_plural": {
+        "one": "Turkmenistani manat",
+        "other": "Turkmenistani manat"
+      },
+      "symbol": "TMT"
+    },
+    "TND": {
+      "display_name": "Tunisian Dinar",
+      "display_names_by_plural": {
+        "one": "Tunisian dinar",
+        "other": "Tunisian dinars"
+      },
+      "symbol": "TND"
+    },
+    "TOP": {
+      "display_name": "Tongan Paʻanga",
+      "display_names_by_plural": {
+        "one": "Tongan paʻanga",
+        "other": "Tongan paʻanga"
+      },
+      "narrow_symbol": "T$",
+      "symbol": "TOP"
+    },
+    "TRY": {
+      "display_name": "Turkish Lira",
+      "display_names_by_plural": {
+        "one": "Turkish lira",
+        "other": "Turkish Lira"
+      },
+      "narrow_symbol": "₺",
+      "symbol": "TRY"
+    },
+    "TTD": {
+      "display_name": "Trinidad & Tobago Dollar",
+      "display_names_by_plural": {
+        "one": "Trinidad & Tobago dollar",
+        "other": "Trinidad & Tobago dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "TTD"
+    },
+    "TWD": {
+      "display_name": "New Taiwan Dollar",
+      "display_names_by_plural": {
+        "one": "New Taiwan dollar",
+        "other": "New Taiwan dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "NT$"
+    },
+    "TZS": {
+      "display_name": "Tanzanian Shilling",
+      "display_names_by_plural": {
+        "one": "Tanzanian shilling",
+        "other": "Tanzanian shillings"
+      },
+      "symbol": "TZS"
+    },
+    "UAH": {
+      "display_name": "Ukrainian Hryvnia",
+      "display_names_by_plural": {
+        "one": "Ukrainian hryvnia",
+        "other": "Ukrainian hryvnias"
+      },
+      "narrow_symbol": "₴",
+      "symbol": "UAH"
+    },
+    "UGX": {
+      "display_name": "Ugandan Shilling",
+      "display_names_by_plural": {
+        "one": "Ugandan shilling",
+        "other": "Ugandan shillings"
+      },
+      "symbol": "UGX"
+    },
+    "USD": {
+      "display_name": "US Dollar",
+      "display_names_by_plural": {
+        "one": "US dollar",
+        "other": "US dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "$"
+    },
+    "UYU": {
+      "display_name": "Uruguayan Peso",
+      "display_names_by_plural": {
+        "one": "Uruguayan peso",
+        "other": "Uruguayan pesos"
+      },
+      "narrow_symbol": "$",
+      "symbol": "UYU"
+    },
+    "UZS": {
+      "display_name": "Uzbekistani Som",
+      "display_names_by_plural": {
+        "one": "Uzbekistani som",
+        "other": "Uzbekistani som"
+      },
+      "symbol": "UZS"
+    },
+    "VND": {
+      "display_name": "Vietnamese Dong",
+      "display_names_by_plural": {
+        "one": "Vietnamese dong",
+        "other": "Vietnamese dong"
+      },
+      "narrow_symbol": "₫",
+      "symbol": "₫"
+    },
+    "VUV": {
+      "display_name": "Vanuatu Vatu",
+      "display_names_by_plural": {
+        "one": "Vanuatu vatu",
+        "other": "Vanuatu vatus"
+      },
+      "symbol": "VUV"
+    },
+    "WST": {
+      "display_name": "Samoan Tala",
+      "display_names_by_plural": {
+        "one": "Samoan tala",
+        "other": "Samoan tala"
+      },
+      "symbol": "WST"
+    },
+    "XAF": {
+      "display_name": "Central African CFA Franc",
+      "display_names_by_plural": {
+        "one": "Central African CFA franc",
+        "other": "Central African CFA francs"
+      },
+      "symbol": "FCFA"
+    },
+    "XCD": {
+      "display_name": "East Caribbean Dollar",
+      "display_names_by_plural": {
+        "one": "East Caribbean dollar",
+        "other": "East Caribbean dollars"
+      },
+      "narrow_symbol": "$",
+      "symbol": "EC$"
+    },
+    "XOF": {
+      "display_name": "West African CFA Franc",
+      "display_names_by_plural": {
+        "one": "West African CFA franc",
+        "other": "West African CFA francs"
+      },
+      "symbol": "F CFA"
+    },
+    "XPF": {
+      "display_name": "CFP Franc",
+      "display_names_by_plural": {
+        "one": "CFP franc",
+        "other": "CFP francs"
+      },
+      "symbol": "CFPF"
+    },
+    "YER": {
+      "display_name": "Yemeni Rial",
+      "display_names_by_plural": {
+        "one": "Yemeni rial",
+        "other": "Yemeni rials"
+      },
+      "symbol": "YER"
+    },
+    "ZAR": {
+      "display_name": "South African Rand",
+      "display_names_by_plural": {
+        "one": "South African rand",
+        "other": "South African rand"
+      },
+      "narrow_symbol": "R",
+      "symbol": "ZAR"
+    },
+    "ZMW": {
+      "display_name": "Zambian Kwacha",
+      "display_names_by_plural": {
+        "one": "Zambian kwacha",
+        "other": "Zambian kwachas"
+      },
+      "narrow_symbol": "ZK",
+      "symbol": "ZMW"
+    }
+  },
+  "locale": "en",
+  "schema_version": 1
+}

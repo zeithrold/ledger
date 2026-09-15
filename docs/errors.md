@@ -11,7 +11,7 @@ Ledger always includes `type`, `title`, `status`, `detail`, and `instance`. The 
   "status": 400,
   "detail": "The requested API version is not supported.",
   "instance": "urn:uuid:4ef176ce-6c0f-4a0f-a826-23dfc4938d63",
-  "supported_versions": ["2026-09-14"]
+  "supported_versions": ["2026-09-16"]
 }
 ```
 

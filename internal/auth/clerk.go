@@ -91,6 +91,13 @@ func (v *Clerk) key(ctx context.Context, kid string) (*clerk.JSONWebKey, error) 
 	return nil, problem.New(problem.InvalidToken, "The session token is invalid.")
 }
 
+// Match Clerk's documented five-second allowance for server clock differences.
+const sessionClockSkew = 5 * time.Second
+
+type verificationClock func() time.Time
+
+func (c verificationClock) Now() time.Time { return c() }
+
 // Verify accepts session tokens only; unverified claims are never used for authorization or URLs.
 func (v *Clerk) Verify(ctx context.Context, token string) (Identity, error) {
 	invalid := problem.New(problem.InvalidToken, "The session token is invalid.")
@@ -107,6 +114,7 @@ func (v *Clerk) Verify(ctx context.Context, token string) (Identity, error) {
 	}{}
 	claims, err := jwt.Verify(ctx, &jwt.VerifyParams{
 		Token: token, JWK: key, ProxyURL: &v.issuer,
+		Clock: verificationClock(v.now), Leeway: sessionClockSkew,
 		CustomClaimsConstructor: func(context.Context) any { return &custom },
 		AuthorizedPartyHandler:  func(azp string) bool { return azp == "" || slices.Contains(v.parties, azp) },
 	})

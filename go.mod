@@ -3,6 +3,7 @@ module github.com/zeithrold/ledger
 go 1.26.0
 
 require (
+	github.com/DataDog/go-sqllexer v0.2.1
 	github.com/clerk/clerk-sdk-go/v2 v2.7.0
 	github.com/getkin/kin-openapi v0.149.0
 	github.com/getsentry/sentry-go v0.49.0

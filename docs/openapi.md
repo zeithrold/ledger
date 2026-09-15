@@ -12,7 +12,7 @@ this check. CI also regenerates and checks the generated diff.
 ## Serving and versioning
 
 - `/docs`: Scalar API Reference 1.68.0 loaded from jsDelivr.
-- `/openapi/v1/2026-09-14.json`: exact current contract, same origin.
+- `/openapi/v1/2026-09-16.json`: exact current contract, same origin.
 - `DOCS_ENABLED`: defaults to true for stage, false for production; explicit
   boolean overrides both. Disabled documentation and asset routes return the
   standard 404 Problem Details.

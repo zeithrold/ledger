@@ -14,6 +14,75 @@ import (
 	openapi_types "github.com/oapi-codegen/runtime/types"
 )
 
+// Defines values for AccountKind.
+const (
+	Bank   AccountKind = "bank"
+	Cash   AccountKind = "cash"
+	Other  AccountKind = "other"
+	Wallet AccountKind = "wallet"
+)
+
+// Valid indicates whether the value is a known member of the AccountKind enum.
+func (e AccountKind) Valid() bool {
+	switch e {
+	case Bank:
+		return true
+	case Cash:
+		return true
+	case Other:
+		return true
+	case Wallet:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CategoryInputKind.
+const (
+	CategoryInputKindExpense CategoryInputKind = "expense"
+	CategoryInputKindIncome  CategoryInputKind = "income"
+)
+
+// Valid indicates whether the value is a known member of the CategoryInputKind enum.
+func (e CategoryInputKind) Valid() bool {
+	switch e {
+	case CategoryInputKindExpense:
+		return true
+	case CategoryInputKindIncome:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for EntryInputKind.
+const (
+	EntryInputKindExpense  EntryInputKind = "expense"
+	EntryInputKindIncome   EntryInputKind = "income"
+	EntryInputKindOpening  EntryInputKind = "opening"
+	EntryInputKindRefund   EntryInputKind = "refund"
+	EntryInputKindTransfer EntryInputKind = "transfer"
+)
+
+// Valid indicates whether the value is a known member of the EntryInputKind enum.
+func (e EntryInputKind) Valid() bool {
+	switch e {
+	case EntryInputKindExpense:
+		return true
+	case EntryInputKindIncome:
+		return true
+	case EntryInputKindOpening:
+		return true
+	case EntryInputKindRefund:
+		return true
+	case EntryInputKindTransfer:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for FieldErrorLocation.
 const (
 	Body  FieldErrorLocation = "body"
@@ -44,6 +113,45 @@ const (
 func (e HealthStatus) Valid() bool {
 	switch e {
 	case HealthStatusOk:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LinkKind.
+const (
+	LinkKindFee     LinkKind = "fee"
+	LinkKindRefund  LinkKind = "refund"
+	LinkKindRelated LinkKind = "related"
+)
+
+// Valid indicates whether the value is a known member of the LinkKind enum.
+func (e LinkKind) Valid() bool {
+	switch e {
+	case LinkKindFee:
+		return true
+	case LinkKindRefund:
+		return true
+	case LinkKindRelated:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for LinkInputKind.
+const (
+	LinkInputKindFee     LinkInputKind = "fee"
+	LinkInputKindRelated LinkInputKind = "related"
+)
+
+// Valid indicates whether the value is a known member of the LinkInputKind enum.
+func (e LinkInputKind) Valid() bool {
+	switch e {
+	case LinkInputKindFee:
+		return true
+	case LinkInputKindRelated:
 		return true
 	default:
 		return false
@@ -137,6 +245,24 @@ func (e TenantRole) Valid() bool {
 	}
 }
 
+// Defines values for TransactionStatus.
+const (
+	Posted TransactionStatus = "posted"
+	Void   TransactionStatus = "void"
+)
+
+// Valid indicates whether the value is a known member of the TransactionStatus enum.
+func (e TransactionStatus) Valid() bool {
+	switch e {
+	case Posted:
+		return true
+	case Void:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for UserStatus.
 const (
 	UserStatusActive   UserStatus = "active"
@@ -175,13 +301,13 @@ func (e UserContextInstanceRole) Valid() bool {
 
 // Defines values for APIVersion.
 const (
-	APIVersionN20260914 APIVersion = "2026-09-14"
+	APIVersionN20260916 APIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the APIVersion enum.
 func (e APIVersion) Valid() bool {
 	switch e {
-	case APIVersionN20260914:
+	case APIVersionN20260916:
 		return true
 	default:
 		return false
@@ -190,13 +316,13 @@ func (e APIVersion) Valid() bool {
 
 // Defines values for GetInstanceParamsXLedgerAPIVersion.
 const (
-	GetInstanceParamsXLedgerAPIVersionN20260914 GetInstanceParamsXLedgerAPIVersion = "2026-09-14"
+	GetInstanceParamsXLedgerAPIVersionN20260916 GetInstanceParamsXLedgerAPIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the GetInstanceParamsXLedgerAPIVersion enum.
 func (e GetInstanceParamsXLedgerAPIVersion) Valid() bool {
 	switch e {
-	case GetInstanceParamsXLedgerAPIVersionN20260914:
+	case GetInstanceParamsXLedgerAPIVersionN20260916:
 		return true
 	default:
 		return false
@@ -205,13 +331,13 @@ func (e GetInstanceParamsXLedgerAPIVersion) Valid() bool {
 
 // Defines values for ListUsersParamsXLedgerAPIVersion.
 const (
-	ListUsersParamsXLedgerAPIVersionN20260914 ListUsersParamsXLedgerAPIVersion = "2026-09-14"
+	ListUsersParamsXLedgerAPIVersionN20260916 ListUsersParamsXLedgerAPIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the ListUsersParamsXLedgerAPIVersion enum.
 func (e ListUsersParamsXLedgerAPIVersion) Valid() bool {
 	switch e {
-	case ListUsersParamsXLedgerAPIVersionN20260914:
+	case ListUsersParamsXLedgerAPIVersionN20260916:
 		return true
 	default:
 		return false
@@ -220,13 +346,13 @@ func (e ListUsersParamsXLedgerAPIVersion) Valid() bool {
 
 // Defines values for SetUserStatusParamsXLedgerAPIVersion.
 const (
-	SetUserStatusParamsXLedgerAPIVersionN20260914 SetUserStatusParamsXLedgerAPIVersion = "2026-09-14"
+	SetUserStatusParamsXLedgerAPIVersionN20260916 SetUserStatusParamsXLedgerAPIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the SetUserStatusParamsXLedgerAPIVersion enum.
 func (e SetUserStatusParamsXLedgerAPIVersion) Valid() bool {
 	switch e {
-	case SetUserStatusParamsXLedgerAPIVersionN20260914:
+	case SetUserStatusParamsXLedgerAPIVersionN20260916:
 		return true
 	default:
 		return false
@@ -235,13 +361,13 @@ func (e SetUserStatusParamsXLedgerAPIVersion) Valid() bool {
 
 // Defines values for ListBooksParamsXLedgerAPIVersion.
 const (
-	ListBooksParamsXLedgerAPIVersionN20260914 ListBooksParamsXLedgerAPIVersion = "2026-09-14"
+	ListBooksParamsXLedgerAPIVersionN20260916 ListBooksParamsXLedgerAPIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the ListBooksParamsXLedgerAPIVersion enum.
 func (e ListBooksParamsXLedgerAPIVersion) Valid() bool {
 	switch e {
-	case ListBooksParamsXLedgerAPIVersionN20260914:
+	case ListBooksParamsXLedgerAPIVersionN20260916:
 		return true
 	default:
 		return false
@@ -250,13 +376,238 @@ func (e ListBooksParamsXLedgerAPIVersion) Valid() bool {
 
 // Defines values for GetBookParamsXLedgerAPIVersion.
 const (
-	GetBookParamsXLedgerAPIVersionN20260914 GetBookParamsXLedgerAPIVersion = "2026-09-14"
+	GetBookParamsXLedgerAPIVersionN20260916 GetBookParamsXLedgerAPIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the GetBookParamsXLedgerAPIVersion enum.
 func (e GetBookParamsXLedgerAPIVersion) Valid() bool {
 	switch e {
-	case GetBookParamsXLedgerAPIVersionN20260914:
+	case GetBookParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListAccountingAccountsParamsXLedgerAPIVersion.
+const (
+	ListAccountingAccountsParamsXLedgerAPIVersionN20260916 ListAccountingAccountsParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the ListAccountingAccountsParamsXLedgerAPIVersion enum.
+func (e ListAccountingAccountsParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case ListAccountingAccountsParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateAccountingAccountParamsXLedgerAPIVersion.
+const (
+	CreateAccountingAccountParamsXLedgerAPIVersionN20260916 CreateAccountingAccountParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the CreateAccountingAccountParamsXLedgerAPIVersion enum.
+func (e CreateAccountingAccountParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case CreateAccountingAccountParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAccountingAccountParamsXLedgerAPIVersion.
+const (
+	GetAccountingAccountParamsXLedgerAPIVersionN20260916 GetAccountingAccountParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the GetAccountingAccountParamsXLedgerAPIVersion enum.
+func (e GetAccountingAccountParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case GetAccountingAccountParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateAccountingAccountParamsXLedgerAPIVersion.
+const (
+	UpdateAccountingAccountParamsXLedgerAPIVersionN20260916 UpdateAccountingAccountParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the UpdateAccountingAccountParamsXLedgerAPIVersion enum.
+func (e UpdateAccountingAccountParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case UpdateAccountingAccountParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListAccountingCategoriesParamsXLedgerAPIVersion.
+const (
+	ListAccountingCategoriesParamsXLedgerAPIVersionN20260916 ListAccountingCategoriesParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the ListAccountingCategoriesParamsXLedgerAPIVersion enum.
+func (e ListAccountingCategoriesParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case ListAccountingCategoriesParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateAccountingCategoryParamsXLedgerAPIVersion.
+const (
+	CreateAccountingCategoryParamsXLedgerAPIVersionN20260916 CreateAccountingCategoryParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the CreateAccountingCategoryParamsXLedgerAPIVersion enum.
+func (e CreateAccountingCategoryParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case CreateAccountingCategoryParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateAccountingCategoryParamsXLedgerAPIVersion.
+const (
+	UpdateAccountingCategoryParamsXLedgerAPIVersionN20260916 UpdateAccountingCategoryParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the UpdateAccountingCategoryParamsXLedgerAPIVersion enum.
+func (e UpdateAccountingCategoryParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case UpdateAccountingCategoryParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAccountingSummaryParamsXLedgerAPIVersion.
+const (
+	GetAccountingSummaryParamsXLedgerAPIVersionN20260916 GetAccountingSummaryParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the GetAccountingSummaryParamsXLedgerAPIVersion enum.
+func (e GetAccountingSummaryParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case GetAccountingSummaryParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListAccountingLinksParamsXLedgerAPIVersion.
+const (
+	ListAccountingLinksParamsXLedgerAPIVersionN20260916 ListAccountingLinksParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the ListAccountingLinksParamsXLedgerAPIVersion enum.
+func (e ListAccountingLinksParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case ListAccountingLinksParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateAccountingLinkParamsXLedgerAPIVersion.
+const (
+	CreateAccountingLinkParamsXLedgerAPIVersionN20260916 CreateAccountingLinkParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the CreateAccountingLinkParamsXLedgerAPIVersion enum.
+func (e CreateAccountingLinkParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case CreateAccountingLinkParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for RemoveAccountingLinkParamsXLedgerAPIVersion.
+const (
+	RemoveAccountingLinkParamsXLedgerAPIVersionN20260916 RemoveAccountingLinkParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the RemoveAccountingLinkParamsXLedgerAPIVersion enum.
+func (e RemoveAccountingLinkParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case RemoveAccountingLinkParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListAccountingTransactionsParamsXLedgerAPIVersion.
+const (
+	ListAccountingTransactionsParamsXLedgerAPIVersionN20260916 ListAccountingTransactionsParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the ListAccountingTransactionsParamsXLedgerAPIVersion enum.
+func (e ListAccountingTransactionsParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case ListAccountingTransactionsParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateAccountingTransactionParamsXLedgerAPIVersion.
+const (
+	CreateAccountingTransactionParamsXLedgerAPIVersionN20260916 CreateAccountingTransactionParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the CreateAccountingTransactionParamsXLedgerAPIVersion enum.
+func (e CreateAccountingTransactionParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case CreateAccountingTransactionParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for GetAccountingTransactionParamsXLedgerAPIVersion.
+const (
+	GetAccountingTransactionParamsXLedgerAPIVersionN20260916 GetAccountingTransactionParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the GetAccountingTransactionParamsXLedgerAPIVersion enum.
+func (e GetAccountingTransactionParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case GetAccountingTransactionParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CorrectAccountingTransactionParamsXLedgerAPIVersion.
+const (
+	CorrectAccountingTransactionParamsXLedgerAPIVersionN20260916 CorrectAccountingTransactionParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the CorrectAccountingTransactionParamsXLedgerAPIVersion enum.
+func (e CorrectAccountingTransactionParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case CorrectAccountingTransactionParamsXLedgerAPIVersionN20260916:
 		return true
 	default:
 		return false
@@ -265,13 +616,73 @@ func (e GetBookParamsXLedgerAPIVersion) Valid() bool {
 
 // Defines values for BootstrapParamsXLedgerAPIVersion.
 const (
-	BootstrapParamsXLedgerAPIVersionN20260914 BootstrapParamsXLedgerAPIVersion = "2026-09-14"
+	BootstrapParamsXLedgerAPIVersionN20260916 BootstrapParamsXLedgerAPIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the BootstrapParamsXLedgerAPIVersion enum.
 func (e BootstrapParamsXLedgerAPIVersion) Valid() bool {
 	switch e {
-	case BootstrapParamsXLedgerAPIVersionN20260914:
+	case BootstrapParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListAccountingCounterpartiesParamsXLedgerAPIVersion.
+const (
+	ListAccountingCounterpartiesParamsXLedgerAPIVersionN20260916 ListAccountingCounterpartiesParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the ListAccountingCounterpartiesParamsXLedgerAPIVersion enum.
+func (e ListAccountingCounterpartiesParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case ListAccountingCounterpartiesParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for CreateAccountingCounterpartyParamsXLedgerAPIVersion.
+const (
+	CreateAccountingCounterpartyParamsXLedgerAPIVersionN20260916 CreateAccountingCounterpartyParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the CreateAccountingCounterpartyParamsXLedgerAPIVersion enum.
+func (e CreateAccountingCounterpartyParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case CreateAccountingCounterpartyParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for UpdateAccountingCounterpartyParamsXLedgerAPIVersion.
+const (
+	UpdateAccountingCounterpartyParamsXLedgerAPIVersionN20260916 UpdateAccountingCounterpartyParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the UpdateAccountingCounterpartyParamsXLedgerAPIVersion enum.
+func (e UpdateAccountingCounterpartyParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case UpdateAccountingCounterpartyParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
+// Defines values for ListCurrenciesParamsXLedgerAPIVersion.
+const (
+	ListCurrenciesParamsXLedgerAPIVersionN20260916 ListCurrenciesParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the ListCurrenciesParamsXLedgerAPIVersion enum.
+func (e ListCurrenciesParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case ListCurrenciesParamsXLedgerAPIVersionN20260916:
 		return true
 	default:
 		return false
@@ -280,13 +691,13 @@ func (e BootstrapParamsXLedgerAPIVersion) Valid() bool {
 
 // Defines values for GetMeParamsXLedgerAPIVersion.
 const (
-	GetMeParamsXLedgerAPIVersionN20260914 GetMeParamsXLedgerAPIVersion = "2026-09-14"
+	GetMeParamsXLedgerAPIVersionN20260916 GetMeParamsXLedgerAPIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the GetMeParamsXLedgerAPIVersion enum.
 func (e GetMeParamsXLedgerAPIVersion) Valid() bool {
 	switch e {
-	case GetMeParamsXLedgerAPIVersionN20260914:
+	case GetMeParamsXLedgerAPIVersionN20260916:
 		return true
 	default:
 		return false
@@ -295,17 +706,45 @@ func (e GetMeParamsXLedgerAPIVersion) Valid() bool {
 
 // Defines values for UpdatePreferencesParamsXLedgerAPIVersion.
 const (
-	UpdatePreferencesParamsXLedgerAPIVersionN20260914 UpdatePreferencesParamsXLedgerAPIVersion = "2026-09-14"
+	UpdatePreferencesParamsXLedgerAPIVersionN20260916 UpdatePreferencesParamsXLedgerAPIVersion = "2026-09-16"
 )
 
 // Valid indicates whether the value is a known member of the UpdatePreferencesParamsXLedgerAPIVersion enum.
 func (e UpdatePreferencesParamsXLedgerAPIVersion) Valid() bool {
 	switch e {
-	case UpdatePreferencesParamsXLedgerAPIVersionN20260914:
+	case UpdatePreferencesParamsXLedgerAPIVersionN20260916:
 		return true
 	default:
 		return false
 	}
+}
+
+// Account defines model for Account.
+type Account struct {
+	Archived bool               `json:"archived"`
+	Balance  string             `json:"balance"`
+	Currency string             `json:"currency"`
+	Id       openapi_types.UUID `json:"id"`
+	Kind     AccountKind        `json:"kind"`
+	Name     string             `json:"name"`
+	Revision int                `json:"revision"`
+}
+
+// AccountKind defines model for Account.Kind.
+type AccountKind string
+
+// AccountInput defines model for AccountInput.
+type AccountInput struct {
+	Currency      string              `json:"currency"`
+	Kind          string              `json:"kind"`
+	Name          string              `json:"name"`
+	OpeningAmount *string             `json:"opening_amount,omitempty"`
+	OpeningDate   *openapi_types.Date `json:"opening_date,omitempty"`
+}
+
+// AccountList defines model for AccountList.
+type AccountList struct {
+	Accounts []Account `json:"accounts"`
 }
 
 // Book defines model for Book.
@@ -333,6 +772,116 @@ type BootstrapInput struct {
 	Timezone *string `json:"timezone,omitempty"`
 }
 
+// Category defines model for Category.
+type Category struct {
+	Archived   bool                `json:"archived"`
+	Id         openapi_types.UUID  `json:"id"`
+	Kind       string              `json:"kind"`
+	Name       string              `json:"name"`
+	NameZh     string              `json:"name_zh"`
+	ParentId   *openapi_types.UUID `json:"parent_id,omitempty"`
+	Revision   int                 `json:"revision"`
+	SystemCode *string             `json:"system_code,omitempty"`
+}
+
+// CategoryInput defines model for CategoryInput.
+type CategoryInput struct {
+	Kind     CategoryInputKind   `json:"kind"`
+	Name     string              `json:"name"`
+	ParentId *openapi_types.UUID `json:"parent_id,omitempty"`
+}
+
+// CategoryInputKind defines model for CategoryInput.Kind.
+type CategoryInputKind string
+
+// CategoryList defines model for CategoryList.
+type CategoryList struct {
+	Categories []Category `json:"categories"`
+}
+
+// Correction defines model for Correction.
+type Correction struct {
+	// Entry Amounts are exact decimal strings in each account currency. Transfers require destination account and principal; income/expense require category; refunds require original_id and retain its category. The service enforces type-dependent fields, active references, precision and refund limits.
+	Entry            *EntryInput        `json:"entry,omitempty"`
+	ExpectedRevision int                `json:"expected_revision"`
+	Id               openapi_types.UUID `json:"id"`
+}
+
+// CorrectionInput Absent entry explicitly voids the transaction. Present entry replaces the entire business input. Selected directly related fees are corrected/voided atomically; omitted fees remain independent.
+type CorrectionInput struct {
+	// Entry Amounts are exact decimal strings in each account currency. Transfers require destination account and principal; income/expense require category; refunds require original_id and retain its category. The service enforces type-dependent fields, active references, precision and refund limits.
+	Entry            *EntryInput   `json:"entry,omitempty"`
+	ExpectedRevision int           `json:"expected_revision"`
+	Fees             *[]Correction `json:"fees,omitempty"`
+}
+
+// Counterparty defines model for Counterparty.
+type Counterparty struct {
+	Archived bool               `json:"archived"`
+	Id       openapi_types.UUID `json:"id"`
+	Name     string             `json:"name"`
+	Revision int                `json:"revision"`
+}
+
+// CounterpartyInput defines model for CounterpartyInput.
+type CounterpartyInput struct {
+	Name string `json:"name"`
+}
+
+// CounterpartyList defines model for CounterpartyList.
+type CounterpartyList struct {
+	Counterparties []Counterparty `json:"counterparties"`
+}
+
+// CreateInput defines model for CreateInput.
+type CreateInput struct {
+	// Entry Amounts are exact decimal strings in each account currency. Transfers require destination account and principal; income/expense require category; refunds require original_id and retain its category. The service enforces type-dependent fields, active references, precision and refund limits.
+	Entry EntryInput `json:"entry"`
+
+	// Fee Amounts are exact decimal strings in each account currency. Transfers require destination account and principal; income/expense require category; refunds require original_id and retain its category. The service enforces type-dependent fields, active references, precision and refund limits.
+	Fee      *EntryInput         `json:"fee,omitempty"`
+	FeeForId *openapi_types.UUID `json:"fee_for_id,omitempty"`
+}
+
+// Currency Language-neutral accounting metadata. Localized display labels are provided by the versioned CLDR reference pack.
+type Currency struct {
+	Code       string `json:"code"`
+	MinorUnits int    `json:"minor_units"`
+}
+
+// CurrencyList defines model for CurrencyList.
+type CurrencyList struct {
+	Currencies []Currency `json:"currencies"`
+}
+
+// EntryInput Amounts are exact decimal strings in each account currency. Transfers require destination account and principal; income/expense require category; refunds require original_id and retain its category. The service enforces type-dependent fields, active references, precision and refund limits.
+type EntryInput struct {
+	AccountId      openapi_types.UUID  `json:"account_id"`
+	Amount         string              `json:"amount"`
+	CategoryId     *openapi_types.UUID `json:"category_id,omitempty"`
+	CounterpartyId *openapi_types.UUID `json:"counterparty_id,omitempty"`
+	Kind           EntryInputKind      `json:"kind"`
+	Note           *string             `json:"note,omitempty"`
+	OccurredOn     openapi_types.Date  `json:"occurred_on"`
+	OriginalId     *openapi_types.UUID `json:"original_id,omitempty"`
+	ToAccountId    *openapi_types.UUID `json:"to_account_id,omitempty"`
+	ToAmount       *string             `json:"to_amount,omitempty"`
+}
+
+// EntryInputKind defines model for EntryInput.Kind.
+type EntryInputKind string
+
+// ExchangeRate defines model for ExchangeRate.
+type ExchangeRate struct {
+	Date         openapi_types.Date `json:"date"`
+	Denominator  string             `json:"denominator"`
+	Display      string             `json:"display"`
+	FromCurrency string             `json:"from_currency"`
+	Numerator    string             `json:"numerator"`
+	Source       string             `json:"source"`
+	ToCurrency   string             `json:"to_currency"`
+}
+
 // FieldError defines model for FieldError.
 type FieldError struct {
 	Location FieldErrorLocation `json:"location"`
@@ -355,6 +904,60 @@ type HealthStatus string
 type Instance struct {
 	AdminUserId   openapi_types.UUID `json:"admin_user_id"`
 	InitializedAt time.Time          `json:"initialized_at"`
+}
+
+// JournalView defines model for JournalView.
+type JournalView struct {
+	Id                openapi_types.UUID  `json:"id"`
+	OccurredOn        openapi_types.Date  `json:"occurred_on"`
+	Postings          []PostingView       `json:"postings"`
+	ReversalOf        *openapi_types.UUID `json:"reversal_of"`
+	Revision          int                 `json:"revision"`
+	ValuationCurrency string              `json:"valuation_currency"`
+}
+
+// Link defines model for Link.
+type Link struct {
+	Id       openapi_types.UUID `json:"id"`
+	Kind     LinkKind           `json:"kind"`
+	SourceId openapi_types.UUID `json:"source_id"`
+	TargetId openapi_types.UUID `json:"target_id"`
+}
+
+// LinkKind defines model for Link.Kind.
+type LinkKind string
+
+// LinkInput defines model for LinkInput.
+type LinkInput struct {
+	Kind     LinkInputKind      `json:"kind"`
+	SourceId openapi_types.UUID `json:"source_id"`
+	TargetId openapi_types.UUID `json:"target_id"`
+}
+
+// LinkInputKind defines model for LinkInput.Kind.
+type LinkInputKind string
+
+// LinkList defines model for LinkList.
+type LinkList struct {
+	Links []Link `json:"links"`
+}
+
+// MutationResult defines model for MutationResult.
+type MutationResult struct {
+	Links        []Link        `json:"links"`
+	Transactions []Transaction `json:"transactions"`
+}
+
+// PostingView defines model for PostingView.
+type PostingView struct {
+	AccountId       openapi_types.UUID `json:"account_id"`
+	Amount          string             `json:"amount"`
+	Currency        string             `json:"currency"`
+	RateDate        openapi_types.Date `json:"rate_date"`
+	RateDenominator string             `json:"rate_denominator"`
+	RateNumerator   string             `json:"rate_numerator"`
+	RateSource      string             `json:"rate_source"`
+	ValuationAmount string             `json:"valuation_amount"`
 }
 
 // Preferences defines model for Preferences.
@@ -403,6 +1006,24 @@ type ReadinessDatabase string
 // ReadinessStatus defines model for Readiness.Status.
 type ReadinessStatus string
 
+// ReferencePatch defines model for ReferencePatch.
+type ReferencePatch struct {
+	Archived         bool   `json:"archived"`
+	ExpectedRevision int    `json:"expected_revision"`
+	Name             string `json:"name"`
+}
+
+// Revision defines model for Revision.
+type Revision struct {
+	ActorId   openapi_types.UUID `json:"actor_id"`
+	CreatedAt time.Time          `json:"created_at"`
+
+	// Data Amounts are exact decimal strings in each account currency. Transfers require destination account and principal; income/expense require category; refunds require original_id and retain its category. The service enforces type-dependent fields, active references, precision and refund limits.
+	Data     EntryInput `json:"data"`
+	Revision int        `json:"revision"`
+	Voided   bool       `json:"voided"`
+}
+
 // StatusInput defines model for StatusInput.
 type StatusInput struct {
 	// Reason Nonblank reason, maximum 1000 UTF-8 bytes.
@@ -413,6 +1034,20 @@ type StatusInput struct {
 // StatusInputStatus defines model for StatusInput.Status.
 type StatusInputStatus string
 
+// Summary defines model for Summary.
+type Summary struct {
+	Categories []SummaryRow `json:"categories"`
+	Totals     []SummaryRow `json:"totals"`
+}
+
+// SummaryRow defines model for SummaryRow.
+type SummaryRow struct {
+	Amount     string              `json:"amount"`
+	CategoryId *openapi_types.UUID `json:"category_id,omitempty"`
+	Currency   string              `json:"currency"`
+	Kind       string              `json:"kind"`
+}
+
 // Tenant defines model for Tenant.
 type Tenant struct {
 	Id   openapi_types.UUID `json:"id"`
@@ -422,6 +1057,37 @@ type Tenant struct {
 
 // TenantRole defines model for Tenant.Role.
 type TenantRole string
+
+// Transaction defines model for Transaction.
+type Transaction struct {
+	CreatedAt time.Time `json:"created_at"`
+
+	// Data Amounts are exact decimal strings in each account currency. Transfers require destination account and principal; income/expense require category; refunds require original_id and retain its category. The service enforces type-dependent fields, active references, precision and refund limits.
+	Data     EntryInput         `json:"data"`
+	Id       openapi_types.UUID `json:"id"`
+	Revision int                `json:"revision"`
+	Status   TransactionStatus  `json:"status"`
+}
+
+// TransactionStatus defines model for Transaction.Status.
+type TransactionStatus string
+
+// TransactionDetail defines model for TransactionDetail.
+type TransactionDetail struct {
+	ExchangeRate     *ExchangeRate `json:"exchange_rate,omitempty"`
+	History          []Revision    `json:"history"`
+	Journals         []JournalView `json:"journals"`
+	Links            []Link        `json:"links"`
+	RefundableAmount *string       `json:"refundable_amount,omitempty"`
+	Transaction      Transaction   `json:"transaction"`
+}
+
+// TransactionPage defines model for TransactionPage.
+type TransactionPage struct {
+	Links        []Link        `json:"links"`
+	NextCursor   *string       `json:"next_cursor"`
+	Transactions []Transaction `json:"transactions"`
+}
 
 // User defines model for User.
 type User struct {
@@ -527,6 +1193,181 @@ type GetBookParams struct {
 // GetBookParamsXLedgerAPIVersion defines parameters for GetBook.
 type GetBookParamsXLedgerAPIVersion string
 
+// ListAccountingAccountsParams defines parameters for ListAccountingAccounts.
+type ListAccountingAccountsParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion ListAccountingAccountsParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// ListAccountingAccountsParamsXLedgerAPIVersion defines parameters for ListAccountingAccounts.
+type ListAccountingAccountsParamsXLedgerAPIVersion string
+
+// CreateAccountingAccountParams defines parameters for CreateAccountingAccount.
+type CreateAccountingAccountParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion CreateAccountingAccountParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// CreateAccountingAccountParamsXLedgerAPIVersion defines parameters for CreateAccountingAccount.
+type CreateAccountingAccountParamsXLedgerAPIVersion string
+
+// GetAccountingAccountParams defines parameters for GetAccountingAccount.
+type GetAccountingAccountParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion GetAccountingAccountParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// GetAccountingAccountParamsXLedgerAPIVersion defines parameters for GetAccountingAccount.
+type GetAccountingAccountParamsXLedgerAPIVersion string
+
+// UpdateAccountingAccountParams defines parameters for UpdateAccountingAccount.
+type UpdateAccountingAccountParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion UpdateAccountingAccountParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// UpdateAccountingAccountParamsXLedgerAPIVersion defines parameters for UpdateAccountingAccount.
+type UpdateAccountingAccountParamsXLedgerAPIVersion string
+
+// ListAccountingCategoriesParams defines parameters for ListAccountingCategories.
+type ListAccountingCategoriesParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion ListAccountingCategoriesParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// ListAccountingCategoriesParamsXLedgerAPIVersion defines parameters for ListAccountingCategories.
+type ListAccountingCategoriesParamsXLedgerAPIVersion string
+
+// CreateAccountingCategoryParams defines parameters for CreateAccountingCategory.
+type CreateAccountingCategoryParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion CreateAccountingCategoryParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// CreateAccountingCategoryParamsXLedgerAPIVersion defines parameters for CreateAccountingCategory.
+type CreateAccountingCategoryParamsXLedgerAPIVersion string
+
+// UpdateAccountingCategoryParams defines parameters for UpdateAccountingCategory.
+type UpdateAccountingCategoryParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion UpdateAccountingCategoryParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// UpdateAccountingCategoryParamsXLedgerAPIVersion defines parameters for UpdateAccountingCategory.
+type UpdateAccountingCategoryParamsXLedgerAPIVersion string
+
+// GetAccountingSummaryParams defines parameters for GetAccountingSummary.
+type GetAccountingSummaryParams struct {
+	From *openapi_types.Date `form:"from,omitempty" json:"from,omitempty"`
+	To   *openapi_types.Date `form:"to,omitempty" json:"to,omitempty"`
+
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion GetAccountingSummaryParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// GetAccountingSummaryParamsXLedgerAPIVersion defines parameters for GetAccountingSummary.
+type GetAccountingSummaryParamsXLedgerAPIVersion string
+
+// ListAccountingLinksParams defines parameters for ListAccountingLinks.
+type ListAccountingLinksParams struct {
+	TransactionId *openapi_types.UUID `form:"transaction_id,omitempty" json:"transaction_id,omitempty"`
+
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion ListAccountingLinksParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// ListAccountingLinksParamsXLedgerAPIVersion defines parameters for ListAccountingLinks.
+type ListAccountingLinksParamsXLedgerAPIVersion string
+
+// CreateAccountingLinkParams defines parameters for CreateAccountingLink.
+type CreateAccountingLinkParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion CreateAccountingLinkParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// CreateAccountingLinkParamsXLedgerAPIVersion defines parameters for CreateAccountingLink.
+type CreateAccountingLinkParamsXLedgerAPIVersion string
+
+// RemoveAccountingLinkParams defines parameters for RemoveAccountingLink.
+type RemoveAccountingLinkParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion RemoveAccountingLinkParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// RemoveAccountingLinkParamsXLedgerAPIVersion defines parameters for RemoveAccountingLink.
+type RemoveAccountingLinkParamsXLedgerAPIVersion string
+
+// ListAccountingTransactionsParams defines parameters for ListAccountingTransactions.
+type ListAccountingTransactionsParams struct {
+	AccountId      *openapi_types.UUID `form:"account_id,omitempty" json:"account_id,omitempty"`
+	CategoryId     *openapi_types.UUID `form:"category_id,omitempty" json:"category_id,omitempty"`
+	CounterpartyId *openapi_types.UUID `form:"counterparty_id,omitempty" json:"counterparty_id,omitempty"`
+	From           *openapi_types.Date `form:"from,omitempty" json:"from,omitempty"`
+	To             *openapi_types.Date `form:"to,omitempty" json:"to,omitempty"`
+	Kind           *string             `form:"kind,omitempty" json:"kind,omitempty"`
+	Currency       *string             `form:"currency,omitempty" json:"currency,omitempty"`
+	Cursor         *string             `form:"cursor,omitempty" json:"cursor,omitempty"`
+	Limit          *int                `form:"limit,omitempty" json:"limit,omitempty"`
+	IncludeVoided  *bool               `form:"include_voided,omitempty" json:"include_voided,omitempty"`
+
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion ListAccountingTransactionsParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// ListAccountingTransactionsParamsXLedgerAPIVersion defines parameters for ListAccountingTransactions.
+type ListAccountingTransactionsParamsXLedgerAPIVersion string
+
+// CreateAccountingTransactionParams defines parameters for CreateAccountingTransaction.
+type CreateAccountingTransactionParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion CreateAccountingTransactionParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// CreateAccountingTransactionParamsXLedgerAPIVersion defines parameters for CreateAccountingTransaction.
+type CreateAccountingTransactionParamsXLedgerAPIVersion string
+
+// GetAccountingTransactionParams defines parameters for GetAccountingTransaction.
+type GetAccountingTransactionParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion GetAccountingTransactionParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// GetAccountingTransactionParamsXLedgerAPIVersion defines parameters for GetAccountingTransaction.
+type GetAccountingTransactionParamsXLedgerAPIVersion string
+
+// CorrectAccountingTransactionParams defines parameters for CorrectAccountingTransaction.
+type CorrectAccountingTransactionParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion CorrectAccountingTransactionParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// CorrectAccountingTransactionParamsXLedgerAPIVersion defines parameters for CorrectAccountingTransaction.
+type CorrectAccountingTransactionParamsXLedgerAPIVersion string
+
 // BootstrapParams defines parameters for Bootstrap.
 type BootstrapParams struct {
 	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
@@ -535,6 +1376,48 @@ type BootstrapParams struct {
 
 // BootstrapParamsXLedgerAPIVersion defines parameters for Bootstrap.
 type BootstrapParamsXLedgerAPIVersion string
+
+// ListAccountingCounterpartiesParams defines parameters for ListAccountingCounterparties.
+type ListAccountingCounterpartiesParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion ListAccountingCounterpartiesParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// ListAccountingCounterpartiesParamsXLedgerAPIVersion defines parameters for ListAccountingCounterparties.
+type ListAccountingCounterpartiesParamsXLedgerAPIVersion string
+
+// CreateAccountingCounterpartyParams defines parameters for CreateAccountingCounterparty.
+type CreateAccountingCounterpartyParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion CreateAccountingCounterpartyParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// CreateAccountingCounterpartyParamsXLedgerAPIVersion defines parameters for CreateAccountingCounterparty.
+type CreateAccountingCounterpartyParamsXLedgerAPIVersion string
+
+// UpdateAccountingCounterpartyParams defines parameters for UpdateAccountingCounterparty.
+type UpdateAccountingCounterpartyParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion UpdateAccountingCounterpartyParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+
+	// IdempotencyKey Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant.
+	IdempotencyKey openapi_types.UUID `json:"Idempotency-Key"`
+}
+
+// UpdateAccountingCounterpartyParamsXLedgerAPIVersion defines parameters for UpdateAccountingCounterparty.
+type UpdateAccountingCounterpartyParamsXLedgerAPIVersion string
+
+// ListCurrenciesParams defines parameters for ListCurrencies.
+type ListCurrenciesParams struct {
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion ListCurrenciesParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// ListCurrenciesParamsXLedgerAPIVersion defines parameters for ListCurrencies.
+type ListCurrenciesParamsXLedgerAPIVersion string
 
 // GetMeParams defines parameters for GetMe.
 type GetMeParams struct {
@@ -557,8 +1440,35 @@ type UpdatePreferencesParamsXLedgerAPIVersion string
 // SetUserStatusJSONRequestBody defines body for SetUserStatus for application/json ContentType.
 type SetUserStatusJSONRequestBody = StatusInput
 
+// CreateAccountingAccountJSONRequestBody defines body for CreateAccountingAccount for application/json ContentType.
+type CreateAccountingAccountJSONRequestBody = AccountInput
+
+// UpdateAccountingAccountJSONRequestBody defines body for UpdateAccountingAccount for application/json ContentType.
+type UpdateAccountingAccountJSONRequestBody = ReferencePatch
+
+// CreateAccountingCategoryJSONRequestBody defines body for CreateAccountingCategory for application/json ContentType.
+type CreateAccountingCategoryJSONRequestBody = CategoryInput
+
+// UpdateAccountingCategoryJSONRequestBody defines body for UpdateAccountingCategory for application/json ContentType.
+type UpdateAccountingCategoryJSONRequestBody = ReferencePatch
+
+// CreateAccountingLinkJSONRequestBody defines body for CreateAccountingLink for application/json ContentType.
+type CreateAccountingLinkJSONRequestBody = LinkInput
+
+// CreateAccountingTransactionJSONRequestBody defines body for CreateAccountingTransaction for application/json ContentType.
+type CreateAccountingTransactionJSONRequestBody = CreateInput
+
+// CorrectAccountingTransactionJSONRequestBody defines body for CorrectAccountingTransaction for application/json ContentType.
+type CorrectAccountingTransactionJSONRequestBody = CorrectionInput
+
 // BootstrapJSONRequestBody defines body for Bootstrap for application/json ContentType.
 type BootstrapJSONRequestBody = BootstrapInput
+
+// CreateAccountingCounterpartyJSONRequestBody defines body for CreateAccountingCounterparty for application/json ContentType.
+type CreateAccountingCounterpartyJSONRequestBody = CounterpartyInput
+
+// UpdateAccountingCounterpartyJSONRequestBody defines body for UpdateAccountingCounterparty for application/json ContentType.
+type UpdateAccountingCounterpartyJSONRequestBody = ReferencePatch
 
 // UpdatePreferencesJSONRequestBody defines body for UpdatePreferences for application/json ContentType.
 type UpdatePreferencesJSONRequestBody = PreferencesPatch
@@ -728,9 +1638,66 @@ type ServerInterface interface {
 	// GetBook Get a personal book
 	// (GET /api/v1/books/{book_id})
 	GetBook(c *gin.Context, bookId openapi_types.UUID, params GetBookParams)
+	// ListAccountingAccounts ListAccountingAccounts
+	// (GET /api/v1/books/{book_id}/accounts)
+	ListAccountingAccounts(c *gin.Context, bookId openapi_types.UUID, params ListAccountingAccountsParams)
+	// CreateAccountingAccount CreateAccountingAccount
+	// (POST /api/v1/books/{book_id}/accounts)
+	CreateAccountingAccount(c *gin.Context, bookId openapi_types.UUID, params CreateAccountingAccountParams)
+	// GetAccountingAccount GetAccountingAccount
+	// (GET /api/v1/books/{book_id}/accounts/{account_id})
+	GetAccountingAccount(c *gin.Context, bookId openapi_types.UUID, accountId openapi_types.UUID, params GetAccountingAccountParams)
+	// UpdateAccountingAccount UpdateAccountingAccount
+	// (PATCH /api/v1/books/{book_id}/accounts/{account_id})
+	UpdateAccountingAccount(c *gin.Context, bookId openapi_types.UUID, accountId openapi_types.UUID, params UpdateAccountingAccountParams)
+	// ListAccountingCategories ListAccountingCategories
+	// (GET /api/v1/books/{book_id}/categories)
+	ListAccountingCategories(c *gin.Context, bookId openapi_types.UUID, params ListAccountingCategoriesParams)
+	// CreateAccountingCategory CreateAccountingCategory
+	// (POST /api/v1/books/{book_id}/categories)
+	CreateAccountingCategory(c *gin.Context, bookId openapi_types.UUID, params CreateAccountingCategoryParams)
+	// UpdateAccountingCategory UpdateAccountingCategory
+	// (PATCH /api/v1/books/{book_id}/categories/{category_id})
+	UpdateAccountingCategory(c *gin.Context, bookId openapi_types.UUID, categoryId openapi_types.UUID, params UpdateAccountingCategoryParams)
+	// GetAccountingSummary GetAccountingSummary
+	// (GET /api/v1/books/{book_id}/summary)
+	GetAccountingSummary(c *gin.Context, bookId openapi_types.UUID, params GetAccountingSummaryParams)
+	// ListAccountingLinks ListAccountingLinks
+	// (GET /api/v1/books/{book_id}/transaction-links)
+	ListAccountingLinks(c *gin.Context, bookId openapi_types.UUID, params ListAccountingLinksParams)
+	// CreateAccountingLink CreateAccountingLink
+	// (POST /api/v1/books/{book_id}/transaction-links)
+	CreateAccountingLink(c *gin.Context, bookId openapi_types.UUID, params CreateAccountingLinkParams)
+	// RemoveAccountingLink RemoveAccountingLink
+	// (DELETE /api/v1/books/{book_id}/transaction-links/{link_id})
+	RemoveAccountingLink(c *gin.Context, bookId openapi_types.UUID, linkId openapi_types.UUID, params RemoveAccountingLinkParams)
+	// ListAccountingTransactions ListAccountingTransactions
+	// (GET /api/v1/books/{book_id}/transactions)
+	ListAccountingTransactions(c *gin.Context, bookId openapi_types.UUID, params ListAccountingTransactionsParams)
+	// CreateAccountingTransaction CreateAccountingTransaction
+	// (POST /api/v1/books/{book_id}/transactions)
+	CreateAccountingTransaction(c *gin.Context, bookId openapi_types.UUID, params CreateAccountingTransactionParams)
+	// GetAccountingTransaction GetAccountingTransaction
+	// (GET /api/v1/books/{book_id}/transactions/{transaction_id})
+	GetAccountingTransaction(c *gin.Context, bookId openapi_types.UUID, transactionId openapi_types.UUID, params GetAccountingTransactionParams)
+	// CorrectAccountingTransaction CorrectAccountingTransaction
+	// (POST /api/v1/books/{book_id}/transactions/{transaction_id}/corrections)
+	CorrectAccountingTransaction(c *gin.Context, bookId openapi_types.UUID, transactionId openapi_types.UUID, params CorrectAccountingTransactionParams)
 	// Bootstrap Initialize personal space
 	// (POST /api/v1/bootstrap)
 	Bootstrap(c *gin.Context, params BootstrapParams)
+	// ListAccountingCounterparties ListAccountingCounterparties
+	// (GET /api/v1/counterparties)
+	ListAccountingCounterparties(c *gin.Context, params ListAccountingCounterpartiesParams)
+	// CreateAccountingCounterparty CreateAccountingCounterparty
+	// (POST /api/v1/counterparties)
+	CreateAccountingCounterparty(c *gin.Context, params CreateAccountingCounterpartyParams)
+	// UpdateAccountingCounterparty UpdateAccountingCounterparty
+	// (PATCH /api/v1/counterparties/{counterparty_id})
+	UpdateAccountingCounterparty(c *gin.Context, counterpartyId openapi_types.UUID, params UpdateAccountingCounterpartyParams)
+	// ListCurrencies ListCurrencies
+	// (GET /api/v1/currencies)
+	ListCurrencies(c *gin.Context, params ListCurrenciesParams)
 	// GetMe Current user and personal space
 	// (GET /api/v1/me)
 	GetMe(c *gin.Context, params GetMeParams)
@@ -1003,6 +1970,1120 @@ func (siw *ServerInterfaceWrapper) GetBook(c *gin.Context) {
 	siw.Handler.GetBook(c, bookId, params)
 }
 
+// ListAccountingAccounts operation middleware
+func (siw *ServerInterfaceWrapper) ListAccountingAccounts(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListAccountingAccountsParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion ListAccountingAccountsParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ListAccountingAccounts(c, bookId, params)
+}
+
+// CreateAccountingAccount operation middleware
+func (siw *ServerInterfaceWrapper) CreateAccountingAccount(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateAccountingAccountParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion CreateAccountingAccountParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.CreateAccountingAccount(c, bookId, params)
+}
+
+// GetAccountingAccount operation middleware
+func (siw *ServerInterfaceWrapper) GetAccountingAccount(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Path parameter "account_id" -------------
+	var accountId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "account_id", c.Param("account_id"), &accountId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter account_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetAccountingAccountParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion GetAccountingAccountParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.GetAccountingAccount(c, bookId, accountId, params)
+}
+
+// UpdateAccountingAccount operation middleware
+func (siw *ServerInterfaceWrapper) UpdateAccountingAccount(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Path parameter "account_id" -------------
+	var accountId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "account_id", c.Param("account_id"), &accountId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter account_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params UpdateAccountingAccountParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion UpdateAccountingAccountParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.UpdateAccountingAccount(c, bookId, accountId, params)
+}
+
+// ListAccountingCategories operation middleware
+func (siw *ServerInterfaceWrapper) ListAccountingCategories(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListAccountingCategoriesParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion ListAccountingCategoriesParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ListAccountingCategories(c, bookId, params)
+}
+
+// CreateAccountingCategory operation middleware
+func (siw *ServerInterfaceWrapper) CreateAccountingCategory(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateAccountingCategoryParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion CreateAccountingCategoryParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.CreateAccountingCategory(c, bookId, params)
+}
+
+// UpdateAccountingCategory operation middleware
+func (siw *ServerInterfaceWrapper) UpdateAccountingCategory(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Path parameter "category_id" -------------
+	var categoryId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "category_id", c.Param("category_id"), &categoryId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter category_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params UpdateAccountingCategoryParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion UpdateAccountingCategoryParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.UpdateAccountingCategory(c, bookId, categoryId, params)
+}
+
+// GetAccountingSummary operation middleware
+func (siw *ServerInterfaceWrapper) GetAccountingSummary(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetAccountingSummaryParams
+
+	// ------------- Optional query parameter "from" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "from", c.Request.URL.Query(), &params.From, runtime.BindQueryParameterOptions{Type: "string", Format: "date"})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter from: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "to" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "to", c.Request.URL.Query(), &params.To, runtime.BindQueryParameterOptions{Type: "string", Format: "date"})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter to: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion GetAccountingSummaryParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.GetAccountingSummary(c, bookId, params)
+}
+
+// ListAccountingLinks operation middleware
+func (siw *ServerInterfaceWrapper) ListAccountingLinks(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListAccountingLinksParams
+
+	// ------------- Optional query parameter "transaction_id" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "transaction_id", c.Request.URL.Query(), &params.TransactionId, runtime.BindQueryParameterOptions{Type: "string", Format: "uuid"})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter transaction_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion ListAccountingLinksParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ListAccountingLinks(c, bookId, params)
+}
+
+// CreateAccountingLink operation middleware
+func (siw *ServerInterfaceWrapper) CreateAccountingLink(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateAccountingLinkParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion CreateAccountingLinkParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.CreateAccountingLink(c, bookId, params)
+}
+
+// RemoveAccountingLink operation middleware
+func (siw *ServerInterfaceWrapper) RemoveAccountingLink(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Path parameter "link_id" -------------
+	var linkId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "link_id", c.Param("link_id"), &linkId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter link_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params RemoveAccountingLinkParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion RemoveAccountingLinkParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.RemoveAccountingLink(c, bookId, linkId, params)
+}
+
+// ListAccountingTransactions operation middleware
+func (siw *ServerInterfaceWrapper) ListAccountingTransactions(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListAccountingTransactionsParams
+
+	// ------------- Optional query parameter "account_id" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "account_id", c.Request.URL.Query(), &params.AccountId, runtime.BindQueryParameterOptions{Type: "string", Format: "uuid"})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter account_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "category_id" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "category_id", c.Request.URL.Query(), &params.CategoryId, runtime.BindQueryParameterOptions{Type: "string", Format: "uuid"})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter category_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "counterparty_id" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "counterparty_id", c.Request.URL.Query(), &params.CounterpartyId, runtime.BindQueryParameterOptions{Type: "string", Format: "uuid"})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter counterparty_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "from" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "from", c.Request.URL.Query(), &params.From, runtime.BindQueryParameterOptions{Type: "string", Format: "date"})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter from: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "to" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "to", c.Request.URL.Query(), &params.To, runtime.BindQueryParameterOptions{Type: "string", Format: "date"})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter to: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "kind" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "kind", c.Request.URL.Query(), &params.Kind, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter kind: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "currency" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "currency", c.Request.URL.Query(), &params.Currency, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter currency: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "cursor" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "cursor", c.Request.URL.Query(), &params.Cursor, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter cursor: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "limit" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "limit", c.Request.URL.Query(), &params.Limit, runtime.BindQueryParameterOptions{Type: "integer", Format: ""})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter limit: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Optional query parameter "include_voided" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, false, "include_voided", c.Request.URL.Query(), &params.IncludeVoided, runtime.BindQueryParameterOptions{Type: "boolean", Format: ""})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter include_voided: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion ListAccountingTransactionsParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ListAccountingTransactions(c, bookId, params)
+}
+
+// CreateAccountingTransaction operation middleware
+func (siw *ServerInterfaceWrapper) CreateAccountingTransaction(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateAccountingTransactionParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion CreateAccountingTransactionParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.CreateAccountingTransaction(c, bookId, params)
+}
+
+// GetAccountingTransaction operation middleware
+func (siw *ServerInterfaceWrapper) GetAccountingTransaction(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Path parameter "transaction_id" -------------
+	var transactionId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "transaction_id", c.Param("transaction_id"), &transactionId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter transaction_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetAccountingTransactionParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion GetAccountingTransactionParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.GetAccountingTransaction(c, bookId, transactionId, params)
+}
+
+// CorrectAccountingTransaction operation middleware
+func (siw *ServerInterfaceWrapper) CorrectAccountingTransaction(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "book_id" -------------
+	var bookId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "book_id", c.Param("book_id"), &bookId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter book_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Path parameter "transaction_id" -------------
+	var transactionId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "transaction_id", c.Param("transaction_id"), &transactionId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter transaction_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CorrectAccountingTransactionParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion CorrectAccountingTransactionParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.CorrectAccountingTransaction(c, bookId, transactionId, params)
+}
+
 // Bootstrap operation middleware
 func (siw *ServerInterfaceWrapper) Bootstrap(c *gin.Context) {
 
@@ -1044,6 +3125,231 @@ func (siw *ServerInterfaceWrapper) Bootstrap(c *gin.Context) {
 	}
 
 	siw.Handler.Bootstrap(c, params)
+}
+
+// ListAccountingCounterparties operation middleware
+func (siw *ServerInterfaceWrapper) ListAccountingCounterparties(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListAccountingCounterpartiesParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion ListAccountingCounterpartiesParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ListAccountingCounterparties(c, params)
+}
+
+// CreateAccountingCounterparty operation middleware
+func (siw *ServerInterfaceWrapper) CreateAccountingCounterparty(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params CreateAccountingCounterpartyParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion CreateAccountingCounterpartyParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.CreateAccountingCounterparty(c, params)
+}
+
+// UpdateAccountingCounterparty operation middleware
+func (siw *ServerInterfaceWrapper) UpdateAccountingCounterparty(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// ------------- Path parameter "counterparty_id" -------------
+	var counterpartyId openapi_types.UUID
+
+	err = runtime.BindStyledParameterWithOptions("simple", "counterparty_id", c.Param("counterparty_id"), &counterpartyId, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationPath, Explode: false, Required: true, Type: "string", Format: "uuid", ValueIsUnescaped: true})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter counterparty_id: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params UpdateAccountingCounterpartyParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion UpdateAccountingCounterpartyParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required header parameter "Idempotency-Key" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("Idempotency-Key")]; found {
+		var IdempotencyKey openapi_types.UUID
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for Idempotency-Key, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "Idempotency-Key", valueList[0], &IdempotencyKey, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: "uuid"})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter Idempotency-Key: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.IdempotencyKey = IdempotencyKey
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter Idempotency-Key is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.UpdateAccountingCounterparty(c, counterpartyId, params)
+}
+
+// ListCurrencies operation middleware
+func (siw *ServerInterfaceWrapper) ListCurrencies(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params ListCurrenciesParams
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion ListCurrenciesParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.ListCurrencies(c, params)
 }
 
 // GetMe operation middleware
@@ -1190,7 +3496,26 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 	router.PATCH(options.BaseURL+"/api/v1/admin/users/:user_id/status", wrapper.SetUserStatus)
 	router.GET(options.BaseURL+"/api/v1/books", wrapper.ListBooks)
 	router.GET(options.BaseURL+"/api/v1/books/:book_id", wrapper.GetBook)
+	router.GET(options.BaseURL+"/api/v1/books/:book_id/accounts", wrapper.ListAccountingAccounts)
+	router.POST(options.BaseURL+"/api/v1/books/:book_id/accounts", wrapper.CreateAccountingAccount)
+	router.GET(options.BaseURL+"/api/v1/books/:book_id/accounts/:account_id", wrapper.GetAccountingAccount)
+	router.PATCH(options.BaseURL+"/api/v1/books/:book_id/accounts/:account_id", wrapper.UpdateAccountingAccount)
+	router.GET(options.BaseURL+"/api/v1/books/:book_id/categories", wrapper.ListAccountingCategories)
+	router.POST(options.BaseURL+"/api/v1/books/:book_id/categories", wrapper.CreateAccountingCategory)
+	router.PATCH(options.BaseURL+"/api/v1/books/:book_id/categories/:category_id", wrapper.UpdateAccountingCategory)
+	router.GET(options.BaseURL+"/api/v1/books/:book_id/summary", wrapper.GetAccountingSummary)
+	router.GET(options.BaseURL+"/api/v1/books/:book_id/transaction-links", wrapper.ListAccountingLinks)
+	router.POST(options.BaseURL+"/api/v1/books/:book_id/transaction-links", wrapper.CreateAccountingLink)
+	router.DELETE(options.BaseURL+"/api/v1/books/:book_id/transaction-links/:link_id", wrapper.RemoveAccountingLink)
+	router.GET(options.BaseURL+"/api/v1/books/:book_id/transactions", wrapper.ListAccountingTransactions)
+	router.POST(options.BaseURL+"/api/v1/books/:book_id/transactions", wrapper.CreateAccountingTransaction)
+	router.GET(options.BaseURL+"/api/v1/books/:book_id/transactions/:transaction_id", wrapper.GetAccountingTransaction)
+	router.POST(options.BaseURL+"/api/v1/books/:book_id/transactions/:transaction_id/corrections", wrapper.CorrectAccountingTransaction)
 	router.POST(options.BaseURL+"/api/v1/bootstrap", wrapper.Bootstrap)
+	router.GET(options.BaseURL+"/api/v1/counterparties", wrapper.ListAccountingCounterparties)
+	router.POST(options.BaseURL+"/api/v1/counterparties", wrapper.CreateAccountingCounterparty)
+	router.PATCH(options.BaseURL+"/api/v1/counterparties/:counterparty_id", wrapper.UpdateAccountingCounterparty)
+	router.GET(options.BaseURL+"/api/v1/currencies", wrapper.ListCurrencies)
 	router.GET(options.BaseURL+"/api/v1/me", wrapper.GetMe)
 	router.PATCH(options.BaseURL+"/api/v1/me/preferences", wrapper.UpdatePreferences)
 	router.GET(options.BaseURL+"/healthz", wrapper.GetHealth)

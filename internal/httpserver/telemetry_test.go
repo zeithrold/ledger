@@ -71,7 +71,7 @@ func TestSentryGinUserIsolationPanicAndCorrelation(t *testing.T) {
 		wg.Go(func() {
 			who := fmt.Sprintf("user-%d", i)
 			req := httptest.NewRequestWithContext(t.Context(), "GET", "/api/v1/me?token=secret-query", nil)
-			req.Header.Set(VersionHeader, "2026-09-14")
+			req.Header.Set(VersionHeader, "2026-09-16")
 			req.Header.Set("Authorization", "Bearer "+who)
 			w := httptest.NewRecorder()
 			router.ServeHTTP(w, req)

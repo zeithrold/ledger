@@ -133,3 +133,39 @@ func TestKeyCacheRotationAndFailure(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestSessionClockSkew(t *testing.T) {
+	private, err := rsa.GenerateKey(rand.Reader, 2048)
+	if err != nil {
+		t.Fatal(err)
+	}
+	now := time.Date(2026, time.September, 15, 6, 0, 0, 0, time.UTC)
+	source := &sourceStub{set: &clerk.JSONWebKeySet{Keys: []*clerk.JSONWebKey{{Key: &private.PublicKey, KeyID: "clock", Algorithm: "RS256", Use: "sig"}}}}
+	v := &Clerk{issuer: "https://clerk.example.com", source: source, now: func() time.Time { return now }}
+	for _, tc := range []struct {
+		name, field string
+		offset      time.Duration
+		valid       bool
+	}{
+		{"issued now", "iat", 0, true},
+		{"issued five seconds ahead", "iat", 5 * time.Second, true},
+		{"issued beyond allowance", "iat", 6 * time.Second, false},
+		{"not before within allowance", "nbf", 5 * time.Second, true},
+		{"not before beyond allowance", "nbf", 6 * time.Second, false},
+		{"expired within allowance", "exp", -4 * time.Second, true},
+		{"expired beyond allowance", "exp", -6 * time.Second, false},
+	} {
+		t.Run(tc.name, func(t *testing.T) {
+			claims := map[string]any{"iss": v.issuer, "sub": "user_test", "sid": "sess_test", "sts": "active", "iat": now.Unix(), "nbf": now.Add(-10 * time.Second).Unix(), "exp": now.Add(time.Minute).Unix()}
+			claims[tc.field] = now.Add(tc.offset).Unix()
+			_, err := v.Verify(t.Context(), signToken(t, private, "clock", claims))
+			if tc.valid {
+				if err != nil {
+					t.Fatal(err)
+				}
+			} else {
+				assertProblem(t, err, problem.InvalidToken)
+			}
+		})
+	}
+}

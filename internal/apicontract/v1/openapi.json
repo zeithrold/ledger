@@ -2,7 +2,7 @@
   "openapi": "3.1.0",
   "info": {
     "title": "Ledger API v1",
-    "version": "2026-09-14",
+    "version": "2026-09-16",
     "description": "Personal finance backend. Path major version and exact date header jointly identify the contract. Documentation is public when enabled; business operations require a Clerk session token.",
     "license": {
       "name": "MIT"
@@ -29,6 +29,10 @@
     },
     {
       "name": "Health"
+    },
+    {
+      "name": "Accounting",
+      "description": "Atomic multi-currency manual accounting, independent related fees and immutable correction history."
     }
   ],
   "paths": {
@@ -136,7 +140,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -185,7 +189,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -245,7 +249,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -310,7 +314,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -384,7 +388,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -449,7 +453,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -524,7 +528,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -610,7 +614,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -685,7 +689,7 @@
                 "schema": {
                   "type": "string",
                   "enum": [
-                    "2026-09-14"
+                    "2026-09-16"
                   ]
                 }
               }
@@ -732,6 +736,1731 @@
           }
         }
       }
+    },
+    "/api/v1/currencies": {
+      "get": {
+        "operationId": "ListCurrencies",
+        "summary": "ListCurrencies",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrencyList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/accounts": {
+      "get": {
+        "operationId": "ListAccountingAccounts",
+        "summary": "ListAccountingAccounts",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      },
+      "post": {
+        "operationId": "CreateAccountingAccount",
+        "summary": "CreateAccountingAccount",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AccountInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/accounts/{account_id}": {
+      "patch": {
+        "operationId": "UpdateAccountingAccount",
+        "summary": "UpdateAccountingAccount",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReferencePatch"
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "operationId": "GetAccountingAccount",
+        "summary": "GetAccountingAccount",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Account"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/categories": {
+      "get": {
+        "operationId": "ListAccountingCategories",
+        "summary": "ListAccountingCategories",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CategoryList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      },
+      "post": {
+        "operationId": "CreateAccountingCategory",
+        "summary": "CreateAccountingCategory",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CategoryInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/categories/{category_id}": {
+      "patch": {
+        "operationId": "UpdateAccountingCategory",
+        "summary": "UpdateAccountingCategory",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "category_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Category"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReferencePatch"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/counterparties": {
+      "get": {
+        "operationId": "ListAccountingCounterparties",
+        "summary": "ListAccountingCounterparties",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CounterpartyList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      },
+      "post": {
+        "operationId": "CreateAccountingCounterparty",
+        "summary": "CreateAccountingCounterparty",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Counterparty"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CounterpartyInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/counterparties/{counterparty_id}": {
+      "patch": {
+        "operationId": "UpdateAccountingCounterparty",
+        "summary": "UpdateAccountingCounterparty",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "counterparty_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Counterparty"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ReferencePatch"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/transactions": {
+      "get": {
+        "operationId": "ListAccountingTransactions",
+        "summary": "ListAccountingTransactions",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "account_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "category_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "counterparty_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "kind",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "currency",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "cursor",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "include_voided",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionPage"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      },
+      "post": {
+        "operationId": "CreateAccountingTransaction",
+        "summary": "CreateAccountingTransaction",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/transactions/{transaction_id}": {
+      "get": {
+        "operationId": "GetAccountingTransaction",
+        "summary": "GetAccountingTransaction",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransactionDetail"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/transactions/{transaction_id}/corrections": {
+      "post": {
+        "operationId": "CorrectAccountingTransaction",
+        "summary": "CorrectAccountingTransaction",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "transaction_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MutationResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CorrectionInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/transaction-links": {
+      "get": {
+        "operationId": "ListAccountingLinks",
+        "summary": "ListAccountingLinks",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "transaction_id",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkList"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      },
+      "post": {
+        "operationId": "CreateAccountingLink",
+        "summary": "CreateAccountingLink",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Link"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LinkInput"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/transaction-links/{link_id}": {
+      "delete": {
+        "operationId": "RemoveAccountingLink",
+        "summary": "RemoveAccountingLink",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "link_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Reuse this UUID and identical request content until the result is known. Successful results are retained per tenant."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Link"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
+    },
+    "/api/v1/books/{book_id}/summary": {
+      "get": {
+        "operationId": "GetAccountingSummary",
+        "summary": "GetAccountingSummary",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "book_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string",
+              "format": "date"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Summary"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        }
+      }
     }
   },
   "components": {
@@ -752,9 +2481,9 @@
         "schema": {
           "type": "string",
           "enum": [
-            "2026-09-14"
+            "2026-09-16"
           ],
-          "default": "2026-09-14"
+          "default": "2026-09-16"
         }
       }
     },
@@ -1136,6 +2865,803 @@
           "detail",
           "instance"
         ]
+      },
+      "Currency": {
+        "type": "object",
+        "properties": {
+          "code": {
+            "type": "string"
+          },
+          "minor_units": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "code",
+          "minor_units"
+        ],
+        "description": "Language-neutral accounting metadata. Localized display labels are provided by the versioned CLDR reference pack."
+      },
+      "Account": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "cash",
+              "bank",
+              "wallet",
+              "other"
+            ]
+          },
+          "currency": {
+            "type": "string"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "balance": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "kind",
+          "currency",
+          "archived",
+          "revision",
+          "balance"
+        ]
+      },
+      "AccountInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "opening_amount": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+          },
+          "opening_date": {
+            "type": "string",
+            "format": "date"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "kind",
+          "currency"
+        ]
+      },
+      "ReferencePatch": {
+        "type": "object",
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "name": {
+            "type": "string"
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "expected_revision",
+          "name",
+          "archived"
+        ]
+      },
+      "Category": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "name_zh": {
+            "type": "string"
+          },
+          "system_code": {
+            "type": "string"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "kind",
+          "name",
+          "name_zh",
+          "archived",
+          "revision"
+        ]
+      },
+      "CategoryInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "income",
+              "expense"
+            ]
+          },
+          "parent_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "kind"
+        ]
+      },
+      "Counterparty": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string"
+          },
+          "archived": {
+            "type": "boolean"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "name",
+          "archived",
+          "revision"
+        ]
+      },
+      "CounterpartyInput": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "name"
+        ]
+      },
+      "EntryInput": {
+        "type": "object",
+        "properties": {
+          "kind": {
+            "type": "string",
+            "enum": [
+              "opening",
+              "income",
+              "expense",
+              "transfer",
+              "refund"
+            ]
+          },
+          "occurred_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "account_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+          },
+          "to_account_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "to_amount": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+          },
+          "category_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "counterparty_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "note": {
+            "type": "string",
+            "maxLength": 1000
+          },
+          "original_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "kind",
+          "occurred_on",
+          "account_id",
+          "amount"
+        ],
+        "description": "Amounts are exact decimal strings in each account currency. Transfers require destination account and principal; income/expense require category; refunds require original_id and retain its category. The service enforces type-dependent fields, active references, precision and refund limits."
+      },
+      "CreateInput": {
+        "type": "object",
+        "properties": {
+          "entry": {
+            "$ref": "#/components/schemas/EntryInput"
+          },
+          "fee": {
+            "$ref": "#/components/schemas/EntryInput"
+          },
+          "fee_for_id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "entry"
+        ]
+      },
+      "Transaction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "posted",
+              "void"
+            ]
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EntryInput"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "revision",
+          "status",
+          "created_at",
+          "data"
+        ]
+      },
+      "Link": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "source_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "target_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "related",
+              "fee",
+              "refund"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "source_id",
+          "target_id",
+          "kind"
+        ]
+      },
+      "LinkInput": {
+        "type": "object",
+        "properties": {
+          "source_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "target_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "related",
+              "fee"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "source_id",
+          "target_id",
+          "kind"
+        ]
+      },
+      "Correction": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "entry": {
+            "$ref": "#/components/schemas/EntryInput"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "expected_revision"
+        ]
+      },
+      "CorrectionInput": {
+        "type": "object",
+        "properties": {
+          "expected_revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "entry": {
+            "$ref": "#/components/schemas/EntryInput"
+          },
+          "fees": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Correction"
+            },
+            "maxItems": 20
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "expected_revision"
+        ],
+        "description": "Absent entry explicitly voids the transaction. Present entry replaces the entire business input. Selected directly related fees are corrected/voided atomically; omitted fees remain independent."
+      },
+      "MutationResult": {
+        "type": "object",
+        "properties": {
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "transactions",
+          "links"
+        ]
+      },
+      "Revision": {
+        "type": "object",
+        "properties": {
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "voided": {
+            "type": "boolean"
+          },
+          "data": {
+            "$ref": "#/components/schemas/EntryInput"
+          },
+          "actor_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "revision",
+          "voided",
+          "data",
+          "actor_id",
+          "created_at"
+        ]
+      },
+      "ExchangeRate": {
+        "type": "object",
+        "properties": {
+          "from_currency": {
+            "type": "string"
+          },
+          "to_currency": {
+            "type": "string"
+          },
+          "numerator": {
+            "type": "string"
+          },
+          "denominator": {
+            "type": "string"
+          },
+          "display": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date"
+          },
+          "source": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "from_currency",
+          "to_currency",
+          "numerator",
+          "denominator",
+          "display",
+          "date",
+          "source"
+        ]
+      },
+      "TransactionDetail": {
+        "type": "object",
+        "properties": {
+          "transaction": {
+            "$ref": "#/components/schemas/Transaction"
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
+          },
+          "history": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Revision"
+            }
+          },
+          "refundable_amount": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+          },
+          "exchange_rate": {
+            "$ref": "#/components/schemas/ExchangeRate"
+          },
+          "journals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/JournalView"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "transaction",
+          "links",
+          "history",
+          "journals"
+        ]
+      },
+      "TransactionPage": {
+        "type": "object",
+        "properties": {
+          "transactions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Transaction"
+            }
+          },
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
+          },
+          "next_cursor": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "transactions",
+          "links",
+          "next_cursor"
+        ]
+      },
+      "SummaryRow": {
+        "type": "object",
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "kind": {
+            "type": "string"
+          },
+          "category_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "amount": {
+            "type": "string",
+            "pattern": "^-?(0|[1-9][0-9]*)(\\.[0-9]+)?$"
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "currency",
+          "kind",
+          "amount"
+        ]
+      },
+      "Summary": {
+        "type": "object",
+        "properties": {
+          "totals": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SummaryRow"
+            }
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SummaryRow"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "totals",
+          "categories"
+        ]
+      },
+      "CurrencyList": {
+        "type": "object",
+        "properties": {
+          "currencies": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Currency"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "currencies"
+        ]
+      },
+      "AccountList": {
+        "type": "object",
+        "properties": {
+          "accounts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Account"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "accounts"
+        ]
+      },
+      "CategoryList": {
+        "type": "object",
+        "properties": {
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Category"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "categories"
+        ]
+      },
+      "CounterpartyList": {
+        "type": "object",
+        "properties": {
+          "counterparties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Counterparty"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "counterparties"
+        ]
+      },
+      "LinkList": {
+        "type": "object",
+        "properties": {
+          "links": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Link"
+            }
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "links"
+        ]
+      },
+      "PostingView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "account_id",
+          "currency",
+          "amount",
+          "valuation_amount",
+          "rate_numerator",
+          "rate_denominator",
+          "rate_source",
+          "rate_date"
+        ],
+        "properties": {
+          "account_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "amount": {
+            "type": "string"
+          },
+          "valuation_amount": {
+            "type": "string"
+          },
+          "rate_numerator": {
+            "type": "string"
+          },
+          "rate_denominator": {
+            "type": "string"
+          },
+          "rate_source": {
+            "type": "string"
+          },
+          "rate_date": {
+            "type": "string",
+            "format": "date"
+          }
+        }
+      },
+      "JournalView": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "id",
+          "revision",
+          "occurred_on",
+          "valuation_currency",
+          "reversal_of",
+          "postings"
+        ],
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "revision": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "occurred_on": {
+            "type": "string",
+            "format": "date"
+          },
+          "valuation_currency": {
+            "type": "string"
+          },
+          "reversal_of": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "format": "uuid"
+          },
+          "postings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PostingView"
+            }
+          }
+        }
       }
     },
     "responses": {
@@ -1154,7 +3680,7 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2026-09-14"
+                "2026-09-16"
               ]
             }
           }
@@ -1182,7 +3708,7 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2026-09-14"
+                "2026-09-16"
               ]
             }
           },
@@ -1216,7 +3742,7 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2026-09-14"
+                "2026-09-16"
               ]
             }
           }
@@ -1244,7 +3770,7 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2026-09-14"
+                "2026-09-16"
               ]
             }
           }
@@ -1272,7 +3798,7 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2026-09-14"
+                "2026-09-16"
               ]
             }
           },
@@ -1305,7 +3831,7 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2026-09-14"
+                "2026-09-16"
               ]
             }
           }
@@ -1333,7 +3859,7 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2026-09-14"
+                "2026-09-16"
               ]
             }
           }
@@ -1361,7 +3887,7 @@
             "schema": {
               "type": "string",
               "enum": [
-                "2026-09-14"
+                "2026-09-16"
               ]
             }
           }

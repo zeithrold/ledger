@@ -23,6 +23,7 @@ func Open(ctx context.Context, dsn string) (*DB, error) {
 	if err != nil {
 		return nil, errors.New("invalid PostgreSQL configuration")
 	}
+	cfg.ConnConfig.Tracer = queryTracer{}
 	cfg.MaxConns = 10
 	cfg.MaxConnLifetime = 30 * time.Minute
 	cfg.ConnConfig.ConnectTimeout = 5 * time.Second
