@@ -15,7 +15,7 @@ INSERT INTO accounting_audit(id,tenant_id,book_id,actor_id,action,resource_id,be
 VALUES ($1,$2,$3,$4,$5,$6,$7,$8);
 
 -- name: AccountingAccounts :many
-SELECT a.*,COALESCE((SELECT sum(p.amount) FROM postings p WHERE p.account_id=a.id),0)::text AS balance
+SELECT a.*,COALESCE((SELECT sum(p.amount) FROM postings p WHERE p.tenant_id=a.tenant_id AND p.book_id=a.book_id AND p.account_id=a.id),0)::text AS balance
 FROM accounts a WHERE a.tenant_id=$1 AND a.book_id=$2 AND a.role='asset' ORDER BY a.archived,a.name,a.id;
 -- name: AccountingAccount :one
 SELECT * FROM accounts WHERE tenant_id=$1 AND book_id=$2 AND id=$3;

@@ -41,7 +41,7 @@ func (q *Queries) AccountingAccount(ctx context.Context, arg AccountingAccountPa
 }
 
 const accountingAccounts = `-- name: AccountingAccounts :many
-SELECT a.id, a.tenant_id, a.book_id, a.name, a.role, a.kind, a.currency, a.category_id, a.system_code, a.archived, a.revision,COALESCE((SELECT sum(p.amount) FROM postings p WHERE p.account_id=a.id),0)::text AS balance
+SELECT a.id, a.tenant_id, a.book_id, a.name, a.role, a.kind, a.currency, a.category_id, a.system_code, a.archived, a.revision,COALESCE((SELECT sum(p.amount) FROM postings p WHERE p.tenant_id=a.tenant_id AND p.book_id=a.book_id AND p.account_id=a.id),0)::text AS balance
 FROM accounts a WHERE a.tenant_id=$1 AND a.book_id=$2 AND a.role='asset' ORDER BY a.archived,a.name,a.id
 `
 
