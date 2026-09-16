@@ -85,3 +85,9 @@ generation, authentication in the request client and contract validation.
 ## Accounting API
 
 The current date includes currencies, asset accounts, two-level categories, tenant counterparties, immutable transaction revisions, ordinary/fee links, refunds and per-currency summaries. See [manual accounting](accounting.md) for business inputs, idempotency, optimistic revision checks and reversal semantics.
+
+## Exchange-rate API
+
+`GET /api/v1/exchange-rates?base=USD&quote=CNY` requires an authenticated session and returns the `MarketRate` object described in [exchange-rate snapshots](exchange-rates.md). Both query parameters are required uppercase ISO 4217 codes from the ledger catalog and must differ; anything else is a 400 Problem Details response. The endpoint only reads published daily snapshots: it never calls the provider, and a pair with no usable snapshot returns 200 with `"status": "unavailable"`, a `reason`, and null rate fields instead of an invented value. The response reports `snapshot_date`, the effective `rate_date`, `stale`, the exact `numerator`/`denominator` and how the value was `derived` (`direct`, `inverse` or `cross`).
+
+This endpoint was added as an additive revision of `2026-09-16`; it renames or removes no existing field, so the date stays unchanged and already deployed clients keep working.

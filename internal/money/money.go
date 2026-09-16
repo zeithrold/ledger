@@ -111,10 +111,44 @@ func (m Money) rat() *big.Rat {
 	return new(big.Rat).SetFrac(m.units, new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(m.scale)), nil))
 }
 
+// ParseDecimal parses a canonical decimal string into an exact rational.
+// It rejects exponents, a leading plus sign, redundant leading zeros and
+// unreasonably long values without any binary floating point conversion.
+func ParseDecimal(value string) (*big.Rat, error) {
+	if len(value) == 0 || len(value) > 40 || !amountPattern.MatchString(value) {
+		return nil, errors.New("invalid decimal")
+	}
+	negative := strings.HasPrefix(value, "-")
+	parts := strings.SplitN(strings.TrimPrefix(value, "-"), ".", 2)
+	digits, scale := parts[0], 0
+	if len(parts) == 2 {
+		digits += parts[1]
+		scale = len(parts[1])
+	}
+	units, ok := new(big.Int).SetString(digits, 10)
+	if !ok {
+		return nil, errors.New("invalid decimal")
+	}
+	if negative {
+		units.Neg(units)
+	}
+	return new(big.Rat).SetFrac(units, new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(scale)), nil)), nil
+}
+
 // Ratio returns the exact major-unit destination/source rate as integer strings.
 func Ratio(source, destination Money) (string, string, string) {
 	r := new(big.Rat).Quo(destination.rat(), source.rat())
 	return r.Num().String(), r.Denom().String(), significant(r, 18)
+}
+
+// SignificantDigits renders an exact rational as a decimal with at most the
+// given number of significant digits, using decimal half-even rounding with no
+// binary intermediate. It panics when digits is not positive.
+func SignificantDigits(r *big.Rat, digits int) string {
+	if digits < 1 {
+		panic("money: significant digits must be positive")
+	}
+	return significant(r, digits)
 }
 
 // significant uses decimal half-even rounding, with no binary intermediate.

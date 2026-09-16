@@ -2,39 +2,105 @@
 
 ## Decision
 
-Use [Frankfurter](https://frankfurter.dev/) for reference exchange rates. A River periodic job will fetch rates once per day and persist daily snapshots in PostgreSQL. Request handlers read the database and never fetch rates synchronously.
+Ledger uses [Frankfurter](https://frankfurter.dev/) v2 for public reference
+exchange rates. A River worker fetches the latest rates once per day at
+**17:10 UTC**, persists one immutable snapshot batch in PostgreSQL, and the HTTP
+API reads only from the database. No request handler ever calls the provider,
+and an unavailable pair never falls back to a rate of 1.
 
-This automatic reference-rate cache remains a later-phase design. Phase 2 already stores manual actual conversion ratios, source, date and both principals on immutable journal postings. Those applied rates never depend on this future market-data cache. See [manual accounting](accounting.md).
+The default provider filter is the v2 blended feed, which blends every upstream
+provider; `FX_PROVIDERS` may pin one or more provider keys instead. Each stored
+rate keeps the contributing provider keys that Frankfurter reported, so a
+snapshot's provenance stays reproducible.
 
-## Proposed storage and retention
+Automatic reference rates are reference data only. Phase 2 already stores the
+manual actual conversion ratio, source, date and both principals on immutable
+journal postings, and that applied rate never depends on this cache.
 
-Use a shared public market-data cache, separate from tenant-owned accounting data. Retain a rolling 30 calendar days of snapshots rather than storing the market cache forever. Treat 30 days as the initial configurable interpretation of one month.
+## Snapshot model
 
-Suggested snapshot fields:
+Two tables in `00006_market_rates.sql` hold a shared, non-tenant cache:
 
-- `snapshot_date`: the scheduler's UTC date.
-- `base_currency`, `quote_currency`, and an exact decimal `rate`.
-- `rate_date`: the effective date reported by Frankfurter for this rate.
-- `fetched_at`, provider attribution, and the provider/filter configuration.
-- A batch identifier and completion state so readers never observe a partial refresh.
+- `market_rate_snapshots` identifies one batch by `(snapshot_date, source,
+  source_version, provider_filter)` and carries `base_currency`, `status`
+  (`pending` or `published`), `fetched_at` and `published_at`.
+- `market_rates` stores one row per provider quote with an exact decimal `rate`,
+  the provider's `rate_date`, and the contributing `providers` array.
 
-For a snapshot date D, keep D and the preceding 29 days. Use snapshot date for retention, not the upstream effective date. Only prune after a successful batch publication. Uniqueness by snapshot date, pair and provider configuration makes retries idempotent. Do not overwrite a published daily batch on an ordinary retry.
+Retention keeps the snapshot day and the preceding 29 days (30 calendar days by
+default; `FX_RETENTION_DAYS` may set 1-365). Pruning uses `snapshot_date`, never
+the upstream effective date, and runs only after a batch publishes.
 
-Weekend or holiday data can have an earlier effective date. Preserve it instead of relabeling it as today's market rate. If refresh fails, retain the last successful snapshot and expose its date/staleness. If no suitable snapshot exists, return an explicit unavailable state; do not silently call the upstream API or substitute a rate of 1.
+## Publish protocol
 
-The daily execution time and provider filters will be finalized during worker implementation. The v2 API offers blended rates by default and provider filtering; persist that choice so rate provenance is reproducible.
+`rates.SyncDaily` runs in the worker:
+
+1. If the key is already published, return without contacting the provider. An
+   ordinary retry therefore never rewrites a published batch.
+2. Fetch `GET {endpoint}/v2/rates?base=EUR&expand=providers[&providers=...]`
+   **before** opening any database transaction, with a bounded timeout and a
+   1 MiB response cap.
+3. Validate every row (uppercase ISO codes, positive exact decimal below 10^18,
+   real `YYYY-MM-DD` date), deduplicate quotes and canonicalize provider keys.
+4. In one transaction: insert the pending batch with `ON CONFLICT DO NOTHING`,
+   lock it with `SELECT ... FOR UPDATE`, skip if a concurrent run published it,
+   replace its rates, mark it published and prune expired batches.
+
+A crash between the pending insert and the publish leaves a batch that readers
+never see; the next attempt replaces it. Concurrent runs serialize on the
+unique key plus the row lock, so exactly one publishes and the others report a
+no-op. A failed fetch writes nothing, so the previous batch stays readable.
+
+## Pair resolution
+
+One snapshot stores the pivot base `EUR` and its quotes. A requested pair is
+resolved with exact rational arithmetic:
+
+- `direct` when the base is EUR: the provider's own decimal is served verbatim.
+- `inverse` when the quote is EUR: the exact reciprocal.
+- `cross` otherwise: `quote_leg / base_leg`, where each leg is EUR -> X.
+
+The response carries the exact `numerator` and `denominator` plus a display
+value rounded half-even to at most 18 significant digits. `rate_date` is the
+earliest effective date among the legs actually used, so a holiday quote is not
+relabelled as today's rate. `status` is `available`, `stale` (the snapshot date
+is older than the current UTC day) or `unavailable` with `reason` `no_snapshot`
+or `pair_unavailable`. A pair whose legs are missing from the newest complete
+published batch falls back to an older complete batch before reporting
+unavailable.
 
 ## Accounting is independent of cache retention
 
-Each posted transaction must preserve the applied exchange rate, effective date/provenance, original amounts and valuation amounts needed to reproduce its accounting. Do not rely solely on a foreign key to an expiring cache row. Removing old market snapshots must not delete or change historical transactions.
+Each posted transaction preserves the applied exchange rate, effective date and
+valuation amounts needed to reproduce its accounting. Deleting every market
+snapshot must not change any transaction; an integration test proves it by
+removing the whole cache and re-reading a cross-currency transfer. Imports older
+than the cache window need an explicit supplied rate or a separately designed
+asynchronous historical lookup; silently using today's rate is not allowed.
+Long-term portfolio valuation and permanent historical market data stay outside
+the current scope.
 
-Imports older than the cache window need an explicit supplied rate or a separately designed asynchronous historical lookup. Do not silently use today's rate. Long-term portfolio valuation and permanent historical market data are outside the current scope.
+## API and operations
 
-## Future acceptance cases
+`GET /api/v1/exchange-rates?base=USD&quote=CNY` returns the documented
+`MarketRate` object; see [API contract](api.md). It requires an authenticated
+session, reads only published snapshots, and returns 400 for a malformed,
+equal, or non-catalog currency code.
 
-- Repeated daily jobs cannot duplicate or partially publish a batch.
-- Effective market date can differ from the snapshot date.
-- Failed refresh leaves the prior snapshot usable and marked stale.
-- The rolling 30-day boundary is exact and testable with an injected clock.
-- Cleanup leaves transaction-applied rates intact.
-- No request handler performs an upstream FX call.
+```sh
+just migrate-up    # applies the River and market-rate schema
+just run           # HTTP API only; it never fetches rates
+just worker        # River worker; publishes on start and daily at 17:10 UTC
+```
+
+| Variable | Meaning |
+| --- | --- |
+| `FRANKFURTER_ENDPOINT` | Provider origin; defaults to `https://api.frankfurter.dev` |
+| `FX_PROVIDERS` | Comma-separated provider keys; empty uses the blended feed |
+| `FX_RETENTION_DAYS` | Snapshot days kept; defaults to 30 |
+| `FX_HTTP_TIMEOUT` | Provider request timeout; defaults to 5s |
+
+The worker validates these settings itself, so the API and migration commands
+are unaffected by an invalid value. Automated tests use a controlled HTTP
+server; a small explicit probe against the real Frankfurter service is separate
+acceptance evidence and is not part of `just check`.

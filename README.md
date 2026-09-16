@@ -2,7 +2,7 @@
 
 A personal finance API built with Go, Gin, PostgreSQL, sqlc, and goose.
 
-The selected architecture uses Eino for LLM orchestration, Clerk for authentication, and River for background jobs. The accounting core uses immutable revisions and balanced postings with independent tenant ownership and exact multi-currency amounts. Screenshots will be stored in S3, and DeepSeek is the selected LLM provider. Clerk authentication and local identity/tenant initialization are implemented. Manual accounts, transfers, fees, refunds, corrections and per-currency summaries are implemented; the Flutter client lives in the sibling ledger-app repository. Eino, River and S3 integrations remain later work. See [manual accounting](docs/accounting.md).
+The selected architecture uses Eino for LLM orchestration, Clerk for authentication, and River for background jobs. The accounting core uses immutable revisions and balanced postings with independent tenant ownership and exact multi-currency amounts. Screenshots will be stored in S3, and DeepSeek is the selected LLM provider. Clerk authentication and local identity/tenant initialization are implemented. Manual accounts, transfers, fees, refunds, corrections and per-currency summaries are implemented, together with a River background worker that publishes a daily Frankfurter reference-rate snapshot and a read-only exchange-rate API; the Flutter client lives in the sibling ledger-app repository. Eino and S3 integrations remain later work. See [manual accounting](docs/accounting.md) and [exchange-rate snapshots](docs/exchange-rates.md).
 
 ## Requirements
 
@@ -54,8 +54,12 @@ Both repositories use separate `.env.local` files and `.env.example` templates. 
 | `S3_REGION` / `S3_BUCKET` | Storage region and bucket |
 | `S3_ACCESS_KEY_ID` / `S3_SECRET_ACCESS_KEY` | Optional explicit S3 credentials |
 | `S3_SESSION_TOKEN` | Optional temporary-credential session token |
+| `FRANKFURTER_ENDPOINT` | Reference-rate provider origin; defaults to `https://api.frankfurter.dev` |
+| `FX_PROVIDERS` | Comma-separated provider keys; empty uses the blended feed |
+| `FX_RETENTION_DAYS` | Market snapshot days kept; defaults to 30 |
+| `FX_HTTP_TIMEOUT` | Provider request timeout; defaults to 5s |
 
-Clerk session authentication uses its JWKS endpoint. DeepSeek and S3 settings remain placeholders and are not called. The backend does not use the publishable key; the Flutter client has its own public configuration. The DeepSeek model remains configurable through `LLM_MODEL`; fill it with the model available through your endpoint. Never log secrets or the complete configuration.
+Clerk session authentication uses its JWKS endpoint. The market-rate settings are used only by `just worker`; DeepSeek and S3 settings remain placeholders and are not called. The backend does not use the publishable key; the Flutter client has its own public configuration. The DeepSeek model remains configurable through `LLM_MODEL`; fill it with the model available through your endpoint. Never log secrets or the complete configuration.
 
 ## SQL and migrations
 
@@ -78,6 +82,7 @@ The runtime uses a native pgx pool and sqlc queries. The migration command adapt
 
 ```text
 cmd/api/                    HTTP entry point and graceful shutdown
+cmd/worker/                 River background worker entry point
 cmd/migrate/                Explicit goose migration command
 internal/config/            Environment configuration
 internal/database/          pgx pool and generated-query wiring
@@ -85,6 +90,9 @@ internal/database/queries/  Hand-written SQL
 internal/database/sqlgen/   sqlc-generated Go code
 internal/auth/              Clerk session verification and isolated key cache
 internal/identity/          Atomic bootstrap and tenant authorization
+internal/rates/             Market-rate snapshots, retention and pair resolution
+internal/frankfurter/       Bounded Frankfurter v2 provider adapter
+internal/jobs/              River client, schedule, worker and enqueue seam
 internal/problem/           RFC 7807 types and responder
 internal/httpserver/        Version gate and Gin routes
 migrations/                 Embedded goose migrations
@@ -107,7 +115,7 @@ The module and repository path is `github.com/zeithrold/ledger`. This repository
 
 [MIT](LICENSE).
 
-See [testing and code quality](docs/testing.md) for isolation, fuzzing, and mutation preparation, and [exchange-rate snapshots](docs/exchange-rates.md) for the Frankfurter retention design.
+See [testing and code quality](docs/testing.md) for isolation, fuzzing and mutation preparation, and [exchange-rate snapshots](docs/exchange-rates.md) for the Frankfurter snapshot model, publish protocol and retention rules.
 
 ## Identity API
 

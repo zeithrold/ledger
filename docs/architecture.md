@@ -38,6 +38,7 @@ Implemented accounting rules:
 - Distinguish historical transaction conversion from report-date conversion.
 - Pin CLDR 48 accounting minor units; reject over-precision; use integer minor units, exact rational conversion and half-even display rounding. See [manual accounting](accounting.md).
 - Separate currency metadata from generated locale bundles; both clients consume one pinned source. See [currency reference data](currencies.md).
+- Serve market reference rates from a daily provider snapshot; resolve a pair with exact rational arithmetic and never substitute a rate of 1. See [exchange-rate snapshots](exchange-rates.md).
 
 ## Client boundary
 
@@ -46,25 +47,25 @@ The Flutter client is maintained in the sibling ledger-app repository. Home, Tra
 ## Runtime boundaries
 
 - sqlc generates typed queries; pgx manages PostgreSQL connections.
-- Goose owns schema changes and runs through a separate command.
-- River will schedule background execution; Eino will orchestrate model and tool calls inside workers.
+- Goose owns schema changes and runs through a separate command; the River queue tables are applied by the same command from SQL exported from the pinned River release.
+- River schedules background execution in the separate `cmd/worker` process; Eino will orchestrate model and tool calls inside workers. Business writes that must schedule work enqueue through the River client in the same database transaction.
 - Agent checkpoints and business idempotency are separate concerns.
 - Model calls and user input waits must not hold database transactions open.
 - PostgreSQL will store versioned knowledge; embedding model and vector index configuration remain undecided.
 
 ## Current implementation
 
-Implemented: configuration loading, health endpoints, pgx/sqlc and goose, explicit date-versioned identity APIs, RFC 7807 errors, Clerk session verification, atomic personal bootstrap, first-instance administrator assignment, audited user suspension/restoration, and the complete Phase 2 manual-accounting API.
+Implemented: configuration loading, health endpoints, pgx/sqlc and goose, explicit date-versioned identity APIs, RFC 7807 errors, Clerk session verification, atomic personal bootstrap, first-instance administrator assignment, audited user suspension/restoration, the complete Phase 2 manual-accounting API, the River worker with its daily Frankfurter snapshot, and the read-only market reference-rate API.
 
-Not implemented: credit cards/debt, automatic rates, Eino agents, River workers, knowledge retrieval, file storage, Clerk lifecycle webhooks, administrator transfer, or multiple-book creation.
+Not implemented: credit cards/debt, Eino agents, knowledge retrieval, file storage, Clerk lifecycle webhooks, administrator transfer, multiple-book creation, or historical market-rate backfill beyond the cache window.
 
-The instance administrator is separate from tenant owner and cannot bypass tenant scope. A singleton database row serializes provisioning; the identity key and personal mappings have unique constraints. Initialization and administrator assignment commit together. No background job is needed in phase 1; River initialization work remains in phase 3.
+The instance administrator is separate from tenant owner and cannot bypass tenant scope. A singleton database row serializes provisioning; the identity key and personal mappings have unique constraints. Initialization and administrator assignment commit together. Identity still needs no background job; River now runs the daily rate snapshot in `cmd/worker`.
 
 [API contracts](api.md) use major path versions plus required exact date headers. [Problem Details](errors.md) use stable type URIs under `https://ledger.ztd.me/errors/`.
 
 ## Open implementation choices
 
-Remaining details: daily FX schedule/provider filtering, the DeepSeek model and image-input path, embedding model/dimensions, and S3 deployment settings. These do not change the selected multi-currency scope, DeepSeek provider, or S3 storage. The Flutter client implements the same dated API contract.
+Remaining details: the DeepSeek model and image-input path, embedding model/dimensions, and S3 deployment settings. The daily snapshot time is pinned to 17:10 UTC in `internal/jobs`; provider filtering, retention days and the provider timeout are worker configuration. These do not change the selected multi-currency scope, DeepSeek provider, or S3 storage. The Flutter client implements the same dated API contract.
 
 See [exchange rates](exchange-rates.md) and [testing](testing.md). Historical applied transaction rates remain independent from the expiring market-data cache.
 

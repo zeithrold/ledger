@@ -11,6 +11,7 @@
 | `just coverage-check` | Combined unit/integration and changed-code coverage | Both fresh profiles and a Git base |
 | `just lint` | Strict lint and formatting, including integration source | Pinned Go tool acquisition on a cold cache |
 | `just check` | Gate policy and pinned skills, contracts, architecture, lint, unit/integration coverage, vet, build | Docker for disposable PostgreSQL |
+| `just worker` | River background worker; publishes the daily market snapshot | Migrated database |
 | `go run ./tool/bootstrap.go security` | Redacted source-secret scan and reachable Go vulnerability scan | Pinned tool acquisition and current vulnerability database |
 
 `just --list` shows the daily surface only: `check`, `changes`, `test`, `lint`, `fmt` and `arch`. Every other command above is a private recipe, hidden from that list but still invocable, and new recipes stay private until a daily need is proven.
@@ -48,7 +49,7 @@ The Go runner invokes the pinned lint version from `governance.json`; format wit
 
 `just fuzz` gives each configured target a 30-second PR budget. Seed inputs also run during unit tests. Scheduled `fuzz-nightly` uses 600 seconds per target. Check in minimized regressions under `testdata/fuzz/<target>`; never use real screenshots, tokens, or private financial data in corpora.
 
-Accounting targets are `FuzzMoneyRoundTrip`, `FuzzExactRatio` and `FuzzBalance` in `./internal/money`; configuration includes `FuzzGinMode`. They use no database or external services. Future external-response and draft targets must remain deterministic.
+Accounting targets are `FuzzMoneyRoundTrip`, `FuzzExactRatio`, `FuzzBalance` and `FuzzRateDisplay` in `./internal/money`; configuration includes `FuzzGinMode`. They use no database or external services. Future external-response and draft targets must remain deterministic.
 
 ## Mutation baseline
 
@@ -73,7 +74,9 @@ files and credentials out of mutation fixtures. Reports belong in ignored
 
 Offline unit tests verify signed session JWTs and JWKS cache behavior without developer credentials. HTTP contract tests cover version negotiation, Problem Details, authentication errors, body validation, routing, and recovery. Tagged integration tests verify concurrent bootstrap, administrator assignment, rollback, authorization, audit atomicity, pagination, and HTTP lifecycle in a disposable PostgreSQL database.
 
-The current schema is version 4. Lifecycle tests upgrade populated version 3, verify an existing balance, restore all old currency names on rollback to 3, then roll back through identity 2 and baseline 1 to 0 and reapply. Never run Down against a persistent database as a routine check. `just check-currencies` also verifies pinned hashes, required locale coverage, precision and generated metadata drift.
+The current schema is version 6. Migration 5 carries the River queue tables exported from the pinned River release, migration 6 adds the public market-rate cache. Lifecycle tests upgrade populated version 3, verify an existing balance, restore all old currency names on rollback to 3, then roll back through the worker schema, currency metadata and identity 2 and baseline 1 to 0 and reapply. Never run Down against a persistent database as a routine check. `just check-currencies` also verifies pinned hashes, required locale coverage, precision and generated metadata drift.
+
+Market-rate tests use a controlled HTTP server instead of the real provider. They cover publish-and-read, ordinary-retry idempotency without a second request, concurrent same-day runs publishing exactly one batch, provider failure keeping the previous batch, staleness and retention with an injected UTC clock, rollback-versus-commit of a transactionally enqueued River job, worker start-and-soft-stop, and the guarantee that deleting every market snapshot leaves applied transfer rates and journals unchanged. A real Frankfurter probe is separate acceptance evidence and never runs inside `just check`.
 
 `just check` requires Docker and starts disposable databases; it never uses a running developer database. Tool/module acquisition and golangci-lint's configuration-schema verification may require network access. Real Clerk integration is explicit and separate from `just test-unit`; no real token is stored as a fixture. See [governance](governance.md) for coverage floors and independent review.
 

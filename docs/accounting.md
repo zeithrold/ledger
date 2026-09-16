@@ -10,7 +10,9 @@ after changing it. The Flutter client lives in the sibling `ledger-app` reposito
 Phase 2 supports cash, bank, wallet and other asset accounts; opening balances,
 income, expenses, same-currency and cross-currency transfers, partial refunds,
 independent expense fees, and ordinary transaction links. Credit cards, debt,
-automatic rates, imports, multiple-book creation and offline posting are later work.
+imports, multiple-book creation and offline posting are later work. Market
+reference rates are read-only cache data: the transfer form may offer them, but
+every posting still records the user-entered actual rate.
 
 ## Exact money and applied rates
 

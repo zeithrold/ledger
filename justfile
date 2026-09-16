@@ -50,6 +50,10 @@ run:
     go run ./tool/bootstrap.go run
 
 [private]
+worker:
+    go run ./tool/bootstrap.go worker
+
+[private]
 build:
     go run ./tool/bootstrap.go build
 

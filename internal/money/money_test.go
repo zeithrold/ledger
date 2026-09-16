@@ -100,6 +100,54 @@ func TestExactRatioAndHalfEven(t *testing.T) {
 	}
 }
 
+func TestParseDecimalAndSignificantDigits(t *testing.T) {
+	for _, tc := range []struct {
+		value string
+		want  string
+	}{
+		{"0", "0"},
+		{"1", "1"},
+		{"-1", "-1"},
+		{"0.5", "1/2"},
+		{"-0.50", "-1/2"},
+		{"6.7082", "33541/5000"},
+		{"0.000001", "1/1000000"},
+		{"999999999999999999.99", "99999999999999999999/100"},
+	} {
+		r, err := ParseDecimal(tc.value)
+		if err != nil || r.RatString() != tc.want {
+			t.Fatalf("%s: %v %v", tc.value, r, err)
+		}
+	}
+	for _, value := range []string{"", " ", "1e2", "+1", "01", ".1", "1.", "1/2", "NaN", "Infinity", "-", "1" + strings.Repeat("0", 40)} {
+		if _, err := ParseDecimal(value); err == nil {
+			t.Fatalf("accepted %q", value)
+		}
+	}
+	// The exported display wrapper keeps the exact half-even behavior of Ratio.
+	for _, tc := range []struct {
+		n, d   int64
+		digits int
+		want   string
+	}{
+		{1, 3, 18, "0.333333333333333333"},
+		{125, 100, 2, "1.2"},
+		{135, 100, 2, "1.4"},
+		{0, 1, 18, "0"},
+		{-125, 100, 2, "-1.2"},
+	} {
+		if got := SignificantDigits(big.NewRat(tc.n, tc.d), tc.digits); got != tc.want {
+			t.Fatalf("%+v: %s", tc, got)
+		}
+	}
+	defer func() {
+		if recover() == nil {
+			t.Fatal("accepted zero significant digits")
+		}
+	}()
+	SignificantDigits(big.NewRat(1, 3), 0)
+}
+
 func TestBalanced(t *testing.T) {
 	for _, tc := range []struct {
 		values []string
@@ -179,6 +227,33 @@ func FuzzBalance(f *testing.F) {
 		want = want && total.Sign() == 0
 		if Balanced(values) != want {
 			t.Fatal("balance disagrees with exact sum")
+		}
+	})
+}
+
+func FuzzRateDisplay(f *testing.F) {
+	f.Add(uint64(67082), uint64(10000))
+	f.Add(uint64(1), uint64(3))
+	f.Add(uint64(0), uint64(1))
+	f.Add(uint64(9999), uint64(100))
+	f.Fuzz(func(t *testing.T, n, d uint64) {
+		if d == 0 {
+			return
+		}
+		r := new(big.Rat).SetFrac(new(big.Int).SetUint64(n), new(big.Int).SetUint64(d))
+		for _, digits := range []int{1, 6, 18} {
+			display := SignificantDigits(r, digits)
+			if display == "" || strings.ContainsAny(display, "eE") {
+				t.Fatalf("unsupported display %q", display)
+			}
+			parsed, err := ParseDecimal(display)
+			if err != nil {
+				t.Fatalf("display %q is not parseable: %v", display, err)
+			}
+			// Formatting an already rounded value is a fixed point.
+			if again := SignificantDigits(parsed, digits); again != display {
+				t.Fatalf("display %q reformatted as %q", display, again)
+			}
 		}
 	})
 }

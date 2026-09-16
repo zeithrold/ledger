@@ -20,6 +20,7 @@ import (
 	"github.com/zeithrold/ledger/internal/httpserver"
 	"github.com/zeithrold/ledger/internal/identity"
 	"github.com/zeithrold/ledger/internal/observability"
+	"github.com/zeithrold/ledger/internal/rates"
 )
 
 func main() { os.Exit(observability.Run("ledger-api", run)) }
@@ -43,7 +44,7 @@ func run(parent context.Context, cfg config.Config, telemetry *observability.Run
 		}
 		defer db.Close()
 		pinger = db
-		deps = httpserver.Dependencies{DocsEnabled: cfg.DocsEnabled, Backend: identity.New(db), Accounting: accounting.New(db), Verifier: verifier, Telemetry: telemetry}
+		deps = httpserver.Dependencies{DocsEnabled: cfg.DocsEnabled, Backend: identity.New(db), Accounting: accounting.New(db), Rates: rates.New(db, rates.Options{}), Verifier: verifier, Telemetry: telemetry}
 	}
 	router, err := httpserver.New(pinger, deps) //nolint:contextcheck // Middleware derives context from each HTTP request, not process startup.
 	if err != nil {

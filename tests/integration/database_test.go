@@ -80,8 +80,14 @@ func TestDatabaseLifecycle(t *testing.T) {
 		t.Fatal(err)
 	}
 	version, err := provider.GetDBVersion(ctx)
-	if err != nil || version != 4 {
+	if err != nil || version != 6 {
 		t.Fatalf("version = %d, error = %v", version, err)
+	}
+	// The River queue schema and the public market-rate cache are applied by the
+	// same explicit migration command and survive an upgrade of existing data.
+	var infrastructureTables int
+	if err = db.Pool.QueryRow(ctx, "SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND table_name IN ('river_job','river_queue','river_leader','river_notification','market_rate_snapshots','market_rates')").Scan(&infrastructureTables); err != nil || infrastructureTables != 6 {
+		t.Fatalf("worker infrastructure tables: %d %v", infrastructureTables, err)
 	}
 	var metadata []byte
 	if err = db.Pool.QueryRow(ctx, "SELECT jsonb_agg(to_jsonb(c) ORDER BY code) FROM currencies c").Scan(&metadata); err != nil {
@@ -112,6 +118,28 @@ func TestDatabaseLifecycle(t *testing.T) {
 	}
 	if _, err = provider.Up(ctx); err != nil {
 		t.Fatalf("reapply: %v", err)
+	}
+	if _, err = provider.Down(ctx); err != nil {
+		t.Fatal(err)
+	}
+	version, err = provider.GetDBVersion(ctx)
+	if err != nil || version != 5 {
+		t.Fatalf("rollback to worker schema: %d %v", version, err)
+	}
+	var marketTables int
+	if err = db.Pool.QueryRow(ctx, "SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND table_name IN ('market_rate_snapshots','market_rates')").Scan(&marketTables); err != nil || marketTables != 0 {
+		t.Fatalf("market-rate tables retained: %d %v", marketTables, err)
+	}
+	if _, err = provider.Down(ctx); err != nil {
+		t.Fatal(err)
+	}
+	version, err = provider.GetDBVersion(ctx)
+	if err != nil || version != 4 {
+		t.Fatalf("rollback to currency metadata: %d %v", version, err)
+	}
+	var riverTables int
+	if err = db.Pool.QueryRow(ctx, "SELECT count(*) FROM information_schema.tables WHERE table_schema='public' AND table_name LIKE 'river_%'").Scan(&riverTables); err != nil || riverTables != 0 {
+		t.Fatalf("River tables retained: %d %v", riverTables, err)
 	}
 	if _, err = provider.Down(ctx); err != nil {
 		t.Fatal(err)

@@ -2461,6 +2461,92 @@
           }
         }
       }
+    },
+    "/api/v1/exchange-rates": {
+      "get": {
+        "operationId": "GetExchangeRate",
+        "summary": "Get the market reference rate for one currency pair",
+        "tags": [
+          "Accounting"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/APIVersion"
+          },
+          {
+            "name": "base",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
+            },
+            "description": "Base currency code from the ledger catalog."
+          },
+          {
+            "name": "quote",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^[A-Z]{3}$"
+            },
+            "description": "Quote currency code from the ledger catalog; it must differ from the base."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "headers": {
+              "X-Request-ID": {
+                "description": "Server-generated request correlation UUID.",
+                "schema": {
+                  "type": "string",
+                  "format": "uuid"
+                }
+              },
+              "X-Ledger-API-Version": {
+                "description": "Present only after a version is accepted.",
+                "schema": {
+                  "type": "string",
+                  "enum": [
+                    "2026-09-16"
+                  ]
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MarketRate"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error400"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error401"
+          },
+          "403": {
+            "$ref": "#/components/responses/Error403"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error404"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error409"
+          },
+          "500": {
+            "$ref": "#/components/responses/Error500"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error503"
+          }
+        },
+        "description": "Reads the newest published daily snapshot only. Requests never call the provider and never substitute a rate of 1. A pair with no usable snapshot returns 200 with status \"unavailable\" and a reason."
+      }
     }
   },
   "components": {
@@ -3662,6 +3748,127 @@
             }
           }
         }
+      },
+      "MarketRate": {
+        "type": "object",
+        "properties": {
+          "base": {
+            "type": "string"
+          },
+          "quote": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "available",
+              "stale",
+              "unavailable"
+            ]
+          },
+          "stale": {
+            "type": "boolean"
+          },
+          "source": {
+            "type": "string"
+          },
+          "provider_filter": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Provider filter recorded on the published snapshot."
+          },
+          "pivot": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Snapshot base currency used for exact cross-rate derivation."
+          },
+          "rate": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Reference rate display value: the provider decimal for a direct quote, otherwise half-even rounded to at most 18 significant digits."
+          },
+          "numerator": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Exact rate numerator as an integer string."
+          },
+          "denominator": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Exact rate denominator as an integer string."
+          },
+          "derived": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "How the rate was produced: direct, inverse or cross."
+          },
+          "rate_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Earliest effective date among the snapshot legs actually used."
+          },
+          "snapshot_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "UTC date of the snapshot batch that was read."
+          },
+          "fetched_at": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "RFC 3339 time the snapshot was fetched from the provider."
+          },
+          "latest_snapshot_date": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "UTC date of the newest published snapshot, when any exists."
+          },
+          "reason": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Why the rate is unavailable: no_snapshot or pair_unavailable."
+          }
+        },
+        "additionalProperties": false,
+        "required": [
+          "base",
+          "quote",
+          "status",
+          "stale",
+          "source",
+          "provider_filter",
+          "pivot",
+          "rate",
+          "numerator",
+          "denominator",
+          "derived",
+          "rate_date",
+          "snapshot_date",
+          "fetched_at",
+          "latest_snapshot_date",
+          "reason"
+        ]
       }
     },
     "responses": {

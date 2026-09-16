@@ -104,6 +104,29 @@ type JournalEntry struct {
 	Sealed            bool
 }
 
+type MarketRate struct {
+	ID            pgtype.UUID
+	SnapshotID    pgtype.UUID
+	BaseCurrency  string
+	QuoteCurrency string
+	Rate          pgtype.Numeric
+	RateDate      pgtype.Date
+	Providers     []string
+}
+
+type MarketRateSnapshot struct {
+	ID             pgtype.UUID
+	SnapshotDate   pgtype.Date
+	Source         string
+	SourceVersion  string
+	ProviderFilter string
+	BaseCurrency   string
+	Status         string
+	FetchedAt      pgtype.Timestamptz
+	PublishedAt    pgtype.Timestamptz
+	CreatedAt      pgtype.Timestamptz
+}
+
 type PersonalTenantBinding struct {
 	UserID        pgtype.UUID
 	TenantID      pgtype.UUID

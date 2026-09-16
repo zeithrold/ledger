@@ -19,6 +19,7 @@ import (
 	"github.com/zeithrold/ledger/internal/observability"
 	"github.com/zeithrold/ledger/internal/problem"
 	"github.com/zeithrold/ledger/internal/problemhttp"
+	"github.com/zeithrold/ledger/internal/rates"
 )
 
 // Backend is the local identity and authorization service boundary.
@@ -40,6 +41,7 @@ type (
 		Telemetry   *observability.Runtime
 		Backend     Backend
 		Accounting  *accounting.Service
+		Rates       *rates.Service
 		Verifier    auth.Verifier
 	}
 	api struct {

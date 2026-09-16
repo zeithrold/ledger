@@ -21,13 +21,19 @@ components:
   apidocs: {in: apidocs}
   apiv1: {in: apiv1}
   contracttest: {in: contracttest}
+  rates: {in: rates}
+  frankfurter: {in: frankfurter}
+  jobs: {in: jobs}
 deps:
   accounting: {mayDependOn: [identity, money, problem, database, sqlgen]}
   identity: {mayDependOn: [auth, problem, database, sqlgen]}
   auth: {mayDependOn: [config, problem]}
   database: {mayDependOn: [sqlgen]}
   observability: {mayDependOn: [config]}
-  http: {mayDependOn: [accounting, identity, auth, observability, problem, problemhttp, apicontract, apidocs, apiv1]}
+  http: {mayDependOn: [accounting, identity, auth, observability, problem, problemhttp, apicontract, apidocs, apiv1, rates]}
   problemhttp: {mayDependOn: [problem, observability]}
   apidocs: {mayDependOn: [apicontract]}
   contracttest: {mayDependOn: [apicontract]}
+  rates: {mayDependOn: [money, problem, database, sqlgen]}
+  frankfurter: {mayDependOn: [rates]}
+  jobs: {mayDependOn: [config, database, rates, frankfurter, observability]}

@@ -1,7 +1,16 @@
 version: "2"
 sql:
   - engine: "postgresql"
-    schema: "migrations"
+    # Ledger-owned migrations are listed explicitly so sqlc never models the
+    # River queue tables in 00005_river.sql, which Ledger does not query. Add
+    # every new Ledger migration here; a query against an unlisted table fails
+    # generation immediately.
+    schema:
+      - "migrations/00001_scaffold.sql"
+      - "migrations/00002_identity.sql"
+      - "migrations/00003_accounting.sql"
+      - "migrations/00004_currency_metadata.sql"
+      - "migrations/00006_market_rates.sql"
     queries: "internal/database/queries"
     gen:
       go:

@@ -6,8 +6,10 @@ import (
 	"log/slog"
 	"net/url"
 	"os"
+	"regexp"
 	"strconv"
 	"strings"
+	"time"
 
 	"github.com/joho/godotenv"
 )
@@ -24,6 +26,7 @@ type Config struct {
 	Clerk       Clerk
 	LLM         LLM
 	S3          S3
+	Rates       Rates
 }
 
 // Clerk holds session verification settings and a reserved client publishable key.
@@ -33,6 +36,16 @@ type Clerk struct {
 	APIEndpoint       string
 	IssuerURL         string
 	AuthorizedParties []string
+}
+
+// Rates holds market-reference-rate settings for the background worker.
+// An unparsable numeric setting is kept at zero so the independent API command
+// is unaffected; the worker's Validate reports it.
+type Rates struct {
+	Endpoint      string
+	Providers     []string
+	RetentionDays int
+	Timeout       time.Duration
 }
 
 // LLM holds reserved DeepSeek connection settings.
@@ -80,6 +93,7 @@ func Load() (Config, error) {
 		Clerk:       Clerk{SecretKey: os.Getenv("CLERK_SECRET_KEY"), PublishableKey: os.Getenv("CLERK_PUBLISHABLE_KEY"), APIEndpoint: value("CLERK_API_ENDPOINT", "https://api.clerk.com"), IssuerURL: os.Getenv("CLERK_ISSUER_URL"), AuthorizedParties: splitParties(os.Getenv("CLERK_AUTHORIZED_PARTIES"))},
 		LLM:         LLM{value("LLM_ENDPOINT", "https://api.deepseek.com"), os.Getenv("LLM_API_KEY"), os.Getenv("LLM_MODEL")},
 		S3:          S3{os.Getenv("S3_ENDPOINT"), os.Getenv("S3_REGION"), os.Getenv("S3_BUCKET"), os.Getenv("S3_ACCESS_KEY_ID"), os.Getenv("S3_SECRET_ACCESS_KEY"), os.Getenv("S3_SESSION_TOKEN")},
+		Rates:       ratesFromEnvironment(),
 	}
 	if c.Environment != "stage" && c.Environment != "production" {
 		return Config{}, errors.New("APP_ENV must be stage or production")
@@ -144,4 +158,53 @@ func splitParties(raw string) []string {
 		}
 	}
 	return result
+}
+
+func ratesFromEnvironment() Rates {
+	retention := 30
+	if raw := strings.TrimSpace(os.Getenv("FX_RETENTION_DAYS")); raw != "" {
+		if parsed, err := strconv.Atoi(raw); err == nil {
+			retention = parsed
+		} else {
+			retention = 0
+		}
+	}
+	timeout := 5 * time.Second
+	if raw := strings.TrimSpace(os.Getenv("FX_HTTP_TIMEOUT")); raw != "" {
+		if parsed, err := time.ParseDuration(raw); err == nil {
+			timeout = parsed
+		} else {
+			timeout = 0
+		}
+	}
+	return Rates{
+		Endpoint:      value("FRANKFURTER_ENDPOINT", "https://api.frankfurter.dev"),
+		Providers:     splitParties(os.Getenv("FX_PROVIDERS")),
+		RetentionDays: retention,
+		Timeout:       timeout,
+	}
+}
+
+var providerKey = regexp.MustCompile(`^[A-Za-z0-9_-]{1,32}$`)
+
+// Validate checks the worker's market-rate settings without exposing their values.
+// Worker startup invokes it; the API and migration commands do not depend on it.
+func (r Rates) Validate() error {
+	for _, provider := range r.Providers {
+		if !providerKey.MatchString(provider) {
+			return errors.New("FX_PROVIDERS must contain provider keys")
+		}
+	}
+	if r.RetentionDays < 1 || r.RetentionDays > 365 {
+		return errors.New("FX_RETENTION_DAYS must be an integer between 1 and 365")
+	}
+	if r.Timeout <= 0 || r.Timeout > time.Minute {
+		return errors.New("FX_HTTP_TIMEOUT must be a positive duration of at most 1m")
+	}
+	u, err := url.Parse(r.Endpoint)
+	if err != nil || u.Hostname() == "" || u.User != nil || u.RawQuery != "" || u.Fragment != "" || (u.Path != "" && u.Path != "/") ||
+		(u.Scheme != "https" && (u.Scheme != "http" || (u.Hostname() != "localhost" && u.Hostname() != "127.0.0.1"))) {
+		return errors.New("FRANKFURTER_ENDPOINT must be an HTTPS origin (HTTP allowed only on loopback)")
+	}
+	return nil
 }

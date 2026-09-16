@@ -158,6 +158,27 @@ func (e LinkInputKind) Valid() bool {
 	}
 }
 
+// Defines values for MarketRateStatus.
+const (
+	Available   MarketRateStatus = "available"
+	Stale       MarketRateStatus = "stale"
+	Unavailable MarketRateStatus = "unavailable"
+)
+
+// Valid indicates whether the value is a known member of the MarketRateStatus enum.
+func (e MarketRateStatus) Valid() bool {
+	switch e {
+	case Available:
+		return true
+	case Stale:
+		return true
+	case Unavailable:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for PreferencesTheme.
 const (
 	Dark   PreferencesTheme = "dark"
@@ -689,6 +710,21 @@ func (e ListCurrenciesParamsXLedgerAPIVersion) Valid() bool {
 	}
 }
 
+// Defines values for GetExchangeRateParamsXLedgerAPIVersion.
+const (
+	GetExchangeRateParamsXLedgerAPIVersionN20260916 GetExchangeRateParamsXLedgerAPIVersion = "2026-09-16"
+)
+
+// Valid indicates whether the value is a known member of the GetExchangeRateParamsXLedgerAPIVersion enum.
+func (e GetExchangeRateParamsXLedgerAPIVersion) Valid() bool {
+	switch e {
+	case GetExchangeRateParamsXLedgerAPIVersionN20260916:
+		return true
+	default:
+		return false
+	}
+}
+
 // Defines values for GetMeParamsXLedgerAPIVersion.
 const (
 	GetMeParamsXLedgerAPIVersionN20260916 GetMeParamsXLedgerAPIVersion = "2026-09-16"
@@ -941,6 +977,51 @@ type LinkInputKind string
 type LinkList struct {
 	Links []Link `json:"links"`
 }
+
+// MarketRate defines model for MarketRate.
+type MarketRate struct {
+	Base string `json:"base"`
+
+	// Denominator Exact rate denominator as an integer string.
+	Denominator *string `json:"denominator"`
+
+	// Derived How the rate was produced: direct, inverse or cross.
+	Derived *string `json:"derived"`
+
+	// FetchedAt RFC 3339 time the snapshot was fetched from the provider.
+	FetchedAt *string `json:"fetched_at"`
+
+	// LatestSnapshotDate UTC date of the newest published snapshot, when any exists.
+	LatestSnapshotDate *string `json:"latest_snapshot_date"`
+
+	// Numerator Exact rate numerator as an integer string.
+	Numerator *string `json:"numerator"`
+
+	// Pivot Snapshot base currency used for exact cross-rate derivation.
+	Pivot *string `json:"pivot"`
+
+	// ProviderFilter Provider filter recorded on the published snapshot.
+	ProviderFilter *string `json:"provider_filter"`
+	Quote          string  `json:"quote"`
+
+	// Rate Reference rate display value: the provider decimal for a direct quote, otherwise half-even rounded to at most 18 significant digits.
+	Rate *string `json:"rate"`
+
+	// RateDate Earliest effective date among the snapshot legs actually used.
+	RateDate *string `json:"rate_date"`
+
+	// Reason Why the rate is unavailable: no_snapshot or pair_unavailable.
+	Reason *string `json:"reason"`
+
+	// SnapshotDate UTC date of the snapshot batch that was read.
+	SnapshotDate *string          `json:"snapshot_date"`
+	Source       string           `json:"source"`
+	Stale        bool             `json:"stale"`
+	Status       MarketRateStatus `json:"status"`
+}
+
+// MarketRateStatus defines model for MarketRate.Status.
+type MarketRateStatus string
 
 // MutationResult defines model for MutationResult.
 type MutationResult struct {
@@ -1419,6 +1500,21 @@ type ListCurrenciesParams struct {
 // ListCurrenciesParamsXLedgerAPIVersion defines parameters for ListCurrencies.
 type ListCurrenciesParamsXLedgerAPIVersion string
 
+// GetExchangeRateParams defines parameters for GetExchangeRate.
+type GetExchangeRateParams struct {
+	// Base Base currency code from the ledger catalog.
+	Base string `form:"base" json:"base"`
+
+	// Quote Quote currency code from the ledger catalog; it must differ from the base.
+	Quote string `form:"quote" json:"quote"`
+
+	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
+	XLedgerAPIVersion GetExchangeRateParamsXLedgerAPIVersion `json:"X-Ledger-API-Version"`
+}
+
+// GetExchangeRateParamsXLedgerAPIVersion defines parameters for GetExchangeRate.
+type GetExchangeRateParamsXLedgerAPIVersion string
+
 // GetMeParams defines parameters for GetMe.
 type GetMeParams struct {
 	// XLedgerAPIVersion Exact contract date. Missing, malformed and retired dates are rejected before authentication.
@@ -1698,6 +1794,9 @@ type ServerInterface interface {
 	// ListCurrencies ListCurrencies
 	// (GET /api/v1/currencies)
 	ListCurrencies(c *gin.Context, params ListCurrenciesParams)
+	// GetExchangeRate Get the market reference rate for one currency pair
+	// (GET /api/v1/exchange-rates)
+	GetExchangeRate(c *gin.Context, params GetExchangeRateParams)
 	// GetMe Current user and personal space
 	// (GET /api/v1/me)
 	GetMe(c *gin.Context, params GetMeParams)
@@ -3352,6 +3451,65 @@ func (siw *ServerInterfaceWrapper) ListCurrencies(c *gin.Context) {
 	siw.Handler.ListCurrencies(c, params)
 }
 
+// GetExchangeRate operation middleware
+func (siw *ServerInterfaceWrapper) GetExchangeRate(c *gin.Context) {
+
+	var err error
+	_ = err
+
+	// Parameter object where we will unmarshal all parameters from the context
+	var params GetExchangeRateParams
+
+	// ------------- Required query parameter "base" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, true, "base", c.Request.URL.Query(), &params.Base, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter base: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	// ------------- Required query parameter "quote" -------------
+
+	err = runtime.BindQueryParameterWithOptions("form", true, true, "quote", c.Request.URL.Query(), &params.Quote, runtime.BindQueryParameterOptions{Type: "string", Format: ""})
+	if err != nil {
+		siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter quote: %w", err), http.StatusBadRequest)
+		return
+	}
+
+	headers := c.Request.Header
+
+	// ------------- Required header parameter "X-Ledger-API-Version" -------------
+	if valueList, found := headers[http.CanonicalHeaderKey("X-Ledger-API-Version")]; found {
+		var XLedgerAPIVersion GetExchangeRateParamsXLedgerAPIVersion
+		n := len(valueList)
+		if n != 1 {
+			siw.ErrorHandler(c, fmt.Errorf("Expected one value for X-Ledger-API-Version, got %d", n), http.StatusBadRequest)
+			return
+		}
+
+		err = runtime.BindStyledParameterWithOptions("simple", "X-Ledger-API-Version", valueList[0], &XLedgerAPIVersion, runtime.BindStyledParameterOptions{ParamLocation: runtime.ParamLocationHeader, Explode: false, Required: true, Type: "string", Format: ""})
+		if err != nil {
+			siw.ErrorHandler(c, fmt.Errorf("Invalid format for parameter X-Ledger-API-Version: %w", err), http.StatusBadRequest)
+			return
+		}
+
+		params.XLedgerAPIVersion = XLedgerAPIVersion
+
+	} else {
+		siw.ErrorHandler(c, fmt.Errorf("Header parameter X-Ledger-API-Version is required, but not found"), http.StatusBadRequest)
+		return
+	}
+
+	for _, middleware := range siw.HandlerMiddlewares {
+		middleware(c)
+		if c.IsAborted() {
+			return
+		}
+	}
+
+	siw.Handler.GetExchangeRate(c, params)
+}
+
 // GetMe operation middleware
 func (siw *ServerInterfaceWrapper) GetMe(c *gin.Context) {
 
@@ -3516,6 +3674,7 @@ func RegisterHandlersWithOptions(router gin.IRouter, si ServerInterface, options
 	router.POST(options.BaseURL+"/api/v1/counterparties", wrapper.CreateAccountingCounterparty)
 	router.PATCH(options.BaseURL+"/api/v1/counterparties/:counterparty_id", wrapper.UpdateAccountingCounterparty)
 	router.GET(options.BaseURL+"/api/v1/currencies", wrapper.ListCurrencies)
+	router.GET(options.BaseURL+"/api/v1/exchange-rates", wrapper.GetExchangeRate)
 	router.GET(options.BaseURL+"/api/v1/me", wrapper.GetMe)
 	router.PATCH(options.BaseURL+"/api/v1/me/preferences", wrapper.UpdatePreferences)
 	router.GET(options.BaseURL+"/healthz", wrapper.GetHealth)
