@@ -28,7 +28,7 @@ cash rounding. A reference-label update cannot alter postings.
 | `reference/currencies/locales/{locale}.json` | Names, symbols, optional narrow symbols and plural names, keyed by BCP 47 locale |
 | `reference/currencies/locale_rules.json` | Main-data parents, likely subtags and aliases for currency-name lookup |
 | `reference/currencies/manifest.json` | Schema/CLDR versions, registered paths, source provenance and content hashes |
-| `internal/accounting/currencies.json` | Generated flat metadata projection embedded in Go |
+| `internal/money/currencies.json` | Generated flat metadata projection embedded in Go |
 
 The schema version describes Ledger's data shape; the CLDR version describes
 upstream content. Per-file and aggregate SHA-256 detect accidental drift; they
@@ -38,7 +38,7 @@ are not signatures or a network trust mechanism.
 just generate-currencies
 just check-currencies
 just export-currencies ../ledger-app
-python3 tool/currencies.py --check --app ../ledger-app
+go run ./tool/bootstrap.go currency --check --app ../ledger-app
 ```
 
 Generation uses only vendored inputs, verifies their pinned hashes, and checks
@@ -47,7 +47,7 @@ changes and incomplete required names. Do not hand-edit generated files.
 
 A release can distribute `reference/currencies/` as a versioned data artifact.
 The App requires neither this checkout nor a reference-data request at runtime.
-Its independent `python3 tool/check_currencies.py` verifies the exported pack in CI.
+Its independent `go run ./tool/bootstrap.go currency --app-check` verifies the exported pack in CI.
 
 To add a locale, vendor its pinned CLDR file, register its source hash and
 locale-to-source mapping in the policy, and regenerate/export. No database column,

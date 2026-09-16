@@ -7,9 +7,11 @@
 | `just test-unit` / `just test` | Unit tests and fuzz seed corpus, with race detection | None |
 | `just test-integration` | Tagged PostgreSQL lifecycle tests | Docker |
 | `just fuzz` | Bounded native Go fuzzing | None |
-| `just coverage-unit` | Separate unit coverage report | None |
-| `just lint` | Strict lint and formatting, including integration source | Installed pinned lint tool |
-| `just check` | SQL validation, lint, unit tests, vet, build | No running database |
+| `just coverage-unit` | Unit coverage with all production packages instrumented | None |
+| `just coverage-check` | Combined unit/integration and changed-code coverage | Both fresh profiles and a Git base |
+| `just lint` | Strict lint and formatting, including integration source | Pinned Go tool acquisition on a cold cache |
+| `just check` | Contracts, architecture, lint, unit/integration coverage, vet, build | Docker for disposable PostgreSQL |
+| `go run ./tool/bootstrap.go security` | Redacted source-secret scan and reachable Go vulnerability scan | Pinned tool acquisition and current vulnerability database |
 
 Unit tests live beside production code and must not read developer credentials, contact services, or require Docker. Integration tests live in `tests/integration` and require `//go:build integration`. Missing Docker is a test failure, not a silently skipped pass.
 
@@ -38,29 +40,30 @@ This is a local test credential, not a production secret. Put it in `.env.local`
 
 Follow the [Uber Go Style Guide](https://github.com/uber-go/guide/blob/master/style.md), with automated enforcement through `.golangci.yml`. The guide also contains review concerns that a linter cannot prove: ownership, API clarity, narrow interfaces, and concurrency lifecycle.
 
-Install the pinned version with `just install-lint`, format with `just format`, and check with `just lint`. Checks include errors, security, context propagation, resource closure, static analysis, suspicious constructs, naming and formatting. Generated sqlc files are excluded via their generated header. Any `nolint` requires a specific linter and an explanation; do not introduce blanket exclusions to pass checks.
+The Go runner invokes the pinned lint version from `governance.json`; format with `just format` and check with `just lint`. Checks include errors, security, context propagation, resource closure, static analysis, suspicious constructs, naming and formatting. Generated sqlc files are excluded via their generated header. Any `nolint` requires a specific linter and an explanation; do not introduce blanket exclusions to pass checks. `just architecture-check` additionally validates the declared dependency graph.
 
 ## Fuzzing
 
-`just fuzz ./internal/config FuzzGinMode 10s` starts a bounded native fuzz run. Seed inputs also run during unit tests. Check in minimized regressions under `testdata/fuzz/<target>`; never use real screenshots, tokens, or private financial data in corpora.
+`just fuzz` gives each configured target a 30-second PR budget. Seed inputs also run during unit tests. Scheduled `fuzz-nightly` uses 600 seconds per target. Check in minimized regressions under `testdata/fuzz/<target>`; never use real screenshots, tokens, or private financial data in corpora.
 
-Accounting targets are `FuzzMoneyRoundTrip`, `FuzzExactRatio` and `FuzzBalance` in `./internal/accounting`. Run each with `just fuzz ./internal/accounting <target> 15s`. They use no database or external services. Future external-response and draft targets must remain deterministic.
+Accounting targets are `FuzzMoneyRoundTrip`, `FuzzExactRatio` and `FuzzBalance` in `./internal/money`; configuration includes `FuzzGinMode`. They use no database or external services. Future external-response and draft targets must remain deterministic.
 
 ## Mutation baseline
 
 Pin [Gremlins v0.6.0](https://github.com/go-gremlins/gremlins/releases/tag/v0.6.0).
-The initial pure-money baseline on Go 1.26 has 65 covered mutations: 59 killed,
-6 lived, none uncovered, timed out or nonviable (90.77% efficacy). Surviving
-boundary mutants are reviewed in the external Phase 2 acceptance record; no
-arbitrary score threshold is enabled yet.
+The selected target is the pure `internal/money` package. Generate a fresh report
+and review surviving mutants; historical counts are not evidence for current
+source. `mutation-check` requires a 90% score and zero timeouts, validates report
+categories separately and never counts timeouts or invalid mutants as killed.
 
 ```sh
-just install-mutation
 just mutation-accounting
 ```
 
-The wrapper verifies the installed version and copies only `money.go`, its exact tests and the currency catalog into a temporary standalone module. No application configuration, credentials or unrelated files enter the mutation workspace. The selected target is handwritten `money.go`. Service/database code is tested by
-Testcontainers and excluded from this pure-function mutation score. Keep generated
+The Go runner uses pinned Gremlins and copies only `internal/money` plus module
+metadata into an isolated workspace. No application configuration, credentials
+or unrelated files enter it. Service/database code is tested by Testcontainers
+and excluded from this pure-function mutation score. Keep generated
 files and credentials out of mutation fixtures. Reports belong in ignored
 `mutation-results/`; dated evidence belongs in the external manuscript directory.
 
@@ -70,7 +73,7 @@ Offline unit tests verify signed session JWTs and JWKS cache behavior without de
 
 The current schema is version 4. Lifecycle tests upgrade populated version 3, verify an existing balance, restore all old currency names on rollback to 3, then roll back through identity 2 and baseline 1 to 0 and reapply. Never run Down against a persistent database as a routine check. `just check-currencies` also verifies pinned hashes, required locale coverage, precision and generated metadata drift.
 
-`just check` requires no running database, but tool/module acquisition and golangci-lint's configuration-schema verification may require network access. Real Clerk integration is explicit and separate from `just test-unit`; no real token is stored as a fixture.
+`just check` requires Docker and starts disposable databases; it never uses a running developer database. Tool/module acquisition and golangci-lint's configuration-schema verification may require network access. Real Clerk integration is explicit and separate from `just test-unit`; no real token is stored as a fixture. See [governance](governance.md) for coverage floors and independent review.
 
 ## Observability checks
 

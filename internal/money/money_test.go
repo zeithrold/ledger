@@ -1,4 +1,4 @@
-package accounting
+package money
 
 import (
 	"math/big"
@@ -181,4 +181,43 @@ func FuzzBalance(f *testing.F) {
 			t.Fatal("balance disagrees with exact sum")
 		}
 	})
+}
+
+func TestImmutableOperations(t *testing.T) {
+	a, err := ParseMoney("10.25", "USD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	b, err := ParseMoney("2.10", "USD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if a.Sign() != 1 || a.Neg().Sign() != -1 || a.Cmp(b) != 1 || a.Add(b).String() != "12.35" || a.Add(b.Neg()).String() != "8.15" {
+		t.Fatal("incorrect exact arithmetic")
+	}
+	r := a.Rational()
+	r.SetInt64(99)
+	if a.String() != "10.25" || b.String() != "2.10" {
+		t.Fatal("operation mutated input")
+	}
+	zero, err := ParseMoney("0", "USD")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if zero.Sign() != 0 {
+		t.Fatal("zero sign")
+	}
+	different, err := ParseMoney("10", "JPY")
+	if err != nil {
+		t.Fatal(err)
+	}
+	if a.Cmp(different) != 1 {
+		t.Fatal("comparison ignored precision")
+	}
+	defer func() {
+		if recover() == nil {
+			t.Fatal("accepted incompatible precision")
+		}
+	}()
+	a.Add(different)
 }

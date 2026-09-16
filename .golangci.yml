@@ -28,7 +28,43 @@ linters:
     - nolintlint
     - sloglint
     - forbidigo
+    - depguard
   settings:
+    depguard:
+      rules:
+        pure-kernel:
+          list-mode: strict
+          files:
+            - '**/internal/money/*.go'
+            - '**/internal/problem/*.go'
+          allow:
+            - '$gostd'
+          deny:
+            - pkg: net
+              desc: Pure monetary and error types cannot perform network I/O.
+            - pkg: os
+              desc: Pure monetary and error types cannot access process or filesystem state.
+            - pkg: database/sql
+              desc: Persistence belongs outside the pure kernel.
+            - pkg: syscall
+              desc: Pure code cannot call operating system APIs.
+            - pkg: unsafe
+              desc: Pure code must retain memory safety.
+        business-transport:
+          list-mode: lax
+          files:
+            - '**/internal/accounting/*.go'
+            - '**/internal/identity/*.go'
+            - '**/internal/auth/*.go'
+          deny:
+            - pkg: github.com/gin-gonic/gin
+              desc: HTTP belongs in httpserver or problemhttp.
+            - pkg: github.com/zeithrold/ledger/internal/httpserver
+              desc: Services must not depend on transport adapters.
+            - pkg: github.com/zeithrold/ledger/internal/problemhttp
+              desc: Services use pure problem types, never HTTP responders.
+            - pkg: github.com/zeithrold/ledger/internal/apiv1
+              desc: Map generated DTOs at the HTTP boundary.
     sloglint:
       context: scope
     forbidigo:

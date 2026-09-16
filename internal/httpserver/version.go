@@ -10,6 +10,7 @@ import (
 
 	"github.com/zeithrold/ledger/internal/apicontract"
 	"github.com/zeithrold/ledger/internal/problem"
+	"github.com/zeithrold/ledger/internal/problemhttp"
 )
 
 // VersionHeader pins the minor contract independently of the path's major version.
@@ -31,26 +32,26 @@ func versionGate() gin.HandlerFunc {
 		parts := strings.Split(strings.TrimPrefix(path, "/api/"), "/")
 		versions, ok := apicontract.Supported(parts[0])
 		if !ok {
-			problem.Write(c, problem.New(problem.MajorUnsupported, "The API major version is not supported."))
+			problemhttp.Write(c, problem.New(problem.MajorUnsupported, "The API major version is not supported."))
 			return
 		}
 		values := c.Request.Header.Values(VersionHeader)
 		if len(values) == 0 {
-			problem.Write(c, problem.New(problem.VersionRequired, "Provide the X-Ledger-API-Version request header."))
+			problemhttp.Write(c, problem.New(problem.VersionRequired, "Provide the X-Ledger-API-Version request header."))
 			return
 		}
 		if len(values) != 1 {
-			problem.Write(c, problem.New(problem.VersionInvalid, "Provide exactly one YYYY-MM-DD version."))
+			problemhttp.Write(c, problem.New(problem.VersionInvalid, "Provide exactly one YYYY-MM-DD version."))
 			return
 		}
 		requested := values[0]
 		date, err := time.Parse(time.DateOnly, requested)
 		if err != nil || date.Format(time.DateOnly) != requested {
-			problem.Write(c, problem.New(problem.VersionInvalid, "Provide exactly one YYYY-MM-DD version."))
+			problemhttp.Write(c, problem.New(problem.VersionInvalid, "Provide exactly one YYYY-MM-DD version."))
 			return
 		}
 		if !slices.Contains(versions, requested) {
-			problem.Write(c, problem.New(problem.VersionUnsupported, "The requested API version is not supported."), versions...)
+			problemhttp.Write(c, problem.New(problem.VersionUnsupported, "The requested API version is not supported."), versions...)
 			return
 		}
 		// Echo the negotiated date, which may be the tolerated preceding

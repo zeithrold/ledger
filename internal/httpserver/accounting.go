@@ -10,11 +10,12 @@ import (
 	"github.com/zeithrold/ledger/internal/accounting"
 	"github.com/zeithrold/ledger/internal/apiv1"
 	"github.com/zeithrold/ledger/internal/problem"
+	"github.com/zeithrold/ledger/internal/problemhttp"
 )
 
 func (a api) accountingReady(c *gin.Context) bool {
 	if a.deps.Accounting == nil {
-		problem.Write(c, problem.New(problem.Unavailable, "The accounting API is not configured."))
+		problemhttp.Write(c, problem.New(problem.Unavailable, "The accounting API is not configured."))
 		return false
 	}
 	return true
@@ -58,7 +59,7 @@ func (a api) GetAccountingAccount(c *gin.Context, book, id uuid.UUID, _ apiv1.Ge
 			return
 		}
 	}
-	problem.Write(c, problem.New(problem.NotFound, "The account was not found."))
+	problemhttp.Write(c, problem.New(problem.NotFound, "The account was not found."))
 }
 
 func (a api) CreateAccountingAccount(c *gin.Context, book uuid.UUID, p apiv1.CreateAccountingAccountParams) {
@@ -157,7 +158,7 @@ func (a api) ListAccountingTransactions(c *gin.Context, book uuid.UUID, _ apiv1.
 	if value := c.Query("limit"); value != "" {
 		n, err := strconv.ParseInt(value, 10, 32)
 		if err != nil || n < 1 || n > 100 {
-			problem.Write(c, problem.New(problem.InvalidRequest, "Use a limit between 1 and 100."))
+			problemhttp.Write(c, problem.New(problem.InvalidRequest, "Use a limit between 1 and 100."))
 			return
 		}
 		limit = int(n)

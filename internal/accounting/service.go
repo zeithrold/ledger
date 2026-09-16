@@ -232,7 +232,7 @@ func (s *Service) CreateAccount(ctx context.Context, actor identity.Context, boo
 				return Account{}, invalid("opening_amount", e.Error())
 			}
 			balance = m.String()
-			if m.units.Sign() != 0 {
+			if m.Sign() != 0 {
 				if _, e = s.createEntry(ctx, q, actor, book, EntryInput{Kind: "opening", OccurredOn: in.OpeningDate, AccountID: sid(a.ID), Amount: balance}); e != nil {
 					return Account{}, e
 				}

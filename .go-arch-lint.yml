@@ -1,0 +1,33 @@
+version: 3
+workdir: internal
+excludeFiles:
+  - '_test\.go$'
+allow:
+  depOnAnyVendor: true
+  deepScan: false
+components:
+  accounting: {in: accounting}
+  identity: {in: identity}
+  money: {in: money}
+  problem: {in: problem}
+  http: {in: httpserver}
+  problemhttp: {in: problemhttp}
+  auth: {in: auth}
+  config: {in: config}
+  database: {in: database}
+  sqlgen: {in: database/sqlgen}
+  observability: {in: observability}
+  apicontract: {in: apicontract}
+  apidocs: {in: apidocs}
+  apiv1: {in: apiv1}
+  contracttest: {in: contracttest}
+deps:
+  accounting: {mayDependOn: [identity, money, problem, database, sqlgen]}
+  identity: {mayDependOn: [auth, problem, database, sqlgen]}
+  auth: {mayDependOn: [config, problem]}
+  database: {mayDependOn: [sqlgen]}
+  observability: {mayDependOn: [config]}
+  http: {mayDependOn: [accounting, identity, auth, observability, problem, problemhttp, apicontract, apidocs, apiv1]}
+  problemhttp: {mayDependOn: [problem, observability]}
+  apidocs: {mayDependOn: [apicontract]}
+  contracttest: {mayDependOn: [apicontract]}

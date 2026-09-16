@@ -2,10 +2,73 @@ name: CI
 on:
   push:
   pull_request:
+    types: [opened, synchronize, reopened, edited]
+  schedule:
+    - cron: '23 2 * * *'
+  workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: ledger-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'schedule' }}
 jobs:
-  unit-and-lint:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      code: ${{ steps.classify.outputs.code }}
+      backend: ${{ steps.classify.outputs.backend }}
+      policy: ${{ steps.classify.outputs.policy }}
+      mutation: ${{ steps.classify.outputs.mutation }}
+      fuzz: ${{ steps.classify.outputs.fuzz }}
+      docs_only: ${{ steps.classify.outputs.docs_only }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Validate PR title
+        if: github.event_name == 'pull_request'
+        env:
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: go run ./tool/bootstrap.go commit-check "$PR_TITLE"
+      - name: Classify affected checks
+        id: classify
+        env:
+          LEDGER_BASE: ${{ github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}
+        run: go run ./tool/bootstrap.go changes --base "$LEDGER_BASE" --github-output "$GITHUB_OUTPUT" --json
+  source-gate:
+    needs: changes
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - name: Run deterministic quality gate
+        env:
+          LEDGER_BASE: ${{ github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}
+        run: go run ./tool/bootstrap.go check
+      - name: Verify independent final-diff review
+        if: github.event_name == 'pull_request' && (needs.changes.outputs.code == 'true' || needs.changes.outputs.policy == 'true')
+        run: go run ./tool/bootstrap.go review-check --file .governance/review.json
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: source-gate-evidence
+          path: |
+            coverage/
+            build/governance/
+            build/secrets.json
+          if-no-files-found: warn
+  fuzz:
+    needs: changes
+    if: needs.changes.outputs.fuzz == 'true' || needs.changes.outputs.policy == 'true' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -13,26 +76,33 @@ jobs:
         with:
           go-version-file: go.mod
           cache: true
-      - run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.11.3
-      - run: python3 tool/currencies.py --check
-      - run: golangci-lint config verify
-      - run: golangci-lint run
-      - run: golangci-lint fmt --diff
-      - run: go test -race -count=1 ./...
-      - run: go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.0 --config openapi-codegen.yaml -o internal/apiv1/api.gen.go internal/apicontract/v1/openapi.json
-      - run: git diff --exit-code -- internal/apiv1/api.gen.go
-      - run: go vet ./...
-      - run: go build ./...
-      - run: go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 vet
-      - run: go run github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1 generate
-      - run: git diff --exit-code -- internal/database/sqlgen
-      - run: go test ./internal/config -run='^$' -fuzz='^FuzzGinMode$' -fuzztime=10s
-  integration:
+      - name: Bounded PR fuzzing
+        if: github.event_name != 'schedule' && github.event_name != 'workflow_dispatch'
+        run: go run ./tool/bootstrap.go fuzz
+      - name: Broader scheduled fuzzing
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: go run ./tool/bootstrap.go fuzz-nightly
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: fuzz-regressions
+          path: '**/testdata/fuzz/**'
+          if-no-files-found: ignore
+  mutation:
+    needs: changes
+    if: needs.changes.outputs.mutation == 'true' || needs.changes.outputs.policy == 'true' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
+    timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-go@v5
         with:
           go-version-file: go.mod
           cache: true
-      - run: go test -race -tags=integration -count=1 -timeout=5m ./tests/integration/...
+      - run: go run ./tool/bootstrap.go mutation-accounting
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mutation-accounting
+          path: mutation-results/
+          if-no-files-found: warn

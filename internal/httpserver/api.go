@@ -18,6 +18,7 @@ import (
 	"github.com/zeithrold/ledger/internal/identity"
 	"github.com/zeithrold/ledger/internal/observability"
 	"github.com/zeithrold/ledger/internal/problem"
+	"github.com/zeithrold/ledger/internal/problemhttp"
 )
 
 // Backend is the local identity and authorization service boundary.
@@ -53,7 +54,7 @@ func respondError(c *gin.Context, err error) {
 		p = problem.New(problem.Internal, "The request could not be completed.")
 		p.Cause = err
 	}
-	problem.Write(c, p)
+	problemhttp.Write(c, p)
 }
 
 func (a api) authenticate() gin.HandlerFunc {
@@ -63,17 +64,17 @@ func (a api) authenticate() gin.HandlerFunc {
 			return
 		}
 		if a.deps.Backend == nil || a.deps.Verifier == nil {
-			problem.Write(c, problem.New(problem.Unavailable, "The business API is not configured."))
+			problemhttp.Write(c, problem.New(problem.Unavailable, "The business API is not configured."))
 			return
 		}
 		headers := c.Request.Header.Values("Authorization")
 		if len(headers) == 0 {
-			problem.Write(c, problem.New(problem.AuthenticationRequired, "Provide a Bearer session token."))
+			problemhttp.Write(c, problem.New(problem.AuthenticationRequired, "Provide a Bearer session token."))
 			return
 		}
 		fields := strings.Fields(headers[0])
 		if len(headers) != 1 || len(fields) != 2 || !strings.EqualFold(fields[0], "Bearer") || len(fields[1]) > 16384 {
-			problem.Write(c, problem.New(problem.InvalidToken, "Provide exactly one Bearer session token."))
+			problemhttp.Write(c, problem.New(problem.InvalidToken, "Provide exactly one Bearer session token."))
 			return
 		}
 		ctx, cancel := context.WithTimeout(c.Request.Context(), 10*time.Second)
@@ -130,7 +131,7 @@ func decode(c *gin.Context, out any, emptyOK bool) bool {
 	c.Request.Body = http.MaxBytesReader(c.Writer, c.Request.Body, 16384)
 	data, err := io.ReadAll(c.Request.Body)
 	if err != nil {
-		problem.Write(c, problem.New(problem.InvalidRequest, "The request body must not exceed 16384 bytes."))
+		problemhttp.Write(c, problem.New(problem.InvalidRequest, "The request body must not exceed 16384 bytes."))
 		return false
 	}
 	if len(strings.TrimSpace(string(data))) == 0 && emptyOK {
@@ -138,18 +139,18 @@ func decode(c *gin.Context, out any, emptyOK bool) bool {
 	}
 	trimmed := strings.TrimSpace(string(data))
 	if !strings.HasPrefix(trimmed, "{") {
-		problem.Write(c, problem.New(problem.InvalidRequest, "Provide a JSON object."))
+		problemhttp.Write(c, problem.New(problem.InvalidRequest, "Provide a JSON object."))
 		return false
 	}
 	decoder := json.NewDecoder(strings.NewReader(trimmed))
 	decoder.DisallowUnknownFields()
 	if err = decoder.Decode(out); err != nil {
-		problem.Write(c, problem.New(problem.InvalidRequest, "Provide a JSON object with supported fields and value types."))
+		problemhttp.Write(c, problem.New(problem.InvalidRequest, "Provide a JSON object with supported fields and value types."))
 		return false
 	}
 	var extra any
 	if err = decoder.Decode(&extra); !errors.Is(err, io.EOF) {
-		problem.Write(c, problem.New(problem.InvalidRequest, "Provide exactly one JSON object."))
+		problemhttp.Write(c, problem.New(problem.InvalidRequest, "Provide exactly one JSON object."))
 		return false
 	}
 	return true
@@ -227,7 +228,7 @@ func (a api) ListUsers(c *gin.Context, params apiv1.ListUsersParams) {
 		limit = *params.Limit
 	}
 	if limit < 1 || limit > 100 {
-		problem.Write(c, problem.New(problem.InvalidRequest, "Use a UUID after cursor and a limit between 1 and 100."))
+		problemhttp.Write(c, problem.New(problem.InvalidRequest, "Use a UUID after cursor and a limit between 1 and 100."))
 		return
 	}
 

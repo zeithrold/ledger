@@ -201,7 +201,7 @@ func readDetail(ctx context.Context, q *sqlgen.Queries, actor identity.Context, 
 		if e != nil {
 			return out, e
 		}
-		out.RefundableAmount = (Money{new(big.Int).Sub(m.units, used.units), m.scale}).String()
+		out.RefundableAmount = m.Add(used.Neg()).String()
 	}
 	if t.Data.Kind == "transfer" {
 		a, e := getAccount(ctx, q, actor, book, t.Data.AccountID, true)

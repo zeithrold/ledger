@@ -94,11 +94,11 @@ docs/                       Maintained project reference and operational guides
 ## Verification
 
 ```sh
-just install-lint
 just check
-just test-integration
 just fuzz
 ```
+
+`just check` includes disposable PostgreSQL integration tests and requires Docker. The pinned Go bootstrap runs the shared tool from the committed bundle; Python is not required. See [governance](docs/governance.md) and [contributing](CONTRIBUTING.md) for coverage, independent review and commit requirements.
 
 The module and repository path is `github.com/zeithrold/ledger`. This repository is backend-only; the Flutter client lives in the sibling `ledger-app` directory. See [architecture](docs/architecture.md) for the selected stack and implementation boundaries.
 

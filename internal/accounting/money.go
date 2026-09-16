@@ -1,158 +1,29 @@
-// Package accounting owns exact amounts and atomic personal ledger operations.
+// Package accounting owns authorized atomic personal ledger operations.
 package accounting
 
-import (
-	_ "embed"
-	"encoding/json"
-	"errors"
-	"math/big"
-	"regexp"
-	"strings"
-)
+import "github.com/zeithrold/ledger/internal/money"
 
-// Currency is a pinned CLDR 48 legal-tender currency supported by both clients.
-type Currency struct {
-	Code       string `json:"code"`
-	MinorUnits int    `json:"minor_units"`
-}
+// Currency is shared with the pure monetary kernel.
+type Currency = money.Currency
 
-//go:embed currencies.json
-var currencyJSON []byte
+// Money is an immutable exact amount.
+type Money = money.Money
 
-// Currencies returns a fresh copy of the shared reference catalog.
-func Currencies() []Currency {
-	var result []Currency
-	if err := json.Unmarshal(currencyJSON, &result); err != nil {
-		panic("invalid embedded currency catalog")
-	}
-	return result
+// Currencies returns the pinned reference catalog.
+func Currencies() []Currency { return money.Currencies() }
+
+// ParseMoney parses an exact amount using the pinned currency precision.
+func ParseMoney(value, currency string) (Money, error) { return money.ParseMoney(value, currency) }
+
+// Ratio returns the exact conversion rate and rounded display representation.
+func Ratio(source, destination Money) (string, string, string) {
+	return money.Ratio(source, destination)
 }
 
 var currencyUnits = func() map[string]int {
-	result := map[string]int{}
-	for _, c := range Currencies() {
-		result[c.Code] = c.MinorUnits
+	units := make(map[string]int)
+	for _, currency := range Currencies() {
+		units[currency.Code] = currency.MinorUnits
 	}
-	return result
+	return units
 }()
-
-var amountPattern = regexp.MustCompile(`^-?(0|[1-9][0-9]*)(\.[0-9]+)?$`)
-
-// Money stores signed integer minor units. Its methods never mutate the value.
-type Money struct {
-	units *big.Int
-	scale int
-}
-
-// ParseMoney rejects implicit rounding, exponents, non-finite and out-of-range amounts.
-func ParseMoney(value, currency string) (Money, error) {
-	scale, ok := currencyUnits[currency]
-	if !ok || len(value) > 24 || !amountPattern.MatchString(value) {
-		return Money{}, errors.New("invalid amount or currency")
-	}
-	parts := strings.Split(strings.TrimPrefix(value, "-"), ".")
-	if len(parts[0]) > 18 {
-		return Money{}, errors.New("amount must be less than 10^18")
-	}
-	fraction := ""
-	if len(parts) == 2 {
-		fraction = parts[1]
-	}
-	if len(fraction) > scale {
-		return Money{}, errors.New("amount exceeds currency precision")
-	}
-	n, ok := new(big.Int).SetString(parts[0]+fraction+strings.Repeat("0", scale-len(fraction)), 10)
-	if !ok {
-		return Money{}, errors.New("invalid amount")
-	}
-	if strings.HasPrefix(value, "-") {
-		n.Neg(n)
-	}
-	return Money{n, scale}, nil
-}
-
-// String renders a canonical decimal without floating point conversion.
-func (m Money) String() string {
-	sign := ""
-	if m.units.Sign() < 0 {
-		sign = "-"
-	}
-	s := new(big.Int).Abs(m.units).String()
-	if m.scale == 0 {
-		return sign + s
-	}
-	if len(s) <= m.scale {
-		s = strings.Repeat("0", m.scale-len(s)+1) + s
-	}
-	return sign + s[:len(s)-m.scale] + "." + s[len(s)-m.scale:]
-}
-
-func (m Money) rat() *big.Rat {
-	return new(big.Rat).SetFrac(m.units, new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(m.scale)), nil))
-}
-
-// Ratio returns the exact major-unit destination/source rate as integer strings.
-func Ratio(source, destination Money) (string, string, string) {
-	r := new(big.Rat).Quo(destination.rat(), source.rat())
-	return r.Num().String(), r.Denom().String(), significant(r, 18)
-}
-
-// significant uses decimal half-even rounding, with no binary intermediate.
-func significant(r *big.Rat, digits int) string {
-	if r.Sign() == 0 {
-		return "0"
-	}
-	n := new(big.Int).Abs(r.Num())
-	d := new(big.Int).Set(r.Denom())
-	exponent := len(n.String()) - len(d.String())
-	pow := func(e int) *big.Int { return new(big.Int).Exp(big.NewInt(10), big.NewInt(int64(e)), nil) }
-	if exponent >= 0 {
-		if n.Cmp(new(big.Int).Mul(d, pow(exponent))) < 0 {
-			exponent--
-		}
-	} else if new(big.Int).Mul(n, pow(-exponent)).Cmp(d) < 0 {
-		exponent--
-	}
-	scale := digits - 1 - exponent
-	if scale >= 0 {
-		n.Mul(n, pow(scale))
-	} else {
-		d.Mul(d, pow(-scale))
-	}
-	q, rem := new(big.Int), new(big.Int)
-	q.QuoRem(n, d, rem)
-	cmp := new(big.Int).Lsh(rem, 1).Cmp(d)
-	if cmp > 0 || (cmp == 0 && q.Bit(0) == 1) {
-		q.Add(q, big.NewInt(1))
-	}
-	if r.Sign() < 0 {
-		q.Neg(q)
-	}
-	if scale < 0 {
-		return new(big.Int).Mul(q, pow(-scale)).String()
-	}
-	s := (Money{q, scale}).String()
-	if strings.Contains(s, ".") {
-		s = strings.TrimRight(strings.TrimRight(s, "0"), ".")
-	}
-	return s
-}
-
-// Balanced compares exact quantities in one common valuation currency.
-func Balanced(values []string) bool {
-	if len(values) < 2 {
-		return false
-	}
-	total := new(big.Rat)
-	for _, value := range values {
-		if len(value) > 64 || !amountPattern.MatchString(value) {
-			return false
-		}
-		n, ok := new(big.Rat).SetString(value)
-		if !ok {
-			return false
-		}
-		total.Add(total, n)
-	}
-	return total.Sign() == 0
-}

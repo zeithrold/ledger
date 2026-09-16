@@ -13,6 +13,7 @@ import (
 	"github.com/zeithrold/ledger/internal/apiv1"
 	"github.com/zeithrold/ledger/internal/observability"
 	"github.com/zeithrold/ledger/internal/problem"
+	"github.com/zeithrold/ledger/internal/problemhttp"
 
 	"github.com/gin-gonic/gin"
 )
@@ -27,13 +28,15 @@ func New(db Pinger, dependencies ...Dependencies) (*gin.Engine, error) {
 	if len(dependencies) > 0 {
 		deps = dependencies[0]
 	}
-	r.Use(observability.Requests(), problem.Recovery())
+	r.Use(observability.Requests(), problemhttp.Recovery())
 	r.Use(deps.Telemetry.Middleware()...)
 	r.Use(versionGate())
 	r.HandleMethodNotAllowed = true
 	r.RedirectTrailingSlash = false
 	r.RedirectFixedPath = false
-	r.NoRoute(func(c *gin.Context) { problem.Write(c, problem.New(problem.NotFound, "The resource was not found.")) })
+	r.NoRoute(func(c *gin.Context) {
+		problemhttp.Write(c, problem.New(problem.NotFound, "The resource was not found."))
+	})
 	r.NoMethod(func(c *gin.Context) {
 		methods := []string{}
 		for _, route := range r.Routes() {
@@ -43,7 +46,7 @@ func New(db Pinger, dependencies ...Dependencies) (*gin.Engine, error) {
 		}
 		sort.Strings(methods)
 		c.Header("Allow", strings.Join(methods, ", "))
-		problem.Write(c, problem.New(problem.MethodNotAllowed, "The method is not supported for this resource."))
+		problemhttp.Write(c, problem.New(problem.MethodNotAllowed, "The method is not supported for this resource."))
 	})
 	if err := r.SetTrustedProxies(nil); err != nil {
 		return nil, fmt.Errorf("configure proxy trust: %w", err)
@@ -83,7 +86,7 @@ func (a api) GetReadiness(c *gin.Context) {
 		ctx, cancel := context.WithTimeout(c.Request.Context(), 2*time.Second)
 		defer cancel()
 		if err := a.db.PingContext(ctx); err != nil {
-			problem.Write(c, problem.New(problem.Unavailable, "The database is unavailable."))
+			problemhttp.Write(c, problem.New(problem.Unavailable, "The database is unavailable."))
 			return
 		}
 		state = apiv1.ReadinessDatabaseConnected
@@ -105,7 +108,7 @@ func bindingError(c *gin.Context, err error, _ int) {
 			break
 		}
 	}
-	problem.Write(c, p)
+	problemhttp.Write(c, p)
 }
 
 var _ apiv1.ServerInterface = api{}

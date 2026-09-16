@@ -1,0 +1,677 @@
+{
+  "schema_version": 1,
+  "kind": "go",
+  "coverage": {
+    "format": "go",
+    "profiles": [
+      "coverage/unit.out",
+      "coverage/integration.out"
+    ],
+    "source_roots": [
+      "cmd",
+      "internal",
+      "migrations"
+    ],
+    "exclude": [
+      "internal/database/sqlgen/**",
+      "internal/apiv1/api.gen.go"
+    ],
+    "minimum": 70,
+    "incremental_minimum": 90
+  },
+  "debug_profiles": {
+    "money": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "test",
+            "-json",
+            "-count=1",
+            "./internal/money"
+          ],
+          "timeout_seconds": 120
+        }
+      ]
+    },
+    "identity": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "test",
+            "-json",
+            "-count=1",
+            "./internal/identity"
+          ],
+          "timeout_seconds": 120
+        }
+      ]
+    },
+    "integration": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "test",
+            "-json",
+            "-tags=integration",
+            "-count=1",
+            "-timeout=5m",
+            "./tests/integration/..."
+          ],
+          "timeout_seconds": 900
+        }
+      ]
+    }
+  },
+  "commands": {
+    "check": {
+      "description": "Source, contract, tests and combined coverage; Docker is required",
+      "steps": [
+        {
+          "argv": [
+            "@ledger-tool",
+            "policy-check"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "security"
+          ],
+          "timeout_seconds": 1200
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "currency",
+            "--check"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "check-api"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "check-sqlc"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "sqlc-vet"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "architecture-check"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "lint"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "coverage-unit"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "test-integration"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "coverage-check"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "vet"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "build"
+          ]
+        }
+      ]
+    },
+    "run": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "./cmd/api"
+          ]
+        }
+      ]
+    },
+    "build": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "build",
+            "./..."
+          ]
+        }
+      ]
+    },
+    "test-unit": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "./..."
+          ],
+          "timeout_seconds": 600
+        }
+      ]
+    },
+    "test-integration": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "test",
+            "-race",
+            "-tags=integration",
+            "-count=1",
+            "-timeout=5m",
+            "-covermode=atomic",
+            "-coverpkg=./cmd/...,./internal/...,./migrations/...",
+            "-coverprofile=coverage/integration.out",
+            "./tests/integration/..."
+          ],
+          "timeout_seconds": 900
+        }
+      ]
+    },
+    "coverage-unit": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "test",
+            "-race",
+            "-count=1",
+            "-covermode=atomic",
+            "-coverpkg=./cmd/...,./internal/...,./migrations/...",
+            "-coverprofile=coverage/unit.out",
+            "./..."
+          ],
+          "timeout_seconds": 900
+        }
+      ]
+    },
+    "vet": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "vet",
+            "./..."
+          ]
+        }
+      ]
+    },
+    "lint": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.11.3",
+            "config",
+            "verify"
+          ]
+        },
+        {
+          "argv": [
+            "go",
+            "run",
+            "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.11.3",
+            "run"
+          ],
+          "timeout_seconds": 600
+        },
+        {
+          "argv": [
+            "go",
+            "run",
+            "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.11.3",
+            "fmt",
+            "--diff"
+          ]
+        }
+      ]
+    },
+    "format": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.11.3",
+            "fmt"
+          ]
+        }
+      ]
+    },
+    "architecture-check": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "github.com/fe3dback/go-arch-lint@v1.19.0",
+            "check",
+            "--arch-file",
+            ".go-arch-lint.yml"
+          ]
+        }
+      ]
+    },
+    "generate": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+            "generate"
+          ]
+        }
+      ]
+    },
+    "sqlc-vet": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+            "vet"
+          ]
+        }
+      ]
+    },
+    "check-sqlc": {
+      "steps": [
+        {
+          "argv": [
+            "@ledger-tool",
+            "generate-check",
+            "--output",
+            "internal/database/sqlgen",
+            "--",
+            "go",
+            "run",
+            "github.com/sqlc-dev/sqlc/cmd/sqlc@v1.31.1",
+            "generate"
+          ]
+        }
+      ]
+    },
+    "generate-api": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.0",
+            "--config",
+            "openapi-codegen.yaml",
+            "-o",
+            "internal/apiv1/api.gen.go",
+            "internal/apicontract/v1/openapi.json"
+          ]
+        }
+      ]
+    },
+    "check-api": {
+      "steps": [
+        {
+          "argv": [
+            "@ledger-tool",
+            "generate-check",
+            "--output",
+            "internal/apiv1/api.gen.go",
+            "--",
+            "go",
+            "run",
+            "github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.0",
+            "--config",
+            "openapi-codegen.yaml",
+            "-o",
+            "internal/apiv1/api.gen.go",
+            "internal/apicontract/v1/openapi.json"
+          ]
+        }
+      ]
+    },
+    "migrate-up": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "./cmd/migrate",
+            "up"
+          ]
+        }
+      ]
+    },
+    "migrate-down": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "./cmd/migrate",
+            "down"
+          ]
+        }
+      ]
+    },
+    "migrate-status": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "./cmd/migrate",
+            "status"
+          ]
+        }
+      ]
+    },
+    "db-up": {
+      "steps": [
+        {
+          "argv": [
+            "docker",
+            "compose",
+            "up",
+            "-d",
+            "--wait",
+            "postgres"
+          ]
+        }
+      ]
+    },
+    "db-down": {
+      "steps": [
+        {
+          "argv": [
+            "docker",
+            "compose",
+            "down"
+          ]
+        }
+      ]
+    },
+    "db-logs": {
+      "steps": [
+        {
+          "argv": [
+            "docker",
+            "compose",
+            "logs",
+            "--tail=100",
+            "postgres"
+          ]
+        }
+      ]
+    },
+    "fuzz": {
+      "description": "Thirty-second PR budget for each deterministic fuzz target",
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "test",
+            "./internal/config",
+            "-run=^$",
+            "-fuzz=^FuzzGinMode$",
+            "-fuzztime=30s"
+          ],
+          "timeout_seconds": 180
+        },
+        {
+          "argv": [
+            "go",
+            "test",
+            "./internal/money",
+            "-run=^$",
+            "-fuzz=^FuzzMoneyRoundTrip$",
+            "-fuzztime=30s"
+          ],
+          "timeout_seconds": 180
+        },
+        {
+          "argv": [
+            "go",
+            "test",
+            "./internal/money",
+            "-run=^$",
+            "-fuzz=^FuzzExactRatio$",
+            "-fuzztime=30s"
+          ],
+          "timeout_seconds": 180
+        },
+        {
+          "argv": [
+            "go",
+            "test",
+            "./internal/money",
+            "-run=^$",
+            "-fuzz=^FuzzBalance$",
+            "-fuzztime=30s"
+          ],
+          "timeout_seconds": 180
+        }
+      ]
+    },
+    "fuzz-nightly": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "test",
+            "./internal/config",
+            "-run=^$",
+            "-fuzz=^FuzzGinMode$",
+            "-fuzztime=600s"
+          ],
+          "timeout_seconds": 900
+        },
+        {
+          "argv": [
+            "go",
+            "test",
+            "./internal/money",
+            "-run=^$",
+            "-fuzz=^FuzzMoneyRoundTrip$",
+            "-fuzztime=600s"
+          ],
+          "timeout_seconds": 900
+        },
+        {
+          "argv": [
+            "go",
+            "test",
+            "./internal/money",
+            "-run=^$",
+            "-fuzz=^FuzzExactRatio$",
+            "-fuzztime=600s"
+          ],
+          "timeout_seconds": 900
+        },
+        {
+          "argv": [
+            "go",
+            "test",
+            "./internal/money",
+            "-run=^$",
+            "-fuzz=^FuzzBalance$",
+            "-fuzztime=600s"
+          ],
+          "timeout_seconds": 900
+        }
+      ]
+    },
+    "mutation-accounting": {
+      "steps": [
+        {
+          "argv": [
+            "@ledger-tool",
+            "isolated-run",
+            "--include",
+            "internal/money",
+            "--",
+            "go",
+            "run",
+            "github.com/go-gremlins/gremlins/cmd/gremlins@v0.6.0",
+            "unleash",
+            "./internal/money",
+            "--workers",
+            "2",
+            "--timeout-coefficient",
+            "20",
+            "--output",
+            "{root}/mutation-results/accounting.json"
+          ],
+          "timeout_seconds": 1200
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "mutation-check",
+            "--report",
+            "mutation-results/accounting.json"
+          ]
+        }
+      ]
+    },
+    "security-secrets": {
+      "description": "Scan an isolated source copy with fully redacted findings; no local environment files",
+      "steps": [
+        {
+          "argv": [
+            "@ledger-tool",
+            "isolated-run",
+            "--",
+            "go",
+            "run",
+            "-ldflags=-X github.com/zricethezav/gitleaks/v8/version.Version=8.30.1",
+            "github.com/zricethezav/gitleaks/v8@v8.30.1",
+            "dir",
+            "--redact=100",
+            "--no-banner",
+            "--ignore-gitleaks-allow",
+            "--report-format=json",
+            "--report-path={root}/build/secrets.json",
+            "."
+          ],
+          "timeout_seconds": 600
+        }
+      ]
+    },
+    "security-dependencies": {
+      "description": "Check reachable Go vulnerabilities against the current official vulnerability database",
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "run",
+            "golang.org/x/vuln/cmd/govulncheck@v1.8.0",
+            "./..."
+          ],
+          "timeout_seconds": 600
+        }
+      ]
+    },
+    "security": {
+      "description": "Pinned security tools; network availability is required for dependency advisory data",
+      "steps": [
+        {
+          "argv": [
+            "@ledger-tool",
+            "security-secrets"
+          ],
+          "timeout_seconds": 600
+        },
+        {
+          "argv": [
+            "@ledger-tool",
+            "security-dependencies"
+          ],
+          "timeout_seconds": 600
+        }
+      ]
+    },
+    "bootstrap": {
+      "steps": [
+        {
+          "argv": [
+            "go",
+            "mod",
+            "download"
+          ],
+          "timeout_seconds": 300
+        }
+      ]
+    },
+    "doctor": {
+      "steps": [
+        {
+          "argv": [
+            "@ledger-tool",
+            "version-check",
+            "--pattern",
+            "^go version go1\\.26\\.6 ",
+            "--",
+            "go",
+            "version"
+          ]
+        },
+        {
+          "argv": [
+            "go",
+            "tool",
+            "-n",
+            "covdata"
+          ]
+        },
+        {
+          "argv": [
+            "docker",
+            "info",
+            "--format",
+            "{{.ServerVersion}}"
+          ]
+        }
+      ]
+    }
+  }
+}

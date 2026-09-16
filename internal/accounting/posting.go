@@ -97,7 +97,7 @@ func prepare(ctx context.Context, q *sqlgen.Queries, actor identity.Context, boo
 	if err != nil {
 		return p, invalid("amount", err.Error())
 	}
-	if m.units.Sign() == 0 || (m.units.Sign() < 0 && in.Kind != "opening") {
+	if m.Sign() == 0 || (m.Sign() < 0 && in.Kind != "opening") {
 		return p, invalid("amount", "Provide a positive nonzero amount.")
 	}
 	in.Amount = m.String()
@@ -162,7 +162,7 @@ func prepare(ctx context.Context, q *sqlgen.Queries, actor identity.Context, boo
 		if e != nil {
 			return p, e
 		}
-		if new(big.Int).Add(used.units, m.units).Cmp(limit.units) > 0 {
+		if used.Add(m).Cmp(limit) > 0 {
 			return p, conflict("The refund exceeds the remaining expense amount.")
 		}
 	}
@@ -184,10 +184,10 @@ func prepare(ctx context.Context, q *sqlgen.Queries, actor identity.Context, boo
 		if err != nil {
 			return p, invalid("to_amount", err.Error())
 		}
-		if otherAmount.units.Sign() <= 0 {
+		if otherAmount.Sign() <= 0 {
 			return p, invalid("to_amount", "Provide a positive amount.")
 		}
-		if other.Currency == a.Currency && otherAmount.units.Cmp(m.units) != 0 {
+		if other.Currency == a.Currency && otherAmount.Cmp(m) != 0 {
 			return p, invalid("to_amount", "Same-currency transfer principal must match. Record fees separately.")
 		}
 		in.ToAmount = otherAmount.String()
@@ -274,11 +274,10 @@ func writeRevision(ctx context.Context, q *sqlgen.Queries, actor identity.Contex
 }
 
 func signed(m Money, negative bool) Money {
-	n := new(big.Int).Set(m.units)
 	if negative {
-		n.Neg(n)
+		return m.Neg()
 	}
-	return Money{n, m.scale}
+	return m
 }
 
 func writeJournal(ctx context.Context, q *sqlgen.Queries, actor identity.Context, book uuid.UUID, id string, revision int32, p prepared) error {
@@ -295,7 +294,7 @@ func writeJournal(ctx context.Context, q *sqlgen.Queries, actor identity.Context
 	values := []Money{signed(p.amount, assetNegative), signed(p.amount, !assetNegative)}
 	accounts := []sqlgen.Account{p.account, p.other}
 	for i, a := range accounts {
-		r := new(big.Rat).Quo(values[i].rat(), amounts[i].rat())
+		r := new(big.Rat).Quo(values[i].Rational(), amounts[i].Rational())
 		n, e := num(r.Num().String())
 		if e != nil {
 			return e

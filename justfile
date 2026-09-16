@@ -1,104 +1,139 @@
-sqlc_version := "v1.31.1"
+# Recipes contain no platform-specific shell logic; the pinned Go bootstrap owns execution.
+set windows-shell := ["powershell.exe", "-NoLogo", "-NoProfile", "-Command"]
+export GOTOOLCHAIN := "go1.26.6"
 
-# Show available commands.
 default:
     @just --list
 
+check:
+    go run ./tool/bootstrap.go check
+
+security:
+    go run ./tool/bootstrap.go security
+
+security-secrets:
+    go run ./tool/bootstrap.go security-secrets
+
+security-dependencies:
+    go run ./tool/bootstrap.go security-dependencies
+
+policy-check base="":
+    go run ./tool/bootstrap.go policy-check {{if base == "" { "" } else { "--base " + if os() == "windows" { "'" + replace(base, "'", "''") + "'" } else { quote(base) } }}}
+
 run:
-    go run ./cmd/api
+    go run ./tool/bootstrap.go run
 
 build:
-    go build -o bin/ledger ./cmd/api
-    go build -o bin/migrate ./cmd/migrate
+    go run ./tool/bootstrap.go build
 
 test: test-unit
 
 test-unit:
-    go test -race -count=1 ./...
+    go run ./tool/bootstrap.go test-unit
 
-vet:
-    go vet ./...
-
-fmt:
-    gofmt -w cmd internal migrations
-
-generate:
-    go run github.com/sqlc-dev/sqlc/cmd/sqlc@{{sqlc_version}} generate
-
-sqlc-vet:
-    go run github.com/sqlc-dev/sqlc/cmd/sqlc@{{sqlc_version}} vet
-
-migrate-up:
-    go run ./cmd/migrate up
-
-migrate-down:
-    go run ./cmd/migrate down
-
-migrate-status:
-    go run ./cmd/migrate status
-
-check: check-currencies check-api sqlc-vet lint test-unit vet build
-
-# Rebuild the pinned reference pack and embedded accounting metadata offline.
-generate-currencies:
-    python3 tool/currencies.py
-
-check-currencies:
-    python3 tool/currencies.py --check
-
-export-currencies app:
-    python3 tool/currencies.py --app {{quote(app)}}
-
-# Start the persistent local database without deleting existing data.
-db-up:
-    docker compose up -d --wait postgres
-
-db-down:
-    docker compose down
-
-db-logs:
-    docker compose logs --tail=100 postgres
-
-# Install pinned lint tooling into the ignored project bin directory.
-install-lint:
-    GOBIN="{{justfile_directory()}}/bin" go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@v2.11.3
-
-lint:
-    ./bin/golangci-lint config verify
-    ./bin/golangci-lint run
-    ./bin/golangci-lint fmt --diff
-
-format:
-    ./bin/golangci-lint fmt
-
-# Requires Docker; creates isolated containers and does not read DATABASE_URL.
 test-integration:
-    go test -race -tags=integration -count=1 -timeout=5m ./tests/integration/...
+    go run ./tool/bootstrap.go test-integration
 
 coverage-unit:
-    mkdir -p coverage
-    go test -race -covermode=atomic -coverprofile=coverage/unit.out ./internal/...
+    go run ./tool/bootstrap.go coverage-unit
 
-# Keep each fuzz target scoped to a single package.
-fuzz package="./internal/config" target="FuzzGinMode" duration="10s":
-    go test {{package}} -run='^$' -fuzz='^{{target}}$' -fuzztime={{duration}}
+coverage-check base="":
+    go run ./tool/bootstrap.go coverage-check {{if base == "" { "" } else { "--base " + if os() == "windows" { "'" + replace(base, "'", "''") + "'" } else { quote(base) } }}}
 
-# Generate the HTTP interface and DTOs from the canonical OpenAPI 3.1 contract.
+lint:
+    go run ./tool/bootstrap.go lint
+
+vet:
+    go run ./tool/bootstrap.go vet
+
+format:
+    go run ./tool/bootstrap.go format
+
+fmt: format
+
+architecture-check:
+    go run ./tool/bootstrap.go architecture-check
+
+generate:
+    go run ./tool/bootstrap.go generate
+
+sqlc-vet:
+    go run ./tool/bootstrap.go sqlc-vet
+
+check-sqlc:
+    go run ./tool/bootstrap.go check-sqlc
+
 generate-api:
-    go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.0 --config openapi-codegen.yaml -o internal/apiv1/api.gen.go internal/apicontract/v1/openapi.json
+    go run ./tool/bootstrap.go generate-api
 
-# Compare in a temporary file, including workspaces without Git.
 check-api:
-    #!/usr/bin/env sh
-    set -eu
-    temporary="$(mktemp)"
-    trap 'rm -f "$temporary"' EXIT
-    go run github.com/oapi-codegen/oapi-codegen/v2/cmd/oapi-codegen@v2.8.0 --config openapi-codegen.yaml -o "$temporary" internal/apicontract/v1/openapi.json
-    cmp internal/apiv1/api.gen.go "$temporary"
+    go run ./tool/bootstrap.go check-api
 
-# A pinned mutation engine and a credentials-free copy of pure money functions.
-install-mutation:
-    GOBIN="{{justfile_directory()}}/bin" go install github.com/go-gremlins/gremlins/cmd/gremlins@v0.6.0
+generate-currencies:
+    go run ./tool/bootstrap.go currency
+
+check-currencies:
+    go run ./tool/bootstrap.go currency --check
+
+export-currencies app:
+    go run ./tool/bootstrap.go currency --app {{if os() == "windows" { "'" + replace(app, "'", "''") + "'" } else { quote(app) }}}
+
+migrate-up:
+    go run ./tool/bootstrap.go migrate-up
+
+migrate-down:
+    go run ./tool/bootstrap.go migrate-down
+
+migrate-status:
+    go run ./tool/bootstrap.go migrate-status
+
+db-up:
+    go run ./tool/bootstrap.go db-up
+
+db-down:
+    go run ./tool/bootstrap.go db-down
+
+db-logs:
+    go run ./tool/bootstrap.go db-logs
+
+fuzz:
+    go run ./tool/bootstrap.go fuzz
 
 mutation-accounting:
-    bash tool/mutation-accounting.sh
+    go run ./tool/bootstrap.go mutation-accounting
+
+changes base="":
+    go run ./tool/bootstrap.go changes {{if base == "" { "" } else { "--base " + if os() == "windows" { "'" + replace(base, "'", "''") + "'" } else { quote(base) } }}}
+
+review-check file=".governance/review.json":
+    go run ./tool/bootstrap.go review-check --file {{if os() == "windows" { "'" + replace(file, "'", "''") + "'" } else { quote(file) }}}
+
+fingerprint:
+    go run ./tool/bootstrap.go fingerprint
+
+debug-start case:
+    go run ./tool/bootstrap.go debug-start  {{if os() == "windows" { "'" + replace(case, "'", "''") + "'" } else { quote(case) }}}
+
+debug-run session profile:
+    go run ./tool/bootstrap.go debug-run  {{if os() == "windows" { "'" + replace(session, "'", "''") + "'" } else { quote(session) }}} {{if os() == "windows" { "'" + replace(profile, "'", "''") + "'" } else { quote(profile) }}}
+
+debug-verify session profile:
+    go run ./tool/bootstrap.go debug-verify  {{if os() == "windows" { "'" + replace(session, "'", "''") + "'" } else { quote(session) }}} {{if os() == "windows" { "'" + replace(profile, "'", "''") + "'" } else { quote(profile) }}}
+
+debug-report session:
+    go run ./tool/bootstrap.go debug-report  {{if os() == "windows" { "'" + replace(session, "'", "''") + "'" } else { quote(session) }}}
+
+ui-report manifest=".governance/ui.json":
+    go run ./tool/bootstrap.go ui-report --manifest {{if os() == "windows" { "'" + replace(manifest, "'", "''") + "'" } else { quote(manifest) }}}
+
+doctor:
+    go run ./tool/bootstrap.go doctor
+
+bootstrap:
+    go run ./tool/bootstrap.go bootstrap
+
+arch: architecture-check
+
+coverage: coverage-unit test-integration coverage-check
+
+mutation: mutation-accounting

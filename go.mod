@@ -1,6 +1,6 @@
 module github.com/zeithrold/ledger
 
-go 1.26.0
+go 1.26.6
 
 require (
 	github.com/DataDog/go-sqllexer v0.2.1
@@ -10,7 +10,7 @@ require (
 	github.com/getsentry/sentry-go/gin v0.49.0
 	github.com/getsentry/sentry-go/slog v0.49.0
 	github.com/gin-gonic/gin v1.12.0
-	github.com/go-jose/go-jose/v3 v3.0.4
+	github.com/go-jose/go-jose/v3 v3.0.5
 	github.com/google/uuid v1.6.0
 	github.com/jackc/pgx/v5 v5.10.0
 	github.com/joho/godotenv v1.5.1
@@ -82,7 +82,7 @@ require (
 	github.com/pelletier/go-toml/v2 v2.2.4 // indirect
 	github.com/power-devops/perfstat v0.0.0-20240221224432-82ca36839d55 // indirect
 	github.com/quic-go/qpack v0.6.0 // indirect
-	github.com/quic-go/quic-go v0.59.0 // indirect
+	github.com/quic-go/quic-go v0.59.1 // indirect
 	github.com/santhosh-tekuri/jsonschema/v6 v6.0.3 // indirect
 	github.com/sethvargo/go-retry v0.4.0 // indirect
 	github.com/shirou/gopsutil/v4 v4.26.6 // indirect

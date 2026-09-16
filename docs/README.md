@@ -12,6 +12,7 @@ Maintained reference for developing and operating Ledger.
 | [OpenAPI and Scalar](openapi.md) | Generated HTTP boundary, documentation delivery and contract checks |
 | [Logging and Sentry](observability.md) | Configuration, structured logging, tracing and user scopes |
 | [Testing and code quality](testing.md) | Local database, checks, isolation and quality conventions |
+| [Architecture and quality governance](governance.md) | Coverage floors, change selection, independent review and debug evidence |
 | [Exchange-rate snapshots](exchange-rates.md) | Proposed currency-rate storage and retention |
 
 Keep these guides aligned with the implementation. Development journals, dated
