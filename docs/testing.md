@@ -13,6 +13,8 @@
 | `just check` | Gate policy and pinned skills, contracts, architecture, lint, unit/integration coverage, vet, build | Docker for disposable PostgreSQL |
 | `go run ./tool/bootstrap.go security` | Redacted source-secret scan and reachable Go vulnerability scan | Pinned tool acquisition and current vulnerability database |
 
+`just --list` shows the daily surface only: `check`, `changes`, `test`, `lint`, `fmt` and `arch`. Every other command above is a private recipe, hidden from that list but still invocable, and new recipes stay private until a daily need is proven.
+
 Unit tests live beside production code and must not read developer credentials, contact services, or require Docker. Integration tests live in `tests/integration` and require `//go:build integration`. Missing Docker is a test failure, not a silently skipped pass.
 
 Testcontainers creates an isolated PostgreSQL container with a random host port per lifecycle test. It never uses the Compose database or `DATABASE_URL`. Cleanup has an independent timeout. Compose is for persistent local manual testing only. Both currently use `postgres:17.9-alpine`; update them together. pgvector will be added when vector schema work starts.

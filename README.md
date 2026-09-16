@@ -95,10 +95,11 @@ docs/                       Maintained project reference and operational guides
 
 ```sh
 just check
-just fuzz
 ```
 
 `just check` includes disposable PostgreSQL integration tests and requires Docker. The pinned Go bootstrap runs the shared tool from the committed bundle; Python is not required. See [governance](docs/governance.md) and [contributing](CONTRIBUTING.md) for coverage, independent review and commit requirements.
+
+`just --list` shows the daily surface only: `check`, `changes`, `test`, `lint`, `fmt` and `arch`. Every other recipe is private, hidden from that list but still invocable, for example `just test-integration`, `just fuzz` or `just mutation-accounting`.
 
 The module and repository path is `github.com/zeithrold/ledger`. This repository is backend-only; the Flutter client lives in the sibling `ledger-app` directory. See [architecture](docs/architecture.md) for the selected stack and implementation boundaries.
 
