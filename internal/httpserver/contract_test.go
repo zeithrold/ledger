@@ -8,11 +8,13 @@ import (
 	"log/slog"
 	"net/http"
 	"net/http/httptest"
+	"reflect"
 	"strings"
 	"testing"
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/zeithrold/ledger/internal/apicontract"
 	"github.com/zeithrold/ledger/internal/auth"
 	"github.com/zeithrold/ledger/internal/identity"
 	"github.com/zeithrold/ledger/internal/problem"
@@ -88,6 +90,24 @@ func TestVersionGatePrecedesAuthenticationAndWrites(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
+	current := apicontract.Version()
+	previous := apicontract.PreviousVersion()
+	// A date revision must be additive for a previous revision to be tolerable.
+	// 2026-09-15 is deliberately absent from this release's window: it removed
+	// currency name fields, so tolerating it would serve a client a document it
+	// cannot parse. Until the next bump the window holds the current date alone.
+	tolerated := []any{current}
+	if previous != current {
+		tolerated = append(tolerated, previous)
+	}
+	unsupported := []string{"2026-09-13", "2026-09-15", "2026-09-17"}
+	for _, date := range unsupported {
+		for _, supported := range tolerated {
+			if date == supported {
+				t.Fatalf("fixture date %q is a supported revision", date)
+			}
+		}
+	}
 	for _, tc := range []struct {
 		name, path string
 		versions   []string
@@ -97,12 +117,12 @@ func TestVersionGatePrecedesAuthenticationAndWrites(t *testing.T) {
 		{"missing", "/api/v1/bootstrap", nil, 400, problem.VersionRequired},
 		{"empty", "/api/v1/bootstrap", []string{""}, 400, problem.VersionInvalid},
 		{"invalid date", "/api/v1/bootstrap", []string{"2026-02-30"}, 400, problem.VersionInvalid},
-		{"duplicate", "/api/v1/bootstrap", []string{"2026-09-16", "2026-09-16"}, 400, problem.VersionInvalid},
-		{"comma", "/api/v1/bootstrap", []string{"2026-09-16,2026-09-16"}, 400, problem.VersionInvalid},
-		{"old", "/api/v1/bootstrap", []string{"2026-09-13"}, 400, problem.VersionUnsupported},
-		{"previous currency contract", "/api/v1/bootstrap", []string{"2026-09-15"}, 400, problem.VersionUnsupported},
-		{"future", "/api/v1/bootstrap", []string{"2026-09-17"}, 400, problem.VersionUnsupported},
-		{"major", "/api/v2/bootstrap", []string{"2026-09-16"}, 404, problem.MajorUnsupported},
+		{"duplicate", "/api/v1/bootstrap", []string{current, current}, 400, problem.VersionInvalid},
+		{"comma", "/api/v1/bootstrap", []string{current + "," + current}, 400, problem.VersionInvalid},
+		{"old", "/api/v1/bootstrap", []string{unsupported[0]}, 400, problem.VersionUnsupported},
+		{"removed currency contract", "/api/v1/bootstrap", []string{unsupported[1]}, 400, problem.VersionUnsupported},
+		{"future", "/api/v1/bootstrap", []string{unsupported[2]}, 400, problem.VersionUnsupported},
+		{"major", "/api/v2/bootstrap", []string{current}, 404, problem.MajorUnsupported},
 	} {
 		t.Run(tc.name, func(t *testing.T) {
 			req := httptest.NewRequestWithContext(t.Context(), "POST", tc.path, nil)
@@ -113,8 +133,9 @@ func TestVersionGatePrecedesAuthenticationAndWrites(t *testing.T) {
 			r.ServeHTTP(w, req)
 			body := checkProblem(t, w, tc.code, tc.kind)
 			if tc.kind == problem.VersionUnsupported {
-				if versions, ok := body["supported_versions"].([]any); !ok || len(versions) != 1 || versions[0] != "2026-09-16" {
-					t.Fatalf("versions=%v", body)
+				got, ok := body["supported_versions"].([]any)
+				if !ok || !reflect.DeepEqual(got, tolerated) {
+					t.Fatalf("versions=%v want=%v", body["supported_versions"], tolerated)
 				}
 			}
 			if w.Header().Get(VersionHeader) != "" {
@@ -125,12 +146,40 @@ func TestVersionGatePrecedesAuthenticationAndWrites(t *testing.T) {
 	if v.calls != 0 || b.calls != 0 {
 		t.Fatal("version failure executed auth or business code")
 	}
-	w := request(t, r, "POST", "/api/v1/bootstrap", "2026-09-16", "{}")
-	if w.Code != 201 || v.calls != 1 || b.calls != 1 || w.Header().Get(VersionHeader) != "2026-09-16" {
+	w := request(t, r, "POST", "/api/v1/bootstrap", current, "{}")
+	if w.Code != 201 || v.calls != 1 || b.calls != 1 || w.Header().Get(VersionHeader) != current {
 		t.Fatalf("status=%d calls=%d/%d", w.Code, v.calls, b.calls)
 	}
 	if w.Header().Get("Cache-Control") != "no-store" {
 		t.Fatal("missing no-store")
+	}
+}
+
+// Every tolerated revision is accepted and the negotiated date is reported back,
+// so a client can tell which revision served the response.
+func TestVersionGateAcceptsEveryToleratedRevision(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+	current := apicontract.Version()
+	previous := apicontract.PreviousVersion()
+	if versions, ok := apicontract.Supported("v1"); !ok || len(versions) == 0 {
+		t.Fatalf("no supported revisions: %v", versions)
+	}
+	for _, revision := range []string{current, previous} {
+		v, b := &verifierStub{}, &backendStub{}
+		r, err := New(nil, Dependencies{Backend: b, Verifier: v})
+		if err != nil {
+			t.Fatal(err)
+		}
+		w := request(t, r, "POST", "/api/v1/bootstrap", revision, "{}")
+		if w.Code != 201 || v.calls != 1 || b.calls != 1 {
+			t.Fatalf("revision=%s status=%d calls=%d/%d", revision, w.Code, v.calls, b.calls)
+		}
+		if got := w.Header().Get(VersionHeader); got != revision {
+			t.Fatalf("negotiated=%q want=%q", got, revision)
+		}
+		if got := w.Header().Get("Vary"); !strings.Contains(got, VersionHeader) {
+			t.Fatalf("vary=%q", got)
+		}
 	}
 }
 

@@ -5,8 +5,14 @@
 Currency identity and precision are language-neutral. The database `currencies`
 table and `GET /api/v1/currencies` expose `code` and `minor_units`; names and symbols
 come from a versioned CLDR resource pack. Contract `2026-09-16` removes the former
-`name_en` and `name_zh` currency fields. Deploy the matching App and backend together;
-the preceding date is rejected before authentication or writes.
+`name_en` and `name_zh` currency fields, so it is **not** additive: clients still on
+`2026-09-15` are rejected and must update before the backend rolls forward.
+
+Revisions after `2026-09-16` must be additive. The version gate tolerates the
+immediately preceding date beside the current one and always serves the current
+document, which only helps a client if its fields still exist. Renaming, removing
+or retyping a field is a breaking change and belongs in a new path major version,
+not a new date. See [API contract](api.md).
 
 The 148 allowed currency codes and their accounting precision are unchanged.
 Integer minor-unit / rational calculations do not use CLDR cash precision or

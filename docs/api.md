@@ -12,7 +12,11 @@ Every response handled by the application includes a server-generated `X-Request
 | --- | --- | --- |
 | v1 | 2026-09-16 | Identity and manual accounting; language-neutral currency metadata |
 
+A major version tolerates the current date beside the immediately preceding one, so an already deployed client survives a backend roll-forward. Only the current document is ever served, which means a date revision must be additive: renaming, removing, or retyping a field is a breaking change and requires a new path major version instead. `internal/apicontract/contract.go` holds the tolerated pair; `Supported` collapses it while both entries are equal, as they are for this release.
+
 During early development, only one date implementation is maintained per major version. Existing request, response, or authorization semantics must not silently change under that date. Breaking revisions advance the date and can immediately remove the previous implementation; old clients receive an explicit unsupported-version problem. Internal fixes and independent new endpoints need not change the date. A broad redesign uses a new major path. If compatibility adapters become necessary, register explicit date handlers; no adapters are implemented yet.
+
+The date raised to the backend must move with the release in the same change: `2026-09-15` removed the currency name fields and is deliberately not tolerated, because serving a client a document it cannot parse is worse than an explicit rejection.
 
 Breaking deployment procedure: enter a maintenance window, stop traffic to old instances, apply the explicit migration, deploy the matching API version, then restore traffic after checks. Do not mix incompatible date implementations behind a load balancer. Version negotiation does not make destructive database changes compatible. A rollback involving phase 1 Down migrations deletes identity data and is only suitable for disposable environments; production recovery requires a reviewed backup/restore plan.
 

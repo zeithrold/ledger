@@ -53,6 +53,9 @@ func versionGate() gin.HandlerFunc {
 			problem.Write(c, problem.New(problem.VersionUnsupported, "The requested API version is not supported."), versions...)
 			return
 		}
+		// Echo the negotiated date, which may be the tolerated preceding
+		// revision rather than the current one, so a client can see exactly
+		// which revision the response was served under.
 		c.Header(VersionHeader, requested)
 		c.Next()
 	}

@@ -91,6 +91,38 @@ def synchronize(destination, files, check):
         raise ValueError(f'Unexpected currency pack files: {sorted(extras)}')
 
 
+def app_marker(manifest):
+    """Record what an exported client pack was generated from.
+
+    The application keeps this beside its currency assets and fails its own
+    check when the record no longer matches the pack, so a backend that changed
+    without re-exporting cannot leave the client silently stale.
+    """
+    contract = json.loads((ROOT / 'internal/apicontract/v1/openapi.json').read_text())
+    return encode({
+        'schema_version': 1,
+        'contract_revision': contract['info']['version'],
+        'cldr_version': manifest['cldr_version'],
+        'currency_pack_sha256': manifest['content_sha256'],
+    })
+
+
+def synchronize_app(app, files, marker, check):
+    synchronize(app / 'assets/reference/currencies', files, check)
+    path = app / 'assets/reference/contract.json'
+    if check:
+        if not path.is_file():
+            raise ValueError(f'The application is missing its contract record: {path}')
+        if path.read_bytes() != marker:
+            raise ValueError(
+                'The application contract record is stale; re-export with --app '
+                f'and commit the result: {path}'
+            )
+    else:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(marker)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
@@ -105,7 +137,8 @@ def main():
     else:
         target.write_bytes(metadata)
     if args.app:
-        synchronize(args.app / 'assets/reference/currencies', files, args.check)
+        manifest = json.loads(files['manifest.json'])
+        synchronize_app(args.app, files, app_marker(manifest), args.check)
     print(f'Currency pack {"verified" if args.check else "generated"}: {len(json.loads(metadata))} currencies')
 
 

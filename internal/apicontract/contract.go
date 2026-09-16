@@ -14,6 +14,15 @@ var v1 []byte
 // VersionHeader selects an exact date within a major version.
 const VersionHeader = "X-Ledger-API-Version"
 
+// previousVersion is the revision tolerated alongside the current one so an
+// already deployed client keeps working across a backend roll-forward.
+//
+// A date revision must be additive for this to be meaningful: the served
+// contract is always the current document, and anything that renames or removes
+// a field is a breaking change that belongs in a new major version instead.
+// Update this constant to the outgoing date as the first step of every bump.
+const previousVersion = "2026-09-16"
+
 var currentVersion = func() string {
 	var metadata struct {
 		Info struct {
@@ -29,12 +38,27 @@ var currentVersion = func() string {
 // Version returns the current v1 revision from the canonical contract.
 func Version() string { return currentVersion }
 
+// PreviousVersion returns the tolerated preceding revision, or the current one
+// when no earlier revision is accepted.
+func PreviousVersion() string {
+	if previousVersion == "" {
+		return currentVersion
+	}
+	return previousVersion
+}
+
 // Supported returns the explicitly registered revisions for a major version.
+//
+// The current revision and, when it differs, the immediately preceding one are
+// accepted. The preceding revision is only ever served the current document.
 func Supported(major string) ([]string, bool) {
 	if major != "v1" {
 		return nil, false
 	}
-	return []string{Version()}, true
+	if previousVersion == "" || previousVersion == currentVersion {
+		return []string{currentVersion}, true
+	}
+	return []string{currentVersion, previousVersion}, true
 }
 
 // Document returns a copy of the current document.
