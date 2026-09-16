@@ -120,6 +120,10 @@ func run() error {
 			return closeErr
 		}
 	}
+	required := moduleGoVersion(tmp)
+	if e = requireToolchain(required); e != nil {
+		return e
+	}
 	bin := filepath.Join(tmp, "ledger-tool")
 	if runtime.GOOS == "windows" {
 		bin += ".exe"
@@ -130,7 +134,7 @@ func run() error {
 	build.Stdout = os.Stdout
 	build.Stderr = os.Stderr
 	if e = build.Run(); e != nil {
-		return e
+		return fmt.Errorf("blocked: building the pinned tooling failed (the bundle requires go %s): %w; install that toolchain or provide network access, then retry", required, e)
 	}
 	args := append([]string{"--root", root}, os.Args[1:]...)
 	cmd := exec.Command(bin, args...)
@@ -138,4 +142,90 @@ func run() error {
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	return cmd.Run()
+}
+
+// moduleGoVersion reads the language version the bundled module requires. Go
+// honours both the `go` directive and a newer `toolchain` directive, so the
+// higher of the two is the version the build actually needs.
+func moduleGoVersion(dir string) string {
+	b, e := os.ReadFile(filepath.Join(dir, "go.mod"))
+	if e != nil {
+		return ""
+	}
+	required := ""
+	for _, line := range strings.Split(string(b), "\n") {
+		line = strings.TrimSpace(line)
+		value := ""
+		switch {
+		case strings.HasPrefix(line, "go "):
+			value = strings.TrimSpace(strings.TrimPrefix(line, "go "))
+		case strings.HasPrefix(line, "toolchain "):
+			value = strings.TrimSpace(strings.TrimPrefix(line, "toolchain "))
+			value = strings.TrimSpace(strings.TrimPrefix(value, "go"))
+		}
+		if value != "" && olderThan(required, value) {
+			required = value
+		}
+	}
+	return required
+}
+
+// requireToolchain fails fast with an actionable blocked message when the
+// bundle cannot be built and the toolchain download is disabled, instead of
+// surfacing an unrelated error from the build that follows.
+func requireToolchain(required string) error {
+	if required == "" {
+		return nil
+	}
+	out, e := exec.Command("go", "env", "GOVERSION", "GOTOOLCHAIN").CombinedOutput()
+	if e != nil {
+		return fmt.Errorf("blocked: cannot inspect the local Go toolchain (the bundle requires go %s): %w: %s", required, e, strings.TrimSpace(string(out)))
+	}
+	fields := strings.Fields(strings.TrimSpace(string(out)))
+	local := ""
+	mode := ""
+	if len(fields) > 0 {
+		local = fields[0]
+	}
+	if len(fields) > 1 {
+		mode = fields[1]
+	}
+	if !olderThan(local, required) {
+		return nil
+	}
+	if mode == "local" {
+		return fmt.Errorf("blocked: this repository requires go %s, the local toolchain is %s and GOTOOLCHAIN=local forbids downloading it; install go %s or allow the toolchain download, then retry", required, local, required)
+	}
+	return nil
+}
+
+// olderThan compares two Go version strings numerically.
+func olderThan(local, required string) bool {
+	l1, l2, l3 := versionParts(local)
+	r1, r2, r3 := versionParts(required)
+	if l1 != r1 {
+		return l1 < r1
+	}
+	if l2 != r2 {
+		return l2 < r2
+	}
+	return l3 < r3
+}
+
+func versionParts(version string) (int, int, int) {
+	parts := strings.SplitN(strings.TrimPrefix(strings.TrimSpace(version), "go"), ".", 3)
+	value := func(i int) int {
+		if i >= len(parts) {
+			return 0
+		}
+		n := 0
+		for _, r := range parts[i] {
+			if r < '0' || r > '9' {
+				break
+			}
+			n = n*10 + int(r-'0')
+		}
+		return n
+	}
+	return value(0), value(1), value(2)
 }

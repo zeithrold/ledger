@@ -5,7 +5,7 @@ description: Reproduce and repair Ledger defects using runtime evidence, targete
 
 # Evidence-driven debug
 
-Read `AGENTS.md`, `docs/governance.md` and the affected domain contract. Inspect the dirty diff before changing files. Use the pinned tool's `debug-*` commands for session/evidence management; consult command help for arguments. A session report records evidence, not proof that a human reproduced a device-only issue.
+Read `AGENTS.md`, `docs/governance.md` and the affected domain contract. Inspect the dirty diff before changing files. Use the pinned tool's `debug-*` commands for session and evidence management; `just --list` lists the supported recipes and each reports its own argument usage. A session report records evidence, not proof that a human reproduced a device-only issue.
 
 1. Record trigger, actual/expected behavior, platform and success criteria. Start `just debug-start <case>` and fill `expected`, `actual`, `hypotheses` and `failure_pattern` in `build/debug/<session>/session.json`; record probes in `probes`. The pattern is a regular expression identifying the intended failing assertion, not a generic error/exit marker. Use synthetic inputs and an isolated database.
 2. Reproduce the smallest relevant failure. Separate observed facts from hypotheses. For ambiguous defects, list competing causes and a falsifying observation for each; do not invent extra hypotheses for an obvious failure.

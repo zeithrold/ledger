@@ -38,7 +38,7 @@ jobs:
         id: classify
         env:
           LEDGER_BASE: ${{ github.event.pull_request.base.sha || github.event.before || 'HEAD^' }}
-        run: go run ./tool/bootstrap.go changes --base "$LEDGER_BASE" --github-output "$GITHUB_OUTPUT" --json
+        run: go run ./tool/bootstrap.go changes --base "$LEDGER_BASE" --github-output "$GITHUB_OUTPUT"
   source-gate:
     needs: changes
     runs-on: ubuntu-latest

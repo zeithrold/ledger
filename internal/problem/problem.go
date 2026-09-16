@@ -42,3 +42,17 @@ func (e *Error) Error() string { return string(e.Kind) }
 
 // New constructs an application error with a stable type.
 func New(kind Kind, detail string) *Error { return &Error{Kind: kind, Detail: detail} }
+
+// Kinds lists every published problem kind. Listing a constant here is what
+// makes it part of the contract: the HTTP adapter must register it, and its
+// test enumerates this list, so an unregistered kind cannot degrade into an
+// unrelated server error unnoticed.
+func Kinds() []Kind {
+	return []Kind{
+		VersionRequired, VersionInvalid, VersionUnsupported,
+		InvalidRequest, AuthenticationRequired, InvalidToken,
+		UserDisabled, AccessDenied, MajorUnsupported,
+		NotFound, MethodNotAllowed, BootstrapRequired,
+		Conflict, Unavailable, Internal,
+	}
+}

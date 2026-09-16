@@ -20,6 +20,9 @@ security-dependencies:
 policy-check base="":
     go run ./tool/bootstrap.go policy-check {{if base == "" { "" } else { "--base " + if os() == "windows" { "'" + replace(base, "'", "''") + "'" } else { quote(base) } }}}
 
+skills-check:
+    go run ./tool/bootstrap.go skills-check
+
 run:
     go run ./tool/bootstrap.go run
 

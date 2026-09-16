@@ -10,7 +10,7 @@
 | `just coverage-unit` | Unit coverage with all production packages instrumented | None |
 | `just coverage-check` | Combined unit/integration and changed-code coverage | Both fresh profiles and a Git base |
 | `just lint` | Strict lint and formatting, including integration source | Pinned Go tool acquisition on a cold cache |
-| `just check` | Contracts, architecture, lint, unit/integration coverage, vet, build | Docker for disposable PostgreSQL |
+| `just check` | Gate policy and pinned skills, contracts, architecture, lint, unit/integration coverage, vet, build | Docker for disposable PostgreSQL |
 | `go run ./tool/bootstrap.go security` | Redacted source-secret scan and reachable Go vulnerability scan | Pinned tool acquisition and current vulnerability database |
 
 Unit tests live beside production code and must not read developer credentials, contact services, or require Docker. Integration tests live in `tests/integration` and require `//go:build integration`. Missing Docker is a test failure, not a silently skipped pass.
