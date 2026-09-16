@@ -23,6 +23,15 @@ policy-check base="":
 skills-check:
     go run ./tool/bootstrap.go skills-check
 
+recipes-check:
+    go run ./tool/bootstrap.go recipes-check
+
+commit-check title:
+    go run ./tool/bootstrap.go commit-check {{if os() == "windows" { "'" + replace(title, "'", "''") + "'" } else { quote(title) }}}
+
+fuzz-nightly:
+    go run ./tool/bootstrap.go fuzz-nightly
+
 run:
     go run ./tool/bootstrap.go run
 

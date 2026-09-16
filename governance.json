@@ -84,6 +84,12 @@
         {
           "argv": [
             "@ledger-tool",
+            "recipes-check"
+          ]
+        },
+        {
+          "argv": [
+            "@ledger-tool",
             "security"
           ],
           "timeout_seconds": 1200
